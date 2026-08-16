@@ -1,0 +1,73 @@
+data_lifecycles:
+  - id: DATA-001
+    creation: create workspace after the identity and workspace model is confirmed
+    update: change owner or membership only through an authorized workspace action
+    archive: archive when the workspace is no longer active
+    deletion: pending legal and compliance authority
+    retention: pending legal and compliance authority
+    export: export workspace metadata with its package when requested by an authorized user
+    audit: record access and membership changes in DATA-009
+  - id: DATA-002
+    creation: create a package record when a workspace starts a target package
+    update: increment graph_version after a canonical graph save
+    archive: mark package archived when a later target replaces it
+    deletion: pending retention decision
+    retention: retain through the package version history until the confirmed retention period ends
+    export: export the package files in the canonical YAML and Markdown formats
+    audit: record package lifecycle changes
+  - id: DATA-003
+    creation: create an artifact from a validated package edit or approved proposal
+    update: save a new artifact version while keeping stable_id immutable
+    archive: mark superseded when a confirmed replacement exists
+    deletion: remove only under a confirmed deletion rule and preserve required history
+    retention: follow package retention
+    export: include the artifact in the package export
+    audit: record actor, stable ID, and change type
+  - id: DATA-004
+    creation: create view state when a person opens or customizes a view
+    update: save selection, layout, and local filter changes
+    archive: discard stale layout when a view changes shape
+    deletion: allow the owner to clear view state
+    retention: pending local versus hosted workspace decision
+    export: view state is optional and separate from canonical intent
+    audit: record only when view state changes canonical data, which is forbidden
+  - id: DATA-005
+    creation: create when the product agent or a person proposes a change
+    update: update status and reviewer notes during review
+    archive: retain as resolved history after apply or rejection
+    deletion: pending chat and proposal retention decision
+    retention: pending legal and privacy decision
+    export: include proposals when the user requests governance history
+    audit: record proposal creation, review, and apply result
+  - id: DATA-006
+    creation: create when an authority confirms or rejects a choice
+    update: append a superseding decision instead of changing a confirmed statement
+    archive: keep superseded decisions in package history
+    deletion: pending legal and compliance authority
+    retention: retain with the affected package version
+    export: include decision records in governance export
+    audit: record authority and confirmation reference
+  - id: DATA-007
+    creation: create when a contributor plans implementation work
+    update: change task state, owner, or linked IDs through the task surface
+    archive: close the task after execution
+    deletion: follow the task-system policy; do not delete intent records
+    retention: governed by the selected task integration
+    export: include local links and external references
+    audit: record task link changes
+  - id: DATA-008
+    creation: add a source reference when inspected
+    update: append access limits or refreshed claims with a new capture time
+    archive: mark stale when the source no longer supports the claim
+    deletion: remove only when policy allows and no decision depends on it
+    retention: pending legal and privacy decision
+    export: include source location and limitations without copying private content
+    audit: record capture and source refresh
+  - id: DATA-009
+    creation: append after a user, agent, or integration action
+    update: append a correction event; do not edit history in place
+    archive: retain as an audit archive
+    deletion: pending legal and compliance authority
+    retention: pending legal and compliance authority
+    export: include only records allowed by the workspace policy
+    audit: the event is its own audit record

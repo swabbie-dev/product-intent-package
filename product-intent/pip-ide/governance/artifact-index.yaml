@@ -1,0 +1,1031 @@
+artifacts:
+  - id: ACTOR-001
+    kind: actor
+    label: PIP originator
+    path: product/capabilities.yaml#/actors/0
+    status: proposed
+    authority_id: AUTH-SEAN
+    confirmation_decision_id: null
+    source_refs: [EVID-001, EVID-006]
+    version: 1
+    stale: false
+  - id: ACTOR-002
+    kind: actor
+    label: PIP collaborator and reader
+    path: product/capabilities.yaml#/actors/1
+    status: proposed
+    authority_id: AUTH-SEAN
+    confirmation_decision_id: null
+    source_refs: [EVID-001, EVID-006]
+    version: 1
+    stale: false
+  - id: ACTOR-003
+    kind: actor
+    label: Product agent
+    path: product/capabilities.yaml#/actors/2
+    status: proposed
+    authority_id: AUTH-SEAN
+    confirmation_decision_id: null
+    source_refs: [EVID-006]
+    version: 1
+    stale: false
+  - id: ACTOR-004
+    kind: actor
+    label: Implementation contributor
+    path: product/capabilities.yaml#/actors/3
+    status: proposed
+    authority_id: AUTH-SEAN
+    confirmation_decision_id: null
+    source_refs: [EVID-006]
+    version: 1
+    stale: false
+  - id: CAP-001
+    kind: capability
+    label: Author and evolve a canonical PIP
+    path: product/capabilities.yaml#/capabilities/0
+    status: confirmed
+    authority_id: AUTH-SEAN
+    confirmation_decision_id: DEC-001
+    source_refs: [EVID-006, EVID-007]
+    version: 1
+    stale: false
+  - id: CAP-002
+    kind: capability
+    label: Interpret and navigate an existing PIP
+    path: product/capabilities.yaml#/capabilities/1
+    status: confirmed
+    authority_id: AUTH-SEAN
+    confirmation_decision_id: DEC-002
+    source_refs: [EVID-006]
+    version: 1
+    stale: false
+  - id: CAP-003
+    kind: capability
+    label: Work with a product agent through chat
+    path: product/capabilities.yaml#/capabilities/2
+    status: confirmed
+    authority_id: AUTH-SEAN
+    confirmation_decision_id: DEC-002
+    source_refs: [EVID-006]
+    version: 1
+    stale: false
+  - id: CAP-004
+    kind: capability
+    label: Manage implementation tasks in a Linear-style view
+    path: product/capabilities.yaml#/capabilities/3
+    status: confirmed
+    authority_id: AUTH-SEAN
+    confirmation_decision_id: DEC-002
+    source_refs: [EVID-006]
+    version: 1
+    stale: false
+  - id: DOM-001
+    kind: domain_concept
+    label: Product Intent Package
+    path: product/domain-model.md#/DOM-001
+    status: proposed
+    authority_id: AUTH-SEAN
+    confirmation_decision_id: null
+    source_refs: [EVID-006, EVID-007]
+    version: 1
+    stale: false
+  - id: DOM-002
+    kind: domain_concept
+    label: Artifact
+    path: product/domain-model.md#/DOM-002
+    status: proposed
+    authority_id: AUTH-SEAN
+    confirmation_decision_id: null
+    source_refs: [EVID-007]
+    version: 1
+    stale: false
+  - id: DOM-003
+    kind: domain_concept
+    label: Stable ID
+    path: product/domain-model.md#/DOM-003
+    status: proposed
+    authority_id: AUTH-SEAN
+    confirmation_decision_id: null
+    source_refs: [EVID-007]
+    version: 1
+    stale: false
+  - id: DOM-004
+    kind: domain_concept
+    label: View
+    path: product/domain-model.md#/DOM-004
+    status: proposed
+    authority_id: AUTH-MORGAN
+    confirmation_decision_id: null
+    source_refs: [EVID-006]
+    version: 1
+    stale: false
+  - id: DOM-005
+    kind: domain_concept
+    label: Proposal
+    path: product/domain-model.md#/DOM-005
+    status: proposed
+    authority_id: AUTH-SEAN
+    confirmation_decision_id: null
+    source_refs: [EVID-006]
+    version: 1
+    stale: false
+  - id: DOM-006
+    kind: domain_concept
+    label: Decision
+    path: product/domain-model.md#/DOM-006
+    status: proposed
+    authority_id: AUTH-SEAN
+    confirmation_decision_id: null
+    source_refs: [EVID-007]
+    version: 1
+    stale: false
+  - id: DOM-007
+    kind: domain_concept
+    label: Task
+    path: product/domain-model.md#/DOM-007
+    status: proposed
+    authority_id: AUTH-SEAN
+    confirmation_decision_id: null
+    source_refs: [EVID-006]
+    version: 1
+    stale: false
+  - id: DOM-008
+    kind: domain_concept
+    label: Evidence
+    path: product/domain-model.md#/DOM-008
+    status: proposed
+    authority_id: AUTH-SEAN
+    confirmation_decision_id: null
+    source_refs: [EVID-007]
+    version: 1
+    stale: false
+  - id: DOM-009
+    kind: domain_concept
+    label: Authority
+    path: product/domain-model.md#/DOM-009
+    status: proposed
+    authority_id: AUTH-SEAN
+    confirmation_decision_id: null
+    source_refs: [EVID-001, EVID-007]
+    version: 1
+    stale: false
+  - id: DOM-010
+    kind: domain_concept
+    label: Workspace
+    path: product/domain-model.md#/DOM-010
+    status: proposed
+    authority_id: AUTH-SEAN
+    confirmation_decision_id: null
+    source_refs: [EVID-006]
+    version: 1
+    stale: false
+  - id: FLOW-001
+    kind: flow
+    label: Capture and evolve intent
+    path: experience/user-flows.md#/FLOW-001
+    status: proposed
+    authority_id: AUTH-MORGAN
+    confirmation_decision_id: null
+    source_refs: [EVID-006]
+    version: 1
+    stale: false
+  - id: FLOW-002
+    kind: flow
+    label: Interpret and navigate
+    path: experience/user-flows.md#/FLOW-002
+    status: proposed
+    authority_id: AUTH-MORGAN
+    confirmation_decision_id: null
+    source_refs: [EVID-006]
+    version: 1
+    stale: false
+  - id: FLOW-003
+    kind: flow
+    label: Review agent proposal
+    path: experience/user-flows.md#/FLOW-003
+    status: proposed
+    authority_id: AUTH-MORGAN
+    confirmation_decision_id: null
+    source_refs: [EVID-006]
+    version: 1
+    stale: false
+  - id: FLOW-004
+    kind: flow
+    label: Plan implementation work
+    path: experience/user-flows.md#/FLOW-004
+    status: proposed
+    authority_id: AUTH-MORGAN
+    confirmation_decision_id: null
+    source_refs: [EVID-006]
+    version: 1
+    stale: false
+  - id: SCREEN-001
+    kind: screen
+    label: Workspace shell
+    path: experience/screens.yaml#/screens/0
+    status: proposed
+    authority_id: AUTH-MORGAN
+    confirmation_decision_id: null
+    source_refs: [EVID-002, EVID-006]
+    version: 1
+    stale: false
+  - id: SCREEN-002
+    kind: screen
+    label: Experience board
+    path: experience/screens.yaml#/screens/1
+    status: proposed
+    authority_id: AUTH-MORGAN
+    confirmation_decision_id: null
+    source_refs: [EVID-002, EVID-006]
+    version: 1
+    stale: false
+  - id: SCREEN-003
+    kind: screen
+    label: Semantic canvas
+    path: experience/screens.yaml#/screens/2
+    status: proposed
+    authority_id: AUTH-MORGAN
+    confirmation_decision_id: null
+    source_refs: [EVID-003, EVID-006]
+    version: 1
+    stale: false
+  - id: SCREEN-004
+    kind: screen
+    label: Structured record view
+    path: experience/screens.yaml#/screens/3
+    status: proposed
+    authority_id: AUTH-MORGAN
+    confirmation_decision_id: null
+    source_refs: [EVID-006, EVID-007]
+    version: 1
+    stale: false
+  - id: SCREEN-005
+    kind: screen
+    label: Data table view
+    path: experience/screens.yaml#/screens/4
+    status: proposed
+    authority_id: AUTH-MORGAN
+    confirmation_decision_id: null
+    source_refs: [EVID-004, EVID-006]
+    version: 1
+    stale: false
+  - id: SCREEN-006
+    kind: screen
+    label: Task overlay
+    path: experience/screens.yaml#/screens/5
+    status: proposed
+    authority_id: AUTH-MORGAN
+    confirmation_decision_id: null
+    source_refs: [EVID-001, EVID-006]
+    version: 1
+    stale: false
+  - id: SCREEN-007
+    kind: screen
+    label: Product-agent chat
+    path: experience/screens.yaml#/screens/6
+    status: proposed
+    authority_id: AUTH-MORGAN
+    confirmation_decision_id: null
+    source_refs: [EVID-006]
+    version: 1
+    stale: false
+  - id: SCREEN-008
+    kind: screen
+    label: Proposal review
+    path: experience/screens.yaml#/screens/7
+    status: proposed
+    authority_id: AUTH-MORGAN
+    confirmation_decision_id: null
+    source_refs: [EVID-006]
+    version: 1
+    stale: false
+  - id: MOCK-001
+    kind: mockup
+    label: PIP IDE shell wireframe
+    path: experience/mockups/pip-ide-shell.md
+    status: proposed
+    authority_id: AUTH-MORGAN
+    confirmation_decision_id: null
+    source_refs: [EVID-002, EVID-006]
+    version: 1
+    stale: false
+  - id: TOKEN-001
+    kind: design_token_set
+    label: PIP IDE proposed design tokens
+    path: experience/design-tokens.yaml#/token_set_id
+    status: proposed
+    authority_id: AUTH-MORGAN
+    confirmation_decision_id: null
+    source_refs: [EVID-002]
+    version: 1
+    stale: false
+  - id: COMP-001
+    kind: component
+    label: Workspace shell
+    path: experience/components.yaml#/components/0
+    status: proposed
+    authority_id: AUTH-MORGAN
+    confirmation_decision_id: null
+    source_refs: [EVID-002, EVID-006]
+    version: 1
+    stale: false
+  - id: COMP-002
+    kind: component
+    label: Artifact navigator
+    path: experience/components.yaml#/components/1
+    status: proposed
+    authority_id: AUTH-MORGAN
+    confirmation_decision_id: null
+    source_refs: [EVID-006]
+    version: 1
+    stale: false
+  - id: COMP-003
+    kind: component
+    label: View switcher
+    path: experience/components.yaml#/components/2
+    status: proposed
+    authority_id: AUTH-MORGAN
+    confirmation_decision_id: null
+    source_refs: [EVID-006]
+    version: 1
+    stale: false
+  - id: COMP-004
+    kind: component
+    label: Proposal diff
+    path: experience/components.yaml#/components/3
+    status: proposed
+    authority_id: AUTH-MORGAN
+    confirmation_decision_id: null
+    source_refs: [EVID-006]
+    version: 1
+    stale: false
+  - id: COMP-005
+    kind: component
+    label: Approval controls
+    path: experience/components.yaml#/components/4
+    status: proposed
+    authority_id: AUTH-MORGAN
+    confirmation_decision_id: null
+    source_refs: [EVID-006]
+    version: 1
+    stale: false
+  - id: COMP-006
+    kind: component
+    label: Task link control
+    path: experience/components.yaml#/components/5
+    status: proposed
+    authority_id: AUTH-MORGAN
+    confirmation_decision_id: null
+    source_refs: [EVID-001, EVID-006]
+    version: 1
+    stale: false
+  - id: COMP-007
+    kind: component
+    label: Agent chat composer
+    path: experience/components.yaml#/components/6
+    status: proposed
+    authority_id: AUTH-MORGAN
+    confirmation_decision_id: null
+    source_refs: [EVID-006]
+    version: 1
+    stale: false
+  - id: COMP-008
+    kind: component
+    label: Validation status
+    path: experience/components.yaml#/components/7
+    status: proposed
+    authority_id: AUTH-MORGAN
+    confirmation_decision_id: null
+    source_refs: [EVID-007]
+    version: 1
+    stale: false
+  - id: COMP-009
+    kind: component
+    label: Semantic node
+    path: experience/components.yaml#/components/8
+    status: proposed
+    authority_id: AUTH-MORGAN
+    confirmation_decision_id: null
+    source_refs: [EVID-003, EVID-006]
+    version: 1
+    stale: false
+  - id: COMP-010
+    kind: component
+    label: Intent data grid
+    path: experience/components.yaml#/components/9
+    status: proposed
+    authority_id: AUTH-MORGAN
+    confirmation_decision_id: null
+    source_refs: [EVID-004, EVID-006]
+    version: 1
+    stale: false
+  - id: RULE-001
+    kind: rule
+    label: Canonical graph is source of truth
+    path: behavior/rules.yaml#/rules/0
+    status: proposed
+    authority_id: AUTH-SEAN
+    confirmation_decision_id: null
+    source_refs: [EVID-006, EVID-007]
+    version: 1
+    stale: false
+  - id: RULE-002
+    kind: rule
+    label: Approval before canonical write
+    path: behavior/rules.yaml#/rules/1
+    status: proposed
+    authority_id: AUTH-SEAN
+    confirmation_decision_id: null
+    source_refs: [EVID-006]
+    version: 1
+    stale: false
+  - id: RULE-003
+    kind: rule
+    label: Tasks do not mutate intent
+    path: behavior/rules.yaml#/rules/2
+    status: proposed
+    authority_id: AUTH-SEAN
+    confirmation_decision_id: null
+    source_refs: [EVID-006]
+    version: 1
+    stale: false
+  - id: RULE-004
+    kind: rule
+    label: Invalid edits are not persisted
+    path: behavior/rules.yaml#/rules/3
+    status: proposed
+    authority_id: AUTH-SEAN
+    confirmation_decision_id: null
+    source_refs: [EVID-007]
+    version: 1
+    stale: false
+  - id: RULE-005
+    kind: rule
+    label: View switch preserves context
+    path: behavior/rules.yaml#/rules/4
+    status: proposed
+    authority_id: AUTH-SEAN
+    confirmation_decision_id: null
+    source_refs: [EVID-006]
+    version: 1
+    stale: false
+  - id: RULE-006
+    kind: rule
+    label: Block blind graph overwrite
+    path: behavior/rules.yaml#/rules/5
+    status: proposed
+    authority_id: AUTH-SEAN
+    confirmation_decision_id: null
+    source_refs: [EVID-006]
+    version: 1
+    stale: false
+  - id: RULE-007
+    kind: rule
+    label: Preserve local content on integration failure
+    path: behavior/rules.yaml#/rules/6
+    status: proposed
+    authority_id: AUTH-SEAN
+    confirmation_decision_id: null
+    source_refs: [EVID-002, EVID-003, EVID-004, EVID-005]
+    version: 1
+    stale: false
+  - id: RULE-008
+    kind: rule
+    label: Stable IDs are immutable
+    path: behavior/rules.yaml#/rules/7
+    status: proposed
+    authority_id: AUTH-SEAN
+    confirmation_decision_id: null
+    source_refs: [EVID-007]
+    version: 1
+    stale: false
+  - id: RULE-009
+    kind: rule
+    label: Protected actions require authority
+    path: behavior/rules.yaml#/rules/8
+    status: proposed
+    authority_id: AUTH-SEAN
+    confirmation_decision_id: null
+    source_refs: [EVID-001, EVID-007]
+    version: 1
+    stale: false
+  - id: SM-001
+    kind: state_machine
+    label: Artifact lifecycle
+    path: behavior/state-machines.md#/SM-001
+    status: proposed
+    authority_id: AUTH-SEAN
+    confirmation_decision_id: null
+    source_refs: [EVID-007]
+    version: 1
+    stale: false
+  - id: SM-002
+    kind: state_machine
+    label: Product-agent proposal lifecycle
+    path: behavior/state-machines.md#/SM-002
+    status: proposed
+    authority_id: AUTH-SEAN
+    confirmation_decision_id: null
+    source_refs: [EVID-006]
+    version: 1
+    stale: false
+  - id: DT-001
+    kind: decision_table
+    label: Proposal review outcomes
+    path: behavior/decision-tables.csv#/DT-001
+    status: proposed
+    authority_id: AUTH-SEAN
+    confirmation_decision_id: null
+    source_refs: [EVID-006]
+    version: 1
+    stale: false
+  - id: DT-002
+    kind: decision_table
+    label: Save and integration outcomes
+    path: behavior/decision-tables.csv#/DT-002
+    status: proposed
+    authority_id: AUTH-SEAN
+    confirmation_decision_id: null
+    source_refs: [EVID-006]
+    version: 1
+    stale: false
+  - id: DATA-001
+    kind: data_model
+    label: Workspace data model
+    path: data/schema.yaml#/entities/0
+    status: proposed
+    authority_id: AUTH-SEAN
+    confirmation_decision_id: null
+    source_refs: [EVID-006]
+    version: 1
+    stale: false
+  - id: DATA-002
+    kind: data_model
+    label: Package data model
+    path: data/schema.yaml#/entities/1
+    status: proposed
+    authority_id: AUTH-SEAN
+    confirmation_decision_id: null
+    source_refs: [EVID-007]
+    version: 1
+    stale: false
+  - id: DATA-003
+    kind: data_model
+    label: Artifact data model
+    path: data/schema.yaml#/entities/2
+    status: proposed
+    authority_id: AUTH-SEAN
+    confirmation_decision_id: null
+    source_refs: [EVID-007]
+    version: 1
+    stale: false
+  - id: DATA-004
+    kind: data_model
+    label: View state data model
+    path: data/schema.yaml#/entities/3
+    status: proposed
+    authority_id: AUTH-SEAN
+    confirmation_decision_id: null
+    source_refs: [EVID-006]
+    version: 1
+    stale: false
+  - id: DATA-005
+    kind: data_model
+    label: Proposal data model
+    path: data/schema.yaml#/entities/4
+    status: proposed
+    authority_id: AUTH-SEAN
+    confirmation_decision_id: null
+    source_refs: [EVID-006]
+    version: 1
+    stale: false
+  - id: DATA-006
+    kind: data_model
+    label: Decision data model
+    path: data/schema.yaml#/entities/5
+    status: proposed
+    authority_id: AUTH-SEAN
+    confirmation_decision_id: null
+    source_refs: [EVID-007]
+    version: 1
+    stale: false
+  - id: DATA-007
+    kind: data_model
+    label: Task link data model
+    path: data/schema.yaml#/entities/6
+    status: proposed
+    authority_id: AUTH-SEAN
+    confirmation_decision_id: null
+    source_refs: [EVID-001, EVID-006]
+    version: 1
+    stale: false
+  - id: DATA-008
+    kind: data_model
+    label: Evidence data model
+    path: data/schema.yaml#/entities/7
+    status: proposed
+    authority_id: AUTH-SEAN
+    confirmation_decision_id: null
+    source_refs: [EVID-002, EVID-003, EVID-004, EVID-005]
+    version: 1
+    stale: false
+  - id: DATA-009
+    kind: data_model
+    label: Audit event data model
+    path: data/schema.yaml#/entities/8
+    status: proposed
+    authority_id: AUTH-SEAN
+    confirmation_decision_id: null
+    source_refs: [EVID-007]
+    version: 1
+    stale: false
+  - id: ARCH-001
+    kind: architecture
+    label: System context boundary
+    path: architecture/system-context.md#/ARCH-001
+    status: proposed
+    authority_id: AUTH-SEAN
+    confirmation_decision_id: null
+    source_refs: [EVID-006]
+    version: 1
+    stale: false
+  - id: ARCH-002
+    kind: architecture
+    label: Purpose-built application shell
+    path: architecture/containers.md#/ARCH-002
+    status: proposed
+    authority_id: AUTH-SEAN
+    confirmation_decision_id: null
+    source_refs: [EVID-006]
+    version: 1
+    stale: false
+  - id: ARCH-003
+    kind: architecture
+    label: Canonical graph service
+    path: architecture/components.md#/ARCH-003
+    status: proposed
+    authority_id: AUTH-SEAN
+    confirmation_decision_id: null
+    source_refs: [EVID-006, EVID-007]
+    version: 1
+    stale: false
+  - id: ARCH-004
+    kind: architecture
+    label: View adapters
+    path: architecture/containers.md#/ARCH-004
+    status: proposed
+    authority_id: AUTH-SEAN
+    confirmation_decision_id: null
+    source_refs: [EVID-006]
+    version: 1
+    stale: false
+  - id: ARCH-005
+    kind: architecture
+    label: Product-agent gateway
+    path: architecture/system-context.md#/ARCH-005
+    status: proposed
+    authority_id: AUTH-SEAN
+    confirmation_decision_id: null
+    source_refs: [EVID-006]
+    version: 1
+    stale: false
+  - id: ARCH-006
+    kind: architecture
+    label: Integration adapters
+    path: architecture/system-context.md#/ARCH-006
+    status: proposed
+    authority_id: AUTH-SEAN
+    confirmation_decision_id: null
+    source_refs: [EVID-002, EVID-003, EVID-004, EVID-005]
+    version: 1
+    stale: false
+  - id: ARCH-007
+    kind: architecture
+    label: Workspace storage boundary
+    path: architecture/deployment.md#/ARCH-007
+    status: proposed
+    authority_id: AUTH-SEAN
+    confirmation_decision_id: null
+    source_refs: [EVID-006]
+    version: 1
+    stale: false
+  - id: API-001
+    kind: api_contract
+    label: Package and artifact API
+    path: contracts/openapi.yaml#/x-pip-artifact-groups/API-001
+    status: proposed
+    authority_id: AUTH-SEAN
+    confirmation_decision_id: null
+    source_refs: [EVID-007]
+    version: 1
+    stale: false
+  - id: API-002
+    kind: api_contract
+    label: Proposal review API
+    path: contracts/openapi.yaml#/paths/~1v1~1workspaces~1{workspaceId}~1packages~1{packageId}~1proposals~1{proposalId}~1review/post
+    status: proposed
+    authority_id: AUTH-SEAN
+    confirmation_decision_id: null
+    source_refs: [EVID-006]
+    version: 1
+    stale: false
+  - id: API-003
+    kind: api_contract
+    label: View projection API
+    path: contracts/openapi.yaml#/paths/~1v1~1workspaces~1{workspaceId}~1packages~1{packageId}~1views~1{viewKind}/get
+    status: proposed
+    authority_id: AUTH-SEAN
+    confirmation_decision_id: null
+    source_refs: [EVID-006]
+    version: 1
+    stale: false
+  - id: EVT-001
+    kind: event_contract
+    label: Artifact changed event
+    path: contracts/events.yaml#/events/0
+    status: proposed
+    authority_id: AUTH-SEAN
+    confirmation_decision_id: null
+    source_refs: [EVID-007]
+    version: 1
+    stale: false
+  - id: EVT-002
+    kind: event_contract
+    label: Proposal created event
+    path: contracts/events.yaml#/events/1
+    status: proposed
+    authority_id: AUTH-SEAN
+    confirmation_decision_id: null
+    source_refs: [EVID-006]
+    version: 1
+    stale: false
+  - id: EVT-003
+    kind: event_contract
+    label: Proposal reviewed event
+    path: contracts/events.yaml#/events/2
+    status: proposed
+    authority_id: AUTH-SEAN
+    confirmation_decision_id: null
+    source_refs: [EVID-006]
+    version: 1
+    stale: false
+  - id: INT-001
+    kind: integration_contract
+    label: Figma experience source
+    path: contracts/integrations.yaml#/integrations/0
+    status: proposed
+    authority_id: AUTH-SEAN
+    confirmation_decision_id: null
+    source_refs: [EVID-002]
+    version: 1
+    stale: false
+  - id: INT-002
+    kind: integration_contract
+    label: Miro semantic canvas source
+    path: contracts/integrations.yaml#/integrations/1
+    status: proposed
+    authority_id: AUTH-SEAN
+    confirmation_decision_id: null
+    source_refs: [EVID-003]
+    version: 1
+    stale: false
+  - id: INT-003
+    kind: integration_contract
+    label: Google Sheets working table
+    path: contracts/integrations.yaml#/integrations/2
+    status: proposed
+    authority_id: AUTH-SEAN
+    confirmation_decision_id: null
+    source_refs: [EVID-004]
+    version: 1
+    stale: false
+  - id: INT-004
+    kind: integration_contract
+    label: Linear task overlay
+    path: contracts/integrations.yaml#/integrations/3
+    status: proposed
+    authority_id: AUTH-SEAN
+    confirmation_decision_id: null
+    source_refs: [EVID-001]
+    version: 1
+    stale: false
+  - id: INT-005
+    kind: integration_contract
+    label: GitHub package repository
+    path: contracts/integrations.yaml#/integrations/4
+    status: proposed
+    authority_id: AUTH-SEAN
+    confirmation_decision_id: null
+    source_refs: [EVID-005]
+    version: 1
+    stale: false
+  - id: SEQ-001
+    kind: sequence
+    label: Save an author edit
+    path: sequences/sequences.md#/SEQ-001
+    status: proposed
+    authority_id: AUTH-SEAN
+    confirmation_decision_id: null
+    source_refs: [EVID-007]
+    version: 1
+    stale: false
+  - id: SEQ-002
+    kind: sequence
+    label: Review and apply agent proposal
+    path: sequences/sequences.md#/SEQ-002
+    status: proposed
+    authority_id: AUTH-SEAN
+    confirmation_decision_id: null
+    source_refs: [EVID-006]
+    version: 1
+    stale: false
+  - id: SEQ-003
+    kind: sequence
+    label: Integration read failure
+    path: sequences/sequences.md#/SEQ-003
+    status: proposed
+    authority_id: AUTH-SEAN
+    confirmation_decision_id: null
+    source_refs: [EVID-002, EVID-003, EVID-004, EVID-005]
+    version: 1
+    stale: false
+  - id: QC-001
+    kind: quality_constraint
+    label: Proposed local save latency
+    path: quality/constraints.yaml#/constraints/0
+    status: proposed
+    authority_id: AUTH-SEAN
+    confirmation_decision_id: null
+    source_refs: [EVID-006]
+    version: 1
+    stale: false
+  - id: QC-002
+    kind: quality_constraint
+    label: Proposed view switch latency
+    path: quality/constraints.yaml#/constraints/1
+    status: proposed
+    authority_id: AUTH-SEAN
+    confirmation_decision_id: null
+    source_refs: [EVID-006]
+    version: 1
+    stale: false
+  - id: QC-003
+    kind: quality_constraint
+    label: Concurrent save conflict detection
+    path: quality/constraints.yaml#/constraints/2
+    status: proposed
+    authority_id: AUTH-SEAN
+    confirmation_decision_id: null
+    source_refs: [EVID-006]
+    version: 1
+    stale: false
+  - id: QC-004
+    kind: quality_constraint
+    label: Proposal approval safety
+    path: quality/constraints.yaml#/constraints/3
+    status: proposed
+    authority_id: AUTH-SEAN
+    confirmation_decision_id: null
+    source_refs: [EVID-006]
+    version: 1
+    stale: false
+  - id: QC-005
+    kind: quality_constraint
+    label: Proposed accessibility level
+    path: quality/constraints.yaml#/constraints/4
+    status: proposed
+    authority_id: AUTH-SEAN
+    confirmation_decision_id: null
+    source_refs: [EVID-007]
+    version: 1
+    stale: false
+  - id: QC-006
+    kind: quality_constraint
+    label: Save and reload durability
+    path: quality/constraints.yaml#/constraints/5
+    status: proposed
+    authority_id: AUTH-SEAN
+    confirmation_decision_id: null
+    source_refs: [EVID-006]
+    version: 1
+    stale: false
+  - id: QC-007
+    kind: quality_constraint
+    label: Chat and proposal privacy
+    path: quality/constraints.yaml#/constraints/6
+    status: proposed
+    authority_id: AUTH-SEAN
+    confirmation_decision_id: null
+    source_refs: [EVID-006]
+    version: 1
+    stale: false
+  - id: QC-008
+    kind: quality_constraint
+    label: Integration failure visibility
+    path: quality/constraints.yaml#/constraints/7
+    status: proposed
+    authority_id: AUTH-SEAN
+    confirmation_decision_id: null
+    source_refs: [EVID-002, EVID-003, EVID-004, EVID-005]
+    version: 1
+    stale: false
+  - id: ACC-001
+    kind: acceptance_scenario
+    label: Create package and first capability
+    path: verification/acceptance.yaml#/scenarios/0
+    status: proposed
+    authority_id: AUTH-SEAN
+    confirmation_decision_id: null
+    source_refs: [EVID-006, EVID-007]
+    version: 1
+    stale: false
+  - id: ACC-002
+    kind: acceptance_scenario
+    label: Navigate linked package records
+    path: verification/acceptance.yaml#/scenarios/1
+    status: proposed
+    authority_id: AUTH-SEAN
+    confirmation_decision_id: null
+    source_refs: [EVID-006]
+    version: 1
+    stale: false
+  - id: ACC-003
+    kind: acceptance_scenario
+    label: Edit and synchronize views
+    path: verification/acceptance.yaml#/scenarios/2
+    status: proposed
+    authority_id: AUTH-SEAN
+    confirmation_decision_id: null
+    source_refs: [EVID-006]
+    version: 1
+    stale: false
+  - id: ACC-004
+    kind: acceptance_scenario
+    label: Approve agent proposal
+    path: verification/acceptance.yaml#/scenarios/3
+    status: proposed
+    authority_id: AUTH-SEAN
+    confirmation_decision_id: null
+    source_refs: [EVID-006]
+    version: 1
+    stale: false
+  - id: ACC-005
+    kind: acceptance_scenario
+    label: Deny unauthorized proposal approval
+    path: verification/acceptance.yaml#/scenarios/4
+    status: proposed
+    authority_id: AUTH-SEAN
+    confirmation_decision_id: null
+    source_refs: [EVID-001, EVID-006]
+    version: 1
+    stale: false
+  - id: ACC-006
+    kind: acceptance_scenario
+    label: Link task without changing intent
+    path: verification/acceptance.yaml#/scenarios/5
+    status: proposed
+    authority_id: AUTH-SEAN
+    confirmation_decision_id: null
+    source_refs: [EVID-001, EVID-006]
+    version: 1
+    stale: false
+  - id: ACC-007
+    kind: acceptance_scenario
+    label: Save and reload package
+    path: verification/acceptance.yaml#/scenarios/6
+    status: proposed
+    authority_id: AUTH-SEAN
+    confirmation_decision_id: null
+    source_refs: [EVID-006]
+    version: 1
+    stale: false
+  - id: ACC-008
+    kind: acceptance_scenario
+    label: Preserve local state after integration failure
+    path: verification/acceptance.yaml#/scenarios/7
+    status: proposed
+    authority_id: AUTH-SEAN
+    confirmation_decision_id: null
+    source_refs: [EVID-002, EVID-003, EVID-004, EVID-005]
+    version: 1
+    stale: false
+  - id: ACC-009
+    kind: acceptance_scenario
+    label: Block concurrent blind overwrite
+    path: verification/acceptance.yaml#/scenarios/8
+    status: proposed
+    authority_id: AUTH-SEAN
+    confirmation_decision_id: null
+    source_refs: [EVID-006]
+    version: 1
+    stale: false
+  - id: ACC-010
+    kind: acceptance_scenario
+    label: Core accessibility paths
+    path: verification/acceptance.yaml#/scenarios/9
+    status: proposed
+    authority_id: AUTH-MORGAN
+    confirmation_decision_id: null
+    source_refs: [EVID-007]
+    version: 1
+    stale: false

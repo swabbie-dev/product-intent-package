@@ -1,0 +1,99 @@
+actors:
+  - id: ACTOR-001
+    name: PIP originator
+    goals:
+      - Turn an idea into a coherent PIP.
+      - Confirm product decisions and release scope.
+    account_state: authenticated authority
+  - id: ACTOR-002
+    name: PIP collaborator and reader
+    goals:
+      - Interpret an existing package.
+      - Review and discuss proposed changes.
+    account_state: authenticated collaborator
+  - id: ACTOR-003
+    name: Product agent
+    goals:
+      - Help a person find gaps and draft bounded proposals.
+      - Explain links between package records.
+    account_state: agent session with no independent approval power
+  - id: ACTOR-004
+    name: Implementation contributor
+    goals:
+      - Use confirmed package intent to plan and build implementation work.
+      - Link execution tasks to the intent they serve.
+    account_state: authenticated collaborator
+capabilities:
+  - id: CAP-001
+    name: Author and evolve a canonical PIP
+    actor_ids:
+      - ACTOR-001
+      - ACTOR-002
+    dependency_ids: []
+    coverage_requirements:
+      domain: true
+      experience: true
+      behavior: true
+      data: true
+      architecture: true
+      contracts: true
+      sequence: true
+      quality: true
+      verification: true
+    coverage_exceptions: {}
+  - id: CAP-002
+    name: Interpret and navigate an existing PIP
+    actor_ids:
+      - ACTOR-001
+      - ACTOR-002
+      - ACTOR-004
+    dependency_ids:
+      - CAP-001
+    coverage_requirements:
+      domain: true
+      experience: true
+      behavior: true
+      data: true
+      architecture: true
+      contracts: true
+      sequence: true
+      quality: true
+      verification: true
+    coverage_exceptions: {}
+  - id: CAP-003
+    name: Work with a product agent through chat
+    actor_ids:
+      - ACTOR-001
+      - ACTOR-002
+    dependency_ids:
+      - CAP-001
+    coverage_requirements:
+      domain: true
+      experience: true
+      behavior: true
+      data: true
+      architecture: true
+      contracts: true
+      sequence: true
+      quality: true
+      verification: true
+    coverage_exceptions: {}
+  - id: CAP-004
+    name: Manage implementation tasks in a Linear-style view
+    actor_ids:
+      - ACTOR-004
+      - ACTOR-001
+    dependency_ids:
+      - CAP-001
+      - CAP-002
+    coverage_requirements:
+      domain: true
+      experience: true
+      behavior: true
+      data: true
+      architecture: true
+      contracts: true
+      sequence: true
+      quality: true
+      verification: true
+    coverage_exceptions: {}

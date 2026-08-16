@@ -1,0 +1,256 @@
+structures:
+  - name: product_map
+    status: covered
+    artifact_ids:
+      - ACTOR-001
+      - ACTOR-002
+      - ACTOR-003
+      - ACTOR-004
+      - CAP-001
+      - CAP-002
+      - CAP-003
+      - CAP-004
+    decision_id: null
+  - name: domain_model
+    status: covered
+    artifact_ids:
+      - DOM-001
+      - DOM-002
+      - DOM-003
+      - DOM-004
+      - DOM-005
+      - DOM-006
+      - DOM-007
+      - DOM-008
+      - DOM-009
+      - DOM-010
+    decision_id: null
+  - name: user_flow_model
+    status: covered
+    artifact_ids:
+      - FLOW-001
+      - FLOW-002
+      - FLOW-003
+      - FLOW-004
+    decision_id: null
+  - name: interface_model
+    status: covered
+    artifact_ids:
+      - SCREEN-001
+      - SCREEN-002
+      - SCREEN-003
+      - SCREEN-004
+      - SCREEN-005
+      - SCREEN-006
+      - SCREEN-007
+      - SCREEN-008
+      - MOCK-001
+    decision_id: null
+  - name: design_system
+    status: covered
+    artifact_ids:
+      - TOKEN-001
+      - COMP-001
+      - COMP-002
+      - COMP-003
+      - COMP-004
+      - COMP-005
+      - COMP-006
+      - COMP-007
+      - COMP-008
+      - COMP-009
+      - COMP-010
+    decision_id: null
+  - name: behavior_model
+    status: covered
+    artifact_ids:
+      - RULE-001
+      - RULE-002
+      - RULE-003
+      - RULE-004
+      - RULE-005
+      - RULE-006
+      - RULE-007
+      - RULE-008
+      - RULE-009
+      - SM-001
+      - SM-002
+      - DT-001
+      - DT-002
+    decision_id: null
+  - name: data_model
+    status: covered
+    artifact_ids:
+      - DATA-001
+      - DATA-002
+      - DATA-003
+      - DATA-004
+      - DATA-005
+      - DATA-006
+      - DATA-007
+      - DATA-008
+      - DATA-009
+    decision_id: null
+  - name: system_architecture
+    status: covered
+    artifact_ids:
+      - ARCH-001
+      - ARCH-002
+      - ARCH-003
+      - ARCH-004
+      - ARCH-005
+      - ARCH-006
+      - ARCH-007
+    decision_id: null
+  - name: interface_contracts
+    status: covered
+    artifact_ids:
+      - API-001
+      - API-002
+      - API-003
+      - EVT-001
+      - EVT-002
+      - EVT-003
+      - INT-001
+      - INT-002
+      - INT-003
+      - INT-004
+      - INT-005
+    decision_id: null
+  - name: runtime_interactions
+    status: covered
+    artifact_ids:
+      - SEQ-001
+      - SEQ-002
+      - SEQ-003
+    decision_id: null
+  - name: quality_constraints
+    status: covered
+    artifact_ids:
+      - QC-001
+      - QC-002
+      - QC-003
+      - QC-004
+      - QC-005
+      - QC-006
+      - QC-007
+      - QC-008
+    decision_id: null
+  - name: verification_model
+    status: covered
+    artifact_ids:
+      - ACC-001
+      - ACC-002
+      - ACC-003
+      - ACC-004
+      - ACC-005
+      - ACC-006
+      - ACC-007
+      - ACC-008
+      - ACC-009
+      - ACC-010
+    decision_id: null
+lenses:
+  - name: roles_permissions_tenancy
+    status: blocked
+    artifact_ids:
+      - ACTOR-001
+      - ACTOR-002
+      - ACTOR-004
+      - DOM-009
+      - DATA-001
+      - RULE-009
+    decision_id: null
+  - name: identity_account_lifecycle
+    status: blocked
+    artifact_ids:
+      - ACTOR-001
+      - ACTOR-002
+      - DATA-001
+      - RULE-009
+    decision_id: null
+  - name: admin_moderation_support_audit
+    status: blocked
+    artifact_ids:
+      - ACTOR-001
+      - DATA-009
+      - QC-007
+    decision_id: null
+  - name: billing_entitlements_quotas
+    status: blocked
+    artifact_ids:
+      - DATA-001
+      - QC-007
+    decision_id: null
+  - name: notifications_preferences_delivery
+    status: blocked
+    artifact_ids:
+      - DATA-004
+      - QC-008
+    decision_id: null
+  - name: search_filter_sort_pagination
+    status: blocked
+    artifact_ids:
+      - SCREEN-005
+      - COMP-010
+      - CAP-002
+    decision_id: null
+  - name: files_import_export_migration
+    status: blocked
+    artifact_ids:
+      - DATA-002
+      - DATA-008
+      - INT-005
+    decision_id: null
+  - name: analytics_instrumentation_experiments
+    status: blocked
+    artifact_ids:
+      - DATA-009
+      - QC-007
+    decision_id: null
+  - name: localization_time_currency_units
+    status: blocked
+    artifact_ids:
+      - SCREEN-001
+      - QC-005
+    decision_id: null
+  - name: offline_partial_failure_resume
+    status: blocked
+    artifact_ids:
+      - RULE-007
+      - DATA-004
+      - SEQ-003
+      - QC-008
+    decision_id: null
+  - name: concurrency_duplicates_ordering_idempotency
+    status: blocked
+    artifact_ids:
+      - RULE-006
+      - DT-002
+      - SEQ-001
+      - QC-003
+    decision_id: null
+  - name: privacy_retention_deletion_export
+    status: blocked
+    artifact_ids:
+      - DATA-005
+      - DATA-006
+      - DATA-008
+      - DATA-009
+      - QC-007
+    decision_id: null
+  - name: accessibility_keyboard_assistive_motion
+    status: blocked
+    artifact_ids:
+      - SCREEN-001
+      - COMP-001
+      - TOKEN-001
+      - QC-005
+      - ACC-010
+    decision_id: null
+  - name: environments_deploy_rollback_disaster_recovery
+    status: blocked
+    artifact_ids:
+      - ARCH-007
+      - QC-008
+    decision_id: null

@@ -1,0 +1,90 @@
+// DATA-001 Workspace
+// DATA-002 Package
+// DATA-003 Artifact
+// DATA-004 View state
+// DATA-005 Proposal
+// DATA-006 Decision
+// DATA-007 Task link
+// DATA-008 Evidence
+// DATA-009 Audit event
+
+Table pip_workspace {
+  id uuid [pk]
+  owner_ref varchar [not null]
+  created_at timestamp [not null]
+  updated_at timestamp [not null]
+}
+
+Table pip_package {
+  id uuid [pk]
+  workspace_id uuid [not null, ref: > pip_workspace.id]
+  package_id varchar [not null]
+  target_version varchar [not null]
+  graph_version int [not null]
+  status varchar [not null]
+}
+
+Table pip_artifact {
+  id uuid [pk]
+  package_id uuid [not null, ref: > pip_package.id]
+  stable_id varchar [not null]
+  kind varchar [not null]
+  label varchar [not null]
+  record_yaml text [not null]
+  artifact_status varchar [not null]
+  version int [not null]
+}
+
+Table pip_view_state {
+  id uuid [pk]
+  package_id uuid [not null, ref: > pip_package.id]
+  view_kind varchar [not null]
+  selected_stable_id varchar
+  layout_yaml text
+  updated_at timestamp [not null]
+}
+
+Table pip_proposal {
+  id uuid [pk]
+  package_id uuid [not null, ref: > pip_package.id]
+  proposer_ref varchar [not null]
+  proposal_yaml text [not null]
+  proposal_status varchar [not null]
+  decision_id varchar
+}
+
+Table pip_decision {
+  id uuid [pk]
+  package_id uuid [not null, ref: > pip_package.id]
+  stable_decision_id varchar [not null]
+  authority_ref varchar [not null]
+  statement text [not null]
+  decision_status varchar [not null]
+}
+
+Table pip_task_link {
+  id uuid [pk]
+  package_id uuid [not null, ref: > pip_package.id]
+  external_task_ref varchar
+  title varchar [not null]
+  task_status varchar [not null]
+  linked_stable_ids text [not null]
+}
+
+Table pip_evidence {
+  id uuid [pk]
+  package_id uuid [not null, ref: > pip_package.id]
+  evidence_id varchar [not null]
+  location text [not null]
+  claims_yaml text [not null]
+  sensitivity varchar [not null]
+}
+
+Table pip_audit_event {
+  id uuid [pk]
+  package_id uuid [not null, ref: > pip_package.id]
+  actor_ref varchar [not null]
+  action varchar [not null]
+  affected_stable_ids text
+  occurred_at timestamp [not null]
+}

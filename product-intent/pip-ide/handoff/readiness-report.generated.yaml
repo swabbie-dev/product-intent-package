@@ -1,0 +1,16 @@
+root: /Users/seanhart/swabbie/product-intent-package/product-intent/pip-ide
+build_ready_declared: false
+artifact_count: 103
+registered_id_count: 103
+found_id_count: 103
+in_scope_capability_count: 4
+acceptance_scenario_count: 10
+open_question_count: 15
+open_contradiction_count: 0
+stale_artifact_count: 0
+error_count: 1
+warning_count: 0
+content_hash: 6e754b2602118884dd3e031fe35fcf0be4a67f4a48ea8fbafa4d9825c04e32cd
+errors:
+  - 'No accountable authority for domain: legal_and_compliance'
+warnings: []

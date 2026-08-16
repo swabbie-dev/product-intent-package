@@ -1,0 +1,166 @@
+scenarios:
+  - id: ACC-001
+    type: success
+    capability_ids:
+      - CAP-001
+    linked_rule_ids:
+      - RULE-001
+      - RULE-004
+    given:
+      - a new workspace
+      - an authenticated originator
+    when: create a package and add one valid capability record through the structured view
+    then:
+      - the package has one canonical capability artifact
+      - the stable ID appears in the navigator and semantic canvas
+      - the save result includes the current graph version
+    test_data_refs:
+      - fixture: one valid capability with actor and coverage requirements
+  - id: ACC-002
+    type: success
+    capability_ids:
+      - CAP-002
+    linked_rule_ids:
+      - RULE-001
+      - RULE-005
+    given:
+      - a package with linked capability, flow, screen, rule, data, architecture, and acceptance records
+    when: select the capability and switch from the structured view to the semantic canvas and data table
+    then:
+      - each view resolves the same stable ID
+      - the selected record remains selected after each switch
+      - the user can open each linked record
+    test_data_refs:
+      - fixture: linked artifact graph
+  - id: ACC-003
+    type: success
+    capability_ids:
+      - CAP-001
+      - CAP-002
+    linked_rule_ids:
+      - RULE-001
+      - RULE-004
+    given:
+      - a package with a valid artifact
+    when: edit the artifact in the structured view and open the experience board
+    then:
+      - the board shows the saved label and stable ID
+      - no duplicate artifact is created
+      - an invalid edit remains visible in the form and is not saved
+    test_data_refs:
+      - fixture: valid and invalid labels
+  - id: ACC-004
+    type: success
+    capability_ids:
+      - CAP-003
+    linked_rule_ids:
+      - RULE-002
+    given:
+      - a pending product-agent proposal with affected stable IDs and evidence
+      - a reviewer with authority for the affected domain
+    when: approve the proposal
+    then:
+      - one confirmed decision is recorded
+      - the canonical graph changes once
+      - linked views refresh to the new graph version
+      - an audit event identifies the reviewer and affected stable IDs
+    test_data_refs:
+      - fixture: proposal with one capability and one rule change
+  - id: ACC-005
+    type: failure
+    capability_ids:
+      - CAP-003
+    linked_rule_ids:
+      - RULE-002
+      - RULE-009
+    given:
+      - a pending product-agent proposal
+      - a reviewer without authority for the affected domain
+    when: attempt to approve the proposal
+    then:
+      - the approval is denied
+      - the canonical graph does not change
+      - the proposal remains available for an authorized reviewer
+      - the user sees the required authority
+    test_data_refs:
+      - fixture: unauthorized reviewer
+  - id: ACC-006
+    type: success
+    capability_ids:
+      - CAP-004
+    linked_rule_ids:
+      - RULE-003
+    given:
+      - a confirmed capability
+      - a contributor in the task overlay
+    when: create a task and link it to the capability
+    then:
+      - the task shows the capability stable ID
+      - the task is visible in the task overlay
+      - changing task state does not change the capability record
+    test_data_refs:
+      - fixture: one confirmed capability and one task
+  - id: ACC-007
+    type: success
+    capability_ids:
+      - CAP-001
+    linked_rule_ids: []
+    linked_quality_ids:
+      - QC-006
+    given:
+      - a valid package save acknowledged at graph version 4
+    when: close and reload the workspace
+    then:
+      - the package reloads at graph version 4 or a later acknowledged version
+      - stable IDs and record values match the last acknowledged save
+      - the current view selection is restored when view state is available
+    test_data_refs:
+      - fixture: package with 500 artifacts and selected stable ID
+  - id: ACC-008
+    type: failure
+    capability_ids:
+      - CAP-002
+      - CAP-004
+    linked_rule_ids:
+      - RULE-007
+    given:
+      - a local package and a linked external system
+    when: the external integration times out or denies access
+    then:
+      - local package content remains available
+      - the view shows the external failure and retry option
+      - the system does not report the external write as complete
+    test_data_refs:
+      - fixture: adapter timeout and permission denial
+  - id: ACC-009
+    type: failure
+    capability_ids:
+      - CAP-001
+    linked_rule_ids:
+      - RULE-006
+    given:
+      - two sessions loaded the same package graph version
+    when: both save the same artifact and the second save uses the old version
+    then:
+      - the first valid save succeeds
+      - the second save enters conflict state
+      - the second save cannot overwrite the first without an explicit merge choice
+    test_data_refs:
+      - fixture: two sessions with graph version 8
+  - id: ACC-010
+    type: quality
+    capability_ids:
+      - CAP-001
+      - CAP-002
+      - CAP-003
+      - CAP-004
+    linked_rule_ids: []
+    given:
+      - a supported core screen
+    when: use keyboard navigation and a screen reader through the main success and error paths
+    then:
+      - every required control has a programmatic name
+      - focus does not become trapped
+      - validation, proposal, and integration status are announced
+    test_data_refs:
+      - fixture: core screen state matrix

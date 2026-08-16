@@ -1,0 +1,241 @@
+entities:
+  - id: DATA-001
+    name: workspace
+    purpose: Owns a package editing context and its access boundary.
+    fields:
+      - name: id
+        type: uuid
+        required: true
+        unique: true
+      - name: owner_ref
+        type: string
+        required: true
+      - name: created_at
+        type: timestamp
+        required: true
+      - name: updated_at
+        type: timestamp
+        required: true
+    constraints:
+      - Proposed identity and membership rules remain open.
+    privacy: private_workspace_metadata
+  - id: DATA-002
+    name: package
+    purpose: Stores one PIP target and its graph version.
+    fields:
+      - name: id
+        type: uuid
+        required: true
+        unique: true
+      - name: workspace_id
+        type: uuid
+        required: true
+      - name: package_id
+        type: string
+        required: true
+      - name: target_version
+        type: string
+        required: true
+      - name: graph_version
+        type: integer
+        required: true
+      - name: status
+        type: enum
+        values:
+          - inventory
+          - modeled
+          - confirmed
+          - validated
+          - blocked
+        required: true
+    constraints:
+      - One active target package per workspace and target version is proposed.
+    privacy: product_intent
+  - id: DATA-003
+    name: artifact
+    purpose: Stores one stable-ID record and its lifecycle state.
+    fields:
+      - name: id
+        type: uuid
+        required: true
+        unique: true
+      - name: package_id
+        type: uuid
+        required: true
+      - name: stable_id
+        type: string
+        required: true
+      - name: kind
+        type: string
+        required: true
+      - name: label
+        type: string
+        required: true
+      - name: record_yaml
+        type: yaml_document
+        required: true
+      - name: artifact_status
+        type: string
+        required: true
+      - name: version
+        type: integer
+        required: true
+    constraints:
+      - stable_id is immutable within the package graph
+      - record_yaml must pass package validation before canonical save
+    privacy: product_intent
+  - id: DATA-004
+    name: view_state
+    purpose: Stores non-canonical layout and selection state for one human view.
+    fields:
+      - name: id
+        type: uuid
+        required: true
+      - name: package_id
+        type: uuid
+        required: true
+      - name: view_kind
+        type: string
+        required: true
+      - name: selected_stable_id
+        type: string
+        required: false
+      - name: layout_yaml
+        type: yaml_document
+        required: false
+    constraints:
+      - view_state cannot change canonical artifact content
+    privacy: private_workspace_metadata
+  - id: DATA-005
+    name: proposal
+    purpose: Holds a proposed change set before and during human review.
+    fields:
+      - name: id
+        type: uuid
+        required: true
+      - name: package_id
+        type: uuid
+        required: true
+      - name: proposer_ref
+        type: string
+        required: true
+      - name: proposal_yaml
+        type: yaml_document
+        required: true
+      - name: proposal_status
+        type: enum
+        values:
+          - prepared
+          - pending_approval
+          - approved
+          - rejected
+          - applied
+          - invalid
+          - apply_failed
+        required: true
+      - name: decision_id
+        type: string
+        required: false
+    constraints:
+      - proposal status cannot be applied without a decision record
+    privacy: potentially_sensitive_product_context
+  - id: DATA-006
+    name: decision
+    purpose: Records authority confirmation for a product choice.
+    fields:
+      - name: id
+        type: uuid
+        required: true
+      - name: package_id
+        type: uuid
+        required: true
+      - name: stable_decision_id
+        type: string
+        required: true
+      - name: authority_ref
+        type: string
+        required: true
+      - name: statement
+        type: string
+        required: true
+      - name: decision_status
+        type: string
+        required: true
+    constraints:
+      - confirmed decisions need an accountable authority and confirmation reference
+    privacy: governance_record
+  - id: DATA-007
+    name: task_link
+    purpose: Connects an execution task to intent stable IDs.
+    fields:
+      - name: id
+        type: uuid
+        required: true
+      - name: package_id
+        type: uuid
+        required: true
+      - name: external_task_ref
+        type: string
+        required: false
+      - name: title
+        type: string
+        required: true
+      - name: task_status
+        type: string
+        required: true
+      - name: linked_stable_ids
+        type: list[string]
+        required: true
+    constraints:
+      - task status changes do not mutate linked intent
+    privacy: workspace_execution_metadata
+  - id: DATA-008
+    name: evidence
+    purpose: Records external sources and access limits that inform intent work.
+    fields:
+      - name: id
+        type: uuid
+        required: true
+      - name: package_id
+        type: uuid
+        required: true
+      - name: evidence_id
+        type: string
+        required: true
+      - name: location
+        type: string
+        required: true
+      - name: claims_yaml
+        type: yaml_document
+        required: true
+      - name: sensitivity
+        type: string
+        required: true
+    constraints:
+      - evidence is not canonical intent without a confirmed decision
+    privacy: potentially_sensitive_external_reference
+  - id: DATA-009
+    name: audit_event
+    purpose: Records actor actions and affected stable IDs.
+    fields:
+      - name: id
+        type: uuid
+        required: true
+      - name: package_id
+        type: uuid
+        required: true
+      - name: actor_ref
+        type: string
+        required: true
+      - name: action
+        type: string
+        required: true
+      - name: affected_stable_ids
+        type: list[string]
+        required: false
+      - name: occurred_at
+        type: timestamp
+        required: true
+    constraints:
+      - Audit events are append-only in the proposed model.
+    privacy: audit_metadata

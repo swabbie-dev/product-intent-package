@@ -1,0 +1,236 @@
+questions:
+  - id: Q-001
+    status: open
+    decision_domain: legal_and_compliance
+    question: Who is the accountable legal and compliance authority for the PIP IDE?
+    why_build_affecting: The authority must define retention, export, consent, terms, and regulated-data choices before build handoff.
+    requested_authority_id: AUTH-SEAN
+    evidence_refs:
+      - EVID-001
+    options:
+      - value: name a legal authority
+        consequences:
+          - Route legal and compliance choices to that authority.
+      - value: assign Sean a narrow legal and compliance authority for 0.1, if valid
+        consequences:
+          - Record the limited assignment, its evidence, and its scope.
+    blocking_artifact_ids:
+      - DATA-008
+      - QC-007
+      - INT-001
+    resolution_decision_id: null
+  - id: Q-002
+    status: open
+    decision_domain: product_strategy
+    question: Which initial target users and team size should 0.1 serve?
+    why_build_affecting: The answer changes onboarding, permissions, tenancy, collaboration, and success measures.
+    requested_authority_id: AUTH-SEAN
+    evidence_refs:
+      - EVID-006
+    blocking_artifact_ids:
+      - ACTOR-001
+      - ACTOR-002
+      - CAP-001
+      - CAP-004
+    resolution_decision_id: null
+  - id: Q-003
+    status: open
+    decision_domain: scope_and_priority
+    question: What exact capability and integration boundary is approved for the 0.1 release?
+    why_build_affecting: The boundary controls implementation scope, integration work, and release acceptance.
+    requested_authority_id: AUTH-SEAN
+    evidence_refs:
+      - EVID-006
+    blocking_artifact_ids:
+      - CAP-001
+      - CAP-002
+      - CAP-003
+      - CAP-004
+      - INT-001
+      - INT-002
+      - INT-003
+      - INT-004
+    resolution_decision_id: null
+  - id: Q-004
+    status: open
+    decision_domain: technical_architecture
+    question: Will 0.1 use a local-only workspace, a hosted workspace, or both?
+    why_build_affecting: The choice changes storage, identity, sync, deployment, conflict handling, and privacy behavior.
+    requested_authority_id: AUTH-SEAN
+    evidence_refs:
+      - EVID-006
+    blocking_artifact_ids:
+      - DOM-010
+      - DATA-001
+      - ARCH-003
+      - ARCH-007
+      - API-001
+    resolution_decision_id: null
+  - id: Q-005
+    status: open
+    decision_domain: data_security_privacy
+    question: What identity, workspace membership, and sharing model should the first release support?
+    why_build_affecting: The answer changes authorization, tenancy, audit, and data lifecycle behavior.
+    requested_authority_id: AUTH-SEAN
+    evidence_refs:
+      - EVID-001
+    blocking_artifact_ids:
+      - DOM-009
+      - DATA-001
+      - RULE-009
+      - API-001
+    resolution_decision_id: null
+  - id: Q-006
+    status: open
+    decision_domain: scope_and_priority
+    question: How deeply should 0.1 integrate with Figma, Miro, Google Sheets, Linear, and GitHub?
+    why_build_affecting: Read-only links, import, export, and bidirectional sync have different contracts and failure behavior.
+    requested_authority_id: AUTH-SEAN
+    evidence_refs:
+      - EVID-002
+      - EVID-003
+      - EVID-004
+      - EVID-005
+    blocking_artifact_ids:
+      - INT-001
+      - INT-002
+      - INT-003
+      - INT-004
+      - INT-005
+    resolution_decision_id: null
+  - id: Q-007
+    status: open
+    decision_domain: ux_and_information_architecture
+    question: Does Morgan confirm the proposed shell topology, view names, navigation, and interaction states?
+    why_build_affecting: The answer controls the user-visible surface, component variants, and flow transitions.
+    requested_authority_id: AUTH-MORGAN
+    evidence_refs:
+      - EVID-001
+      - EVID-002
+    blocking_artifact_ids:
+      - SCREEN-001
+      - SCREEN-002
+      - SCREEN-003
+      - SCREEN-004
+      - SCREEN-005
+      - SCREEN-006
+      - SCREEN-007
+      - COMP-001
+      - TOKEN-001
+      - MOCK-001
+    resolution_decision_id: null
+  - id: Q-008
+    status: open
+    decision_domain: quality_and_operations
+    question: Which measurable latency, reliability, accessibility, and recovery targets are required for 0.1?
+    why_build_affecting: The targets constrain architecture and define release tests.
+    requested_authority_id: AUTH-SEAN
+    evidence_refs:
+      - EVID-006
+    blocking_artifact_ids:
+      - QC-001
+      - QC-002
+      - QC-003
+      - QC-004
+      - QC-005
+      - QC-006
+      - QC-007
+      - QC-008
+    resolution_decision_id: null
+  - id: Q-009
+    status: open
+    decision_domain: data_security_privacy
+    question: What chat data may the product agent read, retain, export, and use for later context?
+    why_build_affecting: The answer controls trust boundaries, storage, deletion, and user disclosure.
+    requested_authority_id: AUTH-SEAN
+    evidence_refs:
+      - EVID-006
+    blocking_artifact_ids:
+      - DOM-005
+      - DATA-005
+      - DATA-008
+      - INT-005
+    resolution_decision_id: null
+  - id: Q-010
+    status: open
+    decision_domain: technical_architecture
+    question: Which platforms and operating environments must 0.1 support?
+    why_build_affecting: The answer changes shell technology, file access, keyboard behavior, and testing.
+    requested_authority_id: AUTH-SEAN
+    evidence_refs:
+      - EVID-006
+    blocking_artifact_ids:
+      - SCREEN-001
+      - QC-005
+      - ARCH-007
+    resolution_decision_id: null
+  - id: Q-011
+    status: open
+    decision_domain: capabilities_and_behavior
+    question: Which proposal types and approval roles may the product agent use in 0.1?
+    why_build_affecting: The answer controls proposal scope, review permissions, and write gates.
+    requested_authority_id: AUTH-SEAN
+    evidence_refs:
+      - EVID-006
+    blocking_artifact_ids:
+      - DOM-005
+      - SM-002
+      - RULE-002
+      - API-002
+    resolution_decision_id: null
+  - id: Q-012
+    status: open
+    decision_domain: capabilities_and_behavior
+    question: Which task states, fields, links, and Linear sync actions belong in the first task overlay?
+    why_build_affecting: The answer controls task behavior and the boundary between intent and execution.
+    requested_authority_id: AUTH-SEAN
+    evidence_refs:
+      - EVID-006
+      - EVID-001
+    blocking_artifact_ids:
+      - DOM-007
+      - DATA-007
+      - RULE-003
+      - INT-004
+    resolution_decision_id: null
+  - id: Q-013
+    status: open
+    decision_domain: technical_architecture
+    question: How should simultaneous edits, file conflicts, and graph version conflicts resolve?
+    why_build_affecting: The answer changes save rules, user prompts, merge behavior, and data safety.
+    requested_authority_id: AUTH-SEAN
+    evidence_refs:
+      - EVID-006
+    blocking_artifact_ids:
+      - RULE-006
+      - DATA-003
+      - API-001
+      - SEQ-001
+    resolution_decision_id: null
+  - id: Q-014
+    status: open
+    decision_domain: technical_architecture
+    question: What offline behavior and resume behavior should 0.1 provide?
+    why_build_affecting: The answer changes local storage, retry, sync, and recovery logic.
+    requested_authority_id: AUTH-SEAN
+    evidence_refs:
+      - EVID-006
+    blocking_artifact_ids:
+      - FLOW-001
+      - RULE-007
+      - DATA-004
+      - ARCH-007
+    resolution_decision_id: null
+  - id: Q-015
+    status: open
+    decision_domain: product_strategy
+    question: Will 0.1 require billing, paid plans, quotas, or entitlements?
+    why_build_affecting: Billing changes account state, limits, data, support, and legal work.
+    requested_authority_id: AUTH-SEAN
+    evidence_refs:
+      - EVID-006
+    blocking_artifact_ids:
+      - CAP-001
+      - DATA-001
+      - QC-007
+    resolution_decision_id: null

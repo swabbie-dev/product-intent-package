@@ -1,0 +1,33 @@
+terms:
+  - id: DOM-001
+    term: Product Intent Package
+    definition: The canonical, versioned set of product intent records and diagrams.
+    aliases:
+      - PIP
+  - id: DOM-002
+    term: Artifact
+    definition: One stable-ID product intent record or diagram in a package.
+  - id: DOM-003
+    term: Stable ID
+    definition: An immutable identifier that connects one intent item across views and package versions.
+  - id: DOM-004
+    term: View
+    definition: A human-oriented representation of the same canonical package graph.
+  - id: DOM-005
+    term: Proposal
+    definition: A product-agent or human change set that is not canonical until an authority approves it.
+  - id: DOM-006
+    term: Decision
+    definition: A recorded authority choice that confirms, rejects, or supersedes a product intent choice.
+  - id: DOM-007
+    term: Task
+    definition: An execution item linked to intent without becoming intent.
+  - id: DOM-008
+    term: Evidence
+    definition: An observed source or statement that informs a proposal but does not create intent by itself.
+  - id: DOM-009
+    term: Authority
+    definition: The accountable person for one decision domain.
+  - id: DOM-010
+    term: Workspace
+    definition: The package editing context that owns local views, identity, and collaboration state.

@@ -1,0 +1,316 @@
+edges:
+  - from: ACTOR-001
+    relation: performed_by
+    to: CAP-001
+  - from: ACTOR-001
+    relation: performed_by
+    to: CAP-002
+  - from: ACTOR-001
+    relation: performed_by
+    to: CAP-003
+  - from: ACTOR-001
+    relation: performed_by
+    to: CAP-004
+  - from: ACTOR-002
+    relation: performed_by
+    to: CAP-001
+  - from: ACTOR-002
+    relation: performed_by
+    to: CAP-002
+  - from: ACTOR-002
+    relation: performed_by
+    to: CAP-003
+  - from: ACTOR-004
+    relation: performed_by
+    to: CAP-002
+  - from: ACTOR-004
+    relation: performed_by
+    to: CAP-004
+  - from: CAP-001
+    relation: uses_domain
+    to: DOM-001
+  - from: CAP-001
+    relation: uses_domain
+    to: DOM-002
+  - from: CAP-001
+    relation: uses_domain
+    to: DOM-003
+  - from: CAP-001
+    relation: experienced_through
+    to: FLOW-001
+  - from: CAP-001
+    relation: experienced_through
+    to: SCREEN-004
+  - from: CAP-001
+    relation: experienced_through
+    to: MOCK-001
+  - from: CAP-001
+    relation: governed_by
+    to: RULE-001
+  - from: CAP-001
+    relation: governed_by
+    to: RULE-004
+  - from: CAP-001
+    relation: governed_by
+    to: RULE-006
+  - from: CAP-001
+    relation: governed_by
+    to: RULE-007
+  - from: CAP-001
+    relation: governed_by
+    to: RULE-008
+  - from: CAP-001
+    relation: governed_by
+    to: RULE-009
+  - from: CAP-001
+    relation: governed_by
+    to: SM-001
+  - from: CAP-001
+    relation: governed_by
+    to: DT-002
+  - from: CAP-001
+    relation: uses_data
+    to: DATA-002
+  - from: CAP-001
+    relation: uses_data
+    to: DATA-003
+  - from: CAP-001
+    relation: implemented_by
+    to: ARCH-003
+  - from: CAP-001
+    relation: implemented_by
+    to: ARCH-004
+  - from: CAP-001
+    relation: exposed_by
+    to: API-001
+  - from: CAP-001
+    relation: exposed_by
+    to: EVT-001
+  - from: CAP-001
+    relation: executed_by
+    to: SEQ-001
+  - from: CAP-001
+    relation: constrained_by
+    to: QC-001
+  - from: CAP-001
+    relation: constrained_by
+    to: QC-003
+  - from: CAP-001
+    relation: constrained_by
+    to: QC-005
+  - from: CAP-001
+    relation: constrained_by
+    to: QC-006
+  - from: CAP-001
+    relation: verified_by
+    to: ACC-001
+  - from: CAP-001
+    relation: verified_by
+    to: ACC-003
+  - from: CAP-001
+    relation: verified_by
+    to: ACC-007
+  - from: CAP-001
+    relation: verified_by
+    to: ACC-009
+  - from: CAP-001
+    relation: verified_by
+    to: ACC-010
+  - from: CAP-002
+    relation: uses_domain
+    to: DOM-001
+  - from: CAP-002
+    relation: uses_domain
+    to: DOM-004
+  - from: CAP-002
+    relation: uses_domain
+    to: DOM-008
+  - from: CAP-002
+    relation: experienced_through
+    to: FLOW-002
+  - from: CAP-002
+    relation: experienced_through
+    to: SCREEN-003
+  - from: CAP-002
+    relation: experienced_through
+    to: SCREEN-005
+  - from: CAP-002
+    relation: governed_by
+    to: RULE-001
+  - from: CAP-002
+    relation: governed_by
+    to: RULE-005
+  - from: CAP-002
+    relation: governed_by
+    to: RULE-007
+  - from: CAP-002
+    relation: governed_by
+    to: RULE-008
+  - from: CAP-002
+    relation: uses_data
+    to: DATA-003
+  - from: CAP-002
+    relation: uses_data
+    to: DATA-004
+  - from: CAP-002
+    relation: implemented_by
+    to: ARCH-004
+  - from: CAP-002
+    relation: exposed_by
+    to: API-003
+  - from: CAP-002
+    relation: executed_by
+    to: SEQ-003
+  - from: CAP-002
+    relation: constrained_by
+    to: QC-002
+  - from: CAP-002
+    relation: constrained_by
+    to: QC-005
+  - from: CAP-002
+    relation: constrained_by
+    to: QC-008
+  - from: CAP-002
+    relation: verified_by
+    to: ACC-002
+  - from: CAP-002
+    relation: verified_by
+    to: ACC-003
+  - from: CAP-002
+    relation: verified_by
+    to: ACC-008
+  - from: CAP-002
+    relation: verified_by
+    to: ACC-010
+  - from: CAP-003
+    relation: uses_domain
+    to: DOM-005
+  - from: CAP-003
+    relation: uses_domain
+    to: DOM-006
+  - from: CAP-003
+    relation: uses_domain
+    to: DOM-009
+  - from: CAP-003
+    relation: experienced_through
+    to: FLOW-003
+  - from: CAP-003
+    relation: experienced_through
+    to: SCREEN-007
+  - from: CAP-003
+    relation: experienced_through
+    to: SCREEN-008
+  - from: CAP-003
+    relation: governed_by
+    to: RULE-002
+  - from: CAP-003
+    relation: governed_by
+    to: RULE-009
+  - from: CAP-003
+    relation: governed_by
+    to: SM-002
+  - from: CAP-003
+    relation: governed_by
+    to: DT-001
+  - from: CAP-003
+    relation: uses_data
+    to: DATA-005
+  - from: CAP-003
+    relation: uses_data
+    to: DATA-006
+  - from: CAP-003
+    relation: implemented_by
+    to: ARCH-005
+  - from: CAP-003
+    relation: exposed_by
+    to: API-002
+  - from: CAP-003
+    relation: exposed_by
+    to: EVT-002
+  - from: CAP-003
+    relation: exposed_by
+    to: EVT-003
+  - from: CAP-003
+    relation: executed_by
+    to: SEQ-002
+  - from: CAP-003
+    relation: constrained_by
+    to: QC-004
+  - from: CAP-003
+    relation: constrained_by
+    to: QC-005
+  - from: CAP-003
+    relation: constrained_by
+    to: QC-007
+  - from: CAP-003
+    relation: verified_by
+    to: ACC-004
+  - from: CAP-003
+    relation: verified_by
+    to: ACC-005
+  - from: CAP-003
+    relation: verified_by
+    to: ACC-010
+  - from: CAP-004
+    relation: uses_domain
+    to: DOM-001
+  - from: CAP-004
+    relation: uses_domain
+    to: DOM-007
+  - from: CAP-004
+    relation: experienced_through
+    to: FLOW-004
+  - from: CAP-004
+    relation: experienced_through
+    to: SCREEN-006
+  - from: CAP-004
+    relation: governed_by
+    to: RULE-003
+  - from: CAP-004
+    relation: uses_data
+    to: DATA-007
+  - from: CAP-004
+    relation: implemented_by
+    to: ARCH-004
+  - from: CAP-004
+    relation: implemented_by
+    to: ARCH-006
+  - from: CAP-004
+    relation: exposed_by
+    to: INT-004
+  - from: CAP-004
+    relation: executed_by
+    to: SEQ-003
+  - from: CAP-004
+    relation: constrained_by
+    to: QC-005
+  - from: CAP-004
+    relation: constrained_by
+    to: QC-008
+  - from: CAP-004
+    relation: verified_by
+    to: ACC-006
+  - from: CAP-004
+    relation: verified_by
+    to: ACC-008
+  - from: CAP-004
+    relation: verified_by
+    to: ACC-010
+  - from: API-001
+    relation: constrained_by
+    to: QC-001
+  - from: API-003
+    relation: constrained_by
+    to: QC-002
+  - from: CAP-002
+    relation: depends_on
+    to: CAP-001
+  - from: CAP-003
+    relation: depends_on
+    to: CAP-001
+  - from: CAP-004
+    relation: depends_on
+    to: CAP-001
+  - from: CAP-004
+    relation: depends_on
+    to: CAP-002

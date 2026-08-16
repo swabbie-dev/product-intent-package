@@ -1,0 +1,126 @@
+rules:
+  - id: RULE-001
+    scope_ids:
+      - CAP-001
+      - CAP-002
+    priority: 100
+    when:
+      - a view reads or edits package content
+    then:
+      - the canonical package graph is the source of truth
+      - every view resolves stable IDs from the graph
+    exceptions: []
+    examples:
+      - input: edit a structured record and open the semantic canvas
+        result: both views show the same saved artifact after refresh
+  - id: RULE-002
+    scope_ids:
+      - CAP-003
+    priority: 100
+    when:
+      - the product agent proposes an intent change
+    then:
+      - show affected stable IDs and evidence
+      - require the appropriate human approval before canonical write
+    exceptions: []
+    examples:
+      - input: agent proposes a new capability
+        result: proposal remains separate until approval
+  - id: RULE-003
+    scope_ids:
+      - CAP-004
+    priority: 100
+    when:
+      - a user changes a task
+    then:
+      - update task state or links only
+      - do not mutate the linked intent artifact
+    exceptions: []
+    examples:
+      - input: mark linked task complete
+        result: linked capability remains unchanged
+  - id: RULE-004
+    scope_ids:
+      - CAP-001
+    priority: 90
+    when:
+      - a submitted field fails validation
+    then:
+      - show the failed rule
+      - keep entered values available
+      - do not persist the invalid change
+    exceptions: []
+    examples:
+      - input: blank stable-ID label
+        result: validation error and no graph write
+  - id: RULE-005
+    scope_ids:
+      - CAP-002
+    priority: 80
+    when:
+      - a user switches view
+    then:
+      - preserve selected stable ID and navigation context
+      - do not create or mutate an artifact
+    exceptions: []
+    examples:
+      - input: switch from table to canvas
+        result: the selected row is selected in the canvas
+  - id: RULE-006
+    scope_ids:
+      - CAP-001
+    priority: 100
+    when:
+      - the graph version changed since the user loaded it
+    then:
+      - reject a blind overwrite
+      - show the conflicting changes
+      - let the user merge or cancel
+    exceptions: []
+    examples:
+      - input: two sessions save the same artifact
+        result: second save enters conflict state
+  - id: RULE-007
+    scope_ids:
+      - CAP-001
+      - CAP-002
+    priority: 90
+    when:
+      - an external integration or network call fails
+    then:
+      - preserve canonical local content
+      - show the failed integration and retry state
+      - do not report an external write as complete
+    exceptions: []
+    examples:
+      - input: Linear update times out
+        result: task link remains local and shows sync error
+  - id: RULE-008
+    scope_ids:
+      - CAP-001
+      - CAP-002
+    priority: 100
+    when:
+      - a user renames an artifact
+    then:
+      - keep its stable ID unchanged
+      - update the human label only
+    exceptions: []
+    examples:
+      - input: rename a capability
+        result: all links still resolve by the same stable ID
+  - id: RULE-009
+    scope_ids:
+      - CAP-001
+      - CAP-003
+    priority: 100
+    when:
+      - a user attempts a protected action without the needed authority
+    then:
+      - deny the action
+      - preserve the proposal or draft
+      - explain which authority is required
+    exceptions: []
+    examples:
+      - input: collaborator approves a legal decision without legal authority
+        result: approval is denied and the question remains open

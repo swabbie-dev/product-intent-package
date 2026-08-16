@@ -1,0 +1,92 @@
+decisions:
+  - id: DEC-001
+    status: confirmed
+    domain: product_strategy
+    statement: One canonical PIP is the source for synchronized experience, semantic, structured-record, table, task, and chat views.
+    authority_id: AUTH-SEAN
+    confirmed_at: '2026-08-16T19:00:00Z'
+    confirmation_ref: conversation:2026-08-16/pip-ide-direction
+    source_refs:
+      - EVID-006
+      - EVID-007
+    affects:
+      - CAP-001
+      - CAP-002
+      - RULE-001
+      - ARCH-003
+  - id: DEC-002
+    status: confirmed
+    domain: capabilities_and_behavior
+    statement: The first product includes an experience board, semantic canvas, structured record view, data table, Linear-style task manager, and product-agent chat.
+    authority_id: AUTH-SEAN
+    confirmed_at: '2026-08-16T19:00:00Z'
+    confirmation_ref: conversation:2026-08-16/pip-ide-direction
+    source_refs:
+      - EVID-006
+    affects:
+      - CAP-001
+      - CAP-002
+      - CAP-003
+      - CAP-004
+      - SCREEN-002
+      - SCREEN-003
+      - SCREEN-004
+      - SCREEN-005
+      - SCREEN-006
+      - SCREEN-007
+  - id: DEC-003
+    status: proposed
+    domain: capabilities_and_behavior
+    statement: A product-agent change should stay as a proposal and need appropriate human approval before it changes canonical intent.
+    authority_id: AUTH-SEAN
+    source_refs:
+      - EVID-006
+    affects:
+      - CAP-003
+      - RULE-002
+      - SM-002
+      - API-002
+  - id: DEC-004
+    status: proposed
+    domain: scope_and_priority
+    statement: The task manager should be an execution overlay. A task may link to intent but should not become or silently change product intent.
+    authority_id: AUTH-SEAN
+    source_refs:
+      - EVID-006
+    affects:
+      - CAP-004
+      - DOM-007
+      - RULE-003
+      - INT-004
+  - id: DEC-005
+    status: proposed
+    domain: technical_architecture
+    statement: The first PIP IDE should use a purpose-built application shell instead of a VS Code base; a companion VS Code extension may follow later.
+    authority_id: AUTH-SEAN
+    source_refs:
+      - EVID-006
+    affects:
+      - ARCH-002
+      - CAP-001
+  - id: DEC-006
+    status: confirmed
+    domain: product_strategy
+    statement: The PIP IDE project uses its own PIP as the product definition for the PIP IDE.
+    authority_id: AUTH-SEAN
+    confirmed_at: '2026-08-16T19:00:00Z'
+    confirmation_ref: conversation:2026-08-16/pip-ide-direction
+    source_refs:
+      - EVID-006
+    affects:
+      - DOM-001
+      - CAP-001
+  - id: DEC-007
+    status: confirmed
+    domain: scope_and_priority
+    statement: Sean Hart is the product, technical, development, and release authority for this draft. Morgan Lacey Hart is the design authority.
+    authority_id: AUTH-SEAN
+    confirmed_at: '2026-08-16T19:00:00Z'
+    confirmation_ref: linear:ready-room-v2-b3ecbb55ae96/authority
+    source_refs:
+      - EVID-001
+    affects: []

@@ -1,0 +1,191 @@
+openapi: 3.1.0
+info:
+  title: PIP IDE Graph API
+  version: 0.1.0-draft
+  description: Proposed internal API for stable-ID package reads, edits, and proposal review.
+x-pip-artifact-groups:
+  API-001:
+    name: Package and artifact API
+    operation_ids:
+      - API-001-get-package
+      - API-001-patch-artifact
+servers:
+  - url: https://pip-ide.invalid/api
+    description: Proposed server boundary; deployment is not confirmed.
+paths:
+  /v1/workspaces/{workspaceId}/packages/{packageId}:
+    get:
+      operationId: API-001-get-package
+      summary: Read a package graph
+      parameters:
+        - $ref: '#/components/parameters/WorkspaceId'
+        - $ref: '#/components/parameters/PackageId'
+      responses:
+        '200':
+          description: Package graph with stable-ID records and current graph version.
+          content:
+            application/yaml:
+              schema:
+                $ref: '#/components/schemas/PackageGraph'
+        '401':
+          description: Authentication is required when an identity model is confirmed.
+        '404':
+          description: Workspace or package was not found.
+  /v1/workspaces/{workspaceId}/packages/{packageId}/artifacts/{stableId}:
+    patch:
+      operationId: API-001-patch-artifact
+      summary: Propose or save one artifact change
+      parameters:
+        - $ref: '#/components/parameters/WorkspaceId'
+        - $ref: '#/components/parameters/PackageId'
+        - $ref: '#/components/parameters/StableId'
+        - $ref: '#/components/parameters/IfMatch'
+      requestBody:
+        required: true
+        content:
+          application/yaml:
+            schema:
+              $ref: '#/components/schemas/ArtifactPatch'
+      responses:
+        '200':
+          description: Validated artifact result.
+        '409':
+          description: Graph version conflict; no blind overwrite.
+        '422':
+          description: Structural or domain validation failed.
+  /v1/workspaces/{workspaceId}/packages/{packageId}/proposals/{proposalId}/review:
+    post:
+      operationId: API-002-review-proposal
+      summary: Approve, reject, or leave a proposal pending
+      parameters:
+        - $ref: '#/components/parameters/WorkspaceId'
+        - $ref: '#/components/parameters/PackageId'
+        - $ref: '#/components/parameters/ProposalId'
+      requestBody:
+        required: true
+        content:
+          application/yaml:
+            schema:
+              $ref: '#/components/schemas/ProposalReview'
+      responses:
+        '200':
+          description: Review result and decision record.
+        '403':
+          description: Reviewer lacks authority for the affected decision domain.
+        '409':
+          description: Proposal was resolved by another review.
+  /v1/workspaces/{workspaceId}/packages/{packageId}/views/{viewKind}:
+    get:
+      operationId: API-003-get-view
+      summary: Read a human-oriented view
+      parameters:
+        - $ref: '#/components/parameters/WorkspaceId'
+        - $ref: '#/components/parameters/PackageId'
+        - name: viewKind
+          in: path
+          required: true
+          schema:
+            type: string
+            enum:
+              - experience_board
+              - semantic_canvas
+              - structured_record
+              - data_table
+              - task_overlay
+              - agent_chat
+      responses:
+        '200':
+          description: View projection that references canonical stable IDs.
+components:
+  parameters:
+    WorkspaceId:
+      name: workspaceId
+      in: path
+      required: true
+      schema:
+        type: string
+    PackageId:
+      name: packageId
+      in: path
+      required: true
+      schema:
+        type: string
+    StableId:
+      name: stableId
+      in: path
+      required: true
+      schema:
+        type: string
+    ProposalId:
+      name: proposalId
+      in: path
+      required: true
+      schema:
+        type: string
+    IfMatch:
+      name: If-Match
+      in: header
+      required: true
+      schema:
+        type: string
+  schemas:
+    PackageGraph:
+      type: object
+      required:
+        - package_id
+        - graph_version
+        - artifacts
+      properties:
+        package_id:
+          type: string
+        graph_version:
+          type: integer
+        artifacts:
+          type: array
+          items:
+            $ref: '#/components/schemas/Artifact'
+    Artifact:
+      type: object
+      required:
+        - stable_id
+        - kind
+        - label
+        - status
+      properties:
+        stable_id:
+          type: string
+        kind:
+          type: string
+        label:
+          type: string
+        status:
+          type: string
+        record:
+          type: object
+          additionalProperties: true
+    ArtifactPatch:
+      type: object
+      required:
+        - expected_graph_version
+        - record
+      properties:
+        expected_graph_version:
+          type: integer
+        record:
+          type: object
+          additionalProperties: true
+        proposal_id:
+          type: string
+    ProposalReview:
+      type: object
+      required:
+        - action
+      properties:
+        action:
+          type: string
+          enum:
+            - approve
+            - reject
+            - leave_pending
+        reviewer_note:
+          type: string

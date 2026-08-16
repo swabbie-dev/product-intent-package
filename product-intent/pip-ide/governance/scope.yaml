@@ -1,0 +1,27 @@
+target_outcome: >-
+  People can turn an idea into a coherent Product Intent Package and interpret
+  an existing package through views that match the work they need to do.
+success_measures:
+  - Proposed: a first-time author can create a package shell and record a first capability without editing raw YAML.
+  - Proposed: a reader can move from a capability to its related flow, screen, rule, data, architecture, and acceptance records.
+  - Proposed: every agent proposal shows its affected stable IDs and cannot change canonical intent before approval.
+  - Proposed: a task links to intent without changing the intent graph.
+release_boundary: >-
+  Proposed 0.1 draft for local package authoring, package interpretation,
+  synchronized core views, proposal review, task links, and bounded integration
+  adapters. Hosted collaboration, billing, and a VS Code extension remain open.
+in_scope_capability_ids:
+  - CAP-001
+  - CAP-002
+  - CAP-003
+  - CAP-004
+out_of_scope: []
+confirmed_constraints:
+  - Structured package records use YAML.
+  - Mermaid diagrams use fenced blocks in Markdown files.
+  - One canonical PIP is the source for synchronized views.
+  - The product includes a Linear-style task manager and product-agent chat.
+proposed_constraints:
+  - Product-agent changes stay as proposals until an authorized person approves them.
+  - Tasks link execution to intent and do not become product intent.
+  - The first product uses a purpose-built application shell instead of a VS Code base.

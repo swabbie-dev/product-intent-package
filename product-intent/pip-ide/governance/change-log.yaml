@@ -1,0 +1,37 @@
+changes:
+  - id: CHANGE-001
+    version: 0.1.0
+    status: modeled
+    changed_at: '2026-08-16T19:10:00Z'
+    summary: Replaced the initializer with a coherent PIP IDE draft across all twelve structures.
+    decision_ids:
+      - DEC-001
+      - DEC-002
+      - DEC-003
+      - DEC-004
+      - DEC-005
+      - DEC-006
+      - DEC-007
+    validator:
+      command: uv run --with-requirements skills/product-intent-manager/requirements.txt python skills/product-intent-manager/scripts/validate_product_intent.py product-intent/pip-ide
+      result: fail
+      error_count: 1
+      warning_count: 0
+      errors:
+        - No accountable authority for domain: legal_and_compliance
+  - id: CHANGE-002
+    version: 0.1.0
+    status: modeled
+    changed_at: '2026-08-16T19:24:30Z'
+    summary: Corrected evidence status, actor authority, traceability, stable IDs, canonical paths, and semantic links after independent audit.
+    decision_ids:
+      - DEC-003
+      - DEC-004
+      - DEC-005
+    validator:
+      command: uv run --with-requirements skills/product-intent-manager/requirements.txt python skills/product-intent-manager/scripts/validate_product_intent.py product-intent/pip-ide
+      result: fail
+      error_count: 1
+      warning_count: 0
+      errors:
+        - No accountable authority for domain: legal_and_compliance

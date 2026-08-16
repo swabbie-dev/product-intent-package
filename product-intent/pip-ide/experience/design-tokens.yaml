@@ -1,0 +1,40 @@
+token_set_id: TOKEN-001
+status: proposed
+authority_id: AUTH-MORGAN
+source_refs:
+  - EVID-002
+references:
+  - Figma file is the intended design workspace, but Page 1 was empty when inspected.
+colors:
+  canvas: '#F7F8FA'
+  surface: '#FFFFFF'
+  text_primary: '#17202A'
+  text_muted: '#5B6673'
+  accent: '#356AE6'
+  success: '#1B7F5A'
+  warning: '#A05A00'
+  danger: '#B42318'
+typography:
+  ui_family: system_sans
+  body_size: 14px
+  body_line_height: 1.5
+  heading_scale: 1.25
+spacing:
+  unit: 4px
+  panel_gap: 16px
+  section_gap: 24px
+sizing:
+  control_height: 36px
+  sidebar_width: 280px
+  inspector_width: 360px
+radii:
+  control: 6px
+  panel: 10px
+elevation:
+  panel: 0 2px 8px rgba(23,32,42,0.12)
+motion:
+  standard_duration: 160ms
+  reduced_motion: remove_nonessential_motion
+breakpoints:
+  compact: 768px
+  wide: 1200px

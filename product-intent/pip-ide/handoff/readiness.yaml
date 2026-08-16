@@ -1,0 +1,44 @@
+gates:
+  governance:
+    passed: false
+    evidence_refs:
+      - EVID-001
+      - EVID-006
+  structural_coverage:
+    passed: false
+    evidence_refs:
+      - EVID-007
+  capability_traceability:
+    passed: false
+    evidence_refs:
+      - EVID-007
+  behavioral_closure:
+    passed: false
+    evidence_refs:
+      - EVID-006
+  technical_closure:
+    passed: false
+    evidence_refs:
+      - EVID-006
+  verification_closure:
+    passed: false
+    evidence_refs:
+      - EVID-007
+  consistency:
+    passed: false
+    evidence_refs:
+      - EVID-008
+  handoff_approval:
+    passed: false
+    evidence_refs:
+      - EVID-001
+validator:
+  command: uv run --with-requirements skills/product-intent-manager/requirements.txt python skills/product-intent-manager/scripts/validate_product_intent.py product-intent/pip-ide
+  passed: false
+  report_path: handoff/readiness-report.generated.yaml
+  error_count: 1
+  warning_count: 0
+  errors:
+    - No accountable authority for domain: legal_and_compliance
+final_approval_decision_id: null
+package_hash: null

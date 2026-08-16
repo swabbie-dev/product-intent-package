@@ -1,0 +1,75 @@
+integrations:
+  - id: INT-001
+    name: Figma experience source
+    system: Figma
+    status: proposed
+    direction: read_reference_first; write access is not defined
+    data_exchange:
+      - design file URL
+      - frame or node reference
+      - optional exported image or link
+    authentication: Figma account access is required for private content.
+    timeout: proposed 10 seconds
+    retry: proposed exponential backoff up to two retries for safe reads
+    rate_limit: use provider response and surface a retry state
+    failure: keep local mockup and evidence; do not claim a Figma write
+    fallback: show the source link and local proposed mockup
+  - id: INT-002
+    name: Miro semantic canvas source
+    system: Miro
+    status: proposed
+    direction: read or write depth is open
+    data_exchange:
+      - board URL
+      - node and connector references if access is granted
+    authentication: Miro account access is required for private board content.
+    timeout: proposed 10 seconds
+    retry: proposed safe read retry up to two times
+    rate_limit: surface provider limit without local data loss
+    failure: keep the local semantic canvas and record source limitation
+    fallback: show local canvas records and the source URL
+  - id: INT-003
+    name: Google Sheets working table
+    system: Google Sheets
+    status: proposed
+    direction: read or write depth is open
+    data_exchange:
+      - spreadsheet URL
+      - selected sheet and row references
+      - tabular values
+    authentication: Google Sheets OAuth scope is required for private data.
+    timeout: proposed 10 seconds
+    retry: proposed safe read retry up to two times
+    rate_limit: surface provider limit and preserve local rows
+    failure: never replace local data with an incomplete response
+    fallback: use the local data table and source evidence record
+  - id: INT-004
+    name: Linear task overlay
+    system: Linear
+    status: proposed
+    direction: link tasks and optionally read task state; exact depth is open
+    data_exchange:
+      - task identifier
+      - task title and state
+      - linked stable IDs
+    authentication: Linear account access is required for project and task writes.
+    timeout: proposed 10 seconds
+    retry: retry idempotent link updates only
+    rate_limit: respect provider limit and keep local sync state
+    failure: show sync error; task link remains separate from canonical intent
+    fallback: store a local task link until the next permitted sync
+  - id: INT-005
+    name: GitHub package repository
+    system: GitHub
+    status: proposed
+    direction: package file read and push boundary; exact workflow is open
+    data_exchange:
+      - repository path
+      - branch and commit reference
+      - package files
+    authentication: GitHub account and repository permission are required.
+    timeout: proposed 30 seconds for a package fetch or push
+    retry: retry only after reading current branch state
+    rate_limit: surface provider limit and preserve local package files
+    failure: never report a push as complete without remote read-back
+    fallback: keep local package and show the remote error

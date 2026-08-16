@@ -1,0 +1,128 @@
+components:
+  - id: COMP-001
+    name: Workspace shell
+    purpose: Holds navigation, package status, active view, and agent entry point.
+    variants:
+      - desktop
+      - compact
+      - unavailable
+    states:
+      - loading
+      - ready
+      - dirty
+      - error
+    accessibility: Proposed keyboard landmarks and screen-reader names for each region.
+  - id: COMP-002
+    name: Artifact navigator
+    purpose: Finds stable IDs by type, relation, search, or recent activity.
+    variants:
+      - tree
+      - search_results
+      - filtered
+    states:
+      - empty
+      - populated
+      - no_results
+      - unavailable
+    accessibility: Proposed keyboard tree navigation and announced result counts.
+  - id: COMP-003
+    name: View switcher
+    purpose: Changes the human view without changing the canonical graph.
+    variants:
+      - tab_bar
+      - command_menu
+    states:
+      - idle
+      - switching
+      - blocked_by_unsaved_change
+    accessibility: Proposed selected-state announcement and keyboard activation.
+  - id: COMP-004
+    name: Proposal diff
+    purpose: Shows proposed artifact changes, affected IDs, and source evidence.
+    variants:
+      - field_diff
+      - graph_diff
+    states:
+      - loading
+      - ready
+      - invalid
+      - already_resolved
+    accessibility: Proposed semantic grouping for additions, removals, and edits.
+  - id: COMP-005
+    name: Approval controls
+    purpose: Applies the human approval gate for a proposal.
+    variants:
+      - approve_reject
+      - pending
+    states:
+      - enabled
+      - disabled
+      - applying
+      - success
+      - error
+    accessibility: Proposed distinct accessible labels for approve, reject, and leave pending.
+  - id: COMP-006
+    name: Task link control
+    purpose: Links an execution task to stable intent IDs.
+    variants:
+      - create
+      - existing
+      - external
+    states:
+      - unlinked
+      - linked
+      - sync_error
+    accessibility: Proposed linked intent is readable before task mutation controls.
+  - id: COMP-007
+    name: Agent chat composer
+    purpose: Sends context-bound requests to the product agent.
+    variants:
+      - plain_message
+      - context_message
+    states:
+      - idle
+      - sending
+      - error
+    accessibility: Proposed keyboard send and status announcement.
+  - id: COMP-008
+    name: Validation status
+    purpose: Shows structural errors, warnings, and save readiness.
+    variants:
+      - inline
+      - summary
+    states:
+      - pass
+      - warning
+      - error
+    accessibility: Proposed live announcement for new validation results.
+  - id: COMP-009
+    name: Semantic node
+    purpose: Represents one stable ID in a board or semantic canvas.
+    variants:
+      - artifact
+      - relationship
+      - proposal
+    states:
+      - selected
+      - unselected
+      - stale
+    accessibility: Proposed list representation with the stable ID and label.
+  - id: COMP-010
+    name: Intent data grid
+    purpose: Supports spreadsheet-style inspection and bounded edits.
+    variants:
+      - read_only
+      - editable
+    states:
+      - loading
+      - populated
+      - no_results
+      - error
+    accessibility: Proposed keyboard row and cell movement with column names.
+interaction_patterns:
+  - name: Preserve context on view switch
+    behavior: Keep the selected stable ID and return path when a person changes views.
+  - name: Approval before canonical write
+    behavior: Keep proposed changes separate until an authorized person confirms them.
+  - name: Explicit recovery
+    behavior: Show the failed operation, preserve recoverable input, and give a next action.

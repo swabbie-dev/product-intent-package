@@ -1,0 +1,40 @@
+authorities:
+  - id: AUTH-SEAN
+    name: Sean Hart
+    roles:
+      - originator
+      - product_lead
+      - technical_lead
+      - development_lead
+      - release_authority
+    source_refs:
+      - EVID-001
+  - id: AUTH-MORGAN
+    name: Morgan Lacey Hart
+    roles:
+      - design_lead
+      - visual_design_authority
+    source_refs:
+      - EVID-001
+domains:
+  - domain: product_strategy
+    accountable_authority_id: AUTH-SEAN
+  - domain: scope_and_priority
+    accountable_authority_id: AUTH-SEAN
+  - domain: capabilities_and_behavior
+    accountable_authority_id: AUTH-SEAN
+  - domain: ux_and_information_architecture
+    accountable_authority_id: AUTH-MORGAN
+  - domain: visual_design_and_content
+    accountable_authority_id: AUTH-MORGAN
+  - domain: technical_architecture
+    accountable_authority_id: AUTH-SEAN
+  - domain: data_security_privacy
+    accountable_authority_id: AUTH-SEAN
+  - domain: quality_and_operations
+    accountable_authority_id: AUTH-SEAN
+  - domain: legal_and_compliance
+    accountable_authority_id: null
+  - domain: release_and_acceptance
+    accountable_authority_id: AUTH-SEAN
+delegations: []

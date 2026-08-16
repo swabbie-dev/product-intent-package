@@ -1,0 +1,253 @@
+screens:
+  - id: SCREEN-001
+    name: Workspace shell
+    surface: purpose_built_desktop_or_web_shell
+    route_or_entry: open_workspace
+    flow_ids:
+      - FLOW-001
+      - FLOW-002
+      - FLOW-003
+      - FLOW-004
+    inputs:
+      - workspace selection
+      - package selection
+      - view selection
+    actions:
+      - open package
+      - switch view
+      - open command search
+      - open agent chat
+    states:
+      - loading
+      - empty_workspace
+      - populated
+      - unavailable
+      - permission_denied
+      - recovery
+    responsive_rules:
+      - Proposed: keep navigation and the active view usable on the supported platform set.
+    accessibility_rules:
+      - Proposed: all shell regions have a keyboard order and programmatic name.
+    component_ids:
+      - COMP-001
+      - COMP-002
+      - COMP-003
+    mockup_ids:
+      - MOCK-001
+  - id: SCREEN-002
+    name: Experience board
+    surface: experience_board
+    route_or_entry: workspace_view_experience
+    flow_ids:
+      - FLOW-001
+      - FLOW-002
+    inputs:
+      - notes
+      - frames
+      - artifact links
+    actions:
+      - add note
+      - connect artifact
+      - open related record
+      - save
+    states:
+      - loading
+      - empty
+      - populated
+      - dirty
+      - save_error
+      - conflict
+    responsive_rules:
+      - Proposed: preserve zoom and pan controls when the viewport changes.
+    accessibility_rules:
+      - Proposed: every board object has a keyboard-accessible list representation.
+    component_ids:
+      - COMP-003
+      - COMP-009
+    mockup_ids:
+      - MOCK-001
+  - id: SCREEN-003
+    name: Semantic canvas
+    surface: semantic_canvas
+    route_or_entry: workspace_view_semantic
+    flow_ids:
+      - FLOW-002
+      - FLOW-003
+    inputs:
+      - stable ID selection
+      - relationship filter
+    actions:
+      - pan
+      - zoom
+      - inspect node
+      - open proposal review
+    states:
+      - loading
+      - empty
+      - populated
+      - partial_graph
+      - unavailable
+    responsive_rules:
+      - Proposed: provide a list fallback when the canvas is too small or unavailable.
+    accessibility_rules:
+      - Proposed: expose nodes and edges in a linear navigation order.
+    component_ids:
+      - COMP-003
+      - COMP-009
+    mockup_ids:
+      - MOCK-001
+  - id: SCREEN-004
+    name: Structured record view
+    surface: structured_record_view
+    route_or_entry: workspace_view_record
+    flow_ids:
+      - FLOW-001
+      - FLOW-002
+    inputs:
+      - YAML-backed field values
+      - stable ID
+    actions:
+      - edit field
+      - add relationship
+      - view evidence
+      - save
+    states:
+      - loading
+      - empty
+      - populated
+      - validation_error
+      - save_error
+      - conflict
+    responsive_rules:
+      - Proposed: group related fields for narrow screens without hiding required fields.
+    accessibility_rules:
+      - Proposed: label every field and announce validation results.
+    component_ids:
+      - COMP-003
+      - COMP-008
+    mockup_ids:
+      - MOCK-001
+  - id: SCREEN-005
+    name: Data table view
+    surface: data_table
+    route_or_entry: workspace_view_data
+    flow_ids:
+      - FLOW-002
+      - FLOW-004
+    inputs:
+      - filter
+      - sort
+      - row selection
+    actions:
+      - filter rows
+      - sort rows
+      - open record
+      - link task
+    states:
+      - loading
+      - empty
+      - populated
+      - no_results
+      - unavailable
+    responsive_rules:
+      - Proposed: keep row identity and primary actions visible at the supported width.
+    accessibility_rules:
+      - Proposed: provide column headers, row labels, and keyboard cell movement.
+    component_ids:
+      - COMP-003
+      - COMP-010
+    mockup_ids:
+      - MOCK-001
+  - id: SCREEN-006
+    name: Task overlay
+    surface: task_overlay
+    route_or_entry: workspace_view_tasks
+    flow_ids:
+      - FLOW-004
+    inputs:
+      - task title
+      - task state
+      - linked stable IDs
+    actions:
+      - create task
+      - update task
+      - open linked intent
+      - open Linear task
+    states:
+      - loading
+      - empty
+      - populated
+      - sync_error
+      - permission_denied
+    responsive_rules:
+      - Proposed: show linked intent before task metadata on narrow screens.
+    accessibility_rules:
+      - Proposed: task state changes are announced without moving focus unexpectedly.
+    component_ids:
+      - COMP-003
+      - COMP-006
+    mockup_ids:
+      - MOCK-001
+  - id: SCREEN-007
+    name: Product-agent chat
+    surface: agent_chat
+    route_or_entry: workspace_agent_chat
+    flow_ids:
+      - FLOW-003
+      - FLOW-002
+    inputs:
+      - message
+      - selected package context
+    actions:
+      - send message
+      - inspect proposal
+      - cancel generation
+      - open evidence
+    states:
+      - idle
+      - generating
+      - proposal_ready
+      - agent_error
+      - retention_warning
+    responsive_rules:
+      - Proposed: keep the proposal summary and approval action visible beside or before the transcript.
+    accessibility_rules:
+      - Proposed: announce new messages and keep the composer keyboard usable.
+    component_ids:
+      - COMP-004
+      - COMP-005
+      - COMP-007
+    mockup_ids:
+      - MOCK-001
+  - id: SCREEN-008
+    name: Proposal review
+    surface: approval_review
+    route_or_entry: proposal_review
+    flow_ids:
+      - FLOW-003
+    inputs:
+      - proposal diff
+      - evidence links
+      - reviewer note
+    actions:
+      - approve
+      - reject
+      - leave pending
+      - open affected record
+    states:
+      - loading
+      - populated
+      - invalid_proposal
+      - already_resolved
+      - apply_error
+      - success
+    responsive_rules:
+      - Proposed: keep affected IDs and the approval decision visible in one review context.
+    accessibility_rules:
+      - Proposed: approval and rejection controls have distinct labels and confirmation feedback.
+    component_ids:
+      - COMP-004
+      - COMP-005
+      - COMP-008
+    mockup_ids:
+      - MOCK-001

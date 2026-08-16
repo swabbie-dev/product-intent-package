@@ -1,0 +1,9 @@
+table_id,rule_id,condition_set,result,authority_decision_id
+DT-001,RULE-002,"proposal has affected IDs; reviewer is authorized; validation passes","allow approval action and record DEC-*",DEC-003
+DT-001,RULE-002,"proposal has affected IDs; reviewer is not authorized; validation passes","deny approval and preserve proposal",DEC-003
+DT-001,RULE-002,"proposal has missing IDs or invalid records; reviewer is authorized","show validation error and preserve proposal",DEC-003
+DT-001,RULE-002,"proposal has affected IDs; reviewer leaves pending","keep proposal pending with no canonical write",DEC-003
+DT-002,RULE-006,"loaded graph version equals current graph version","attempt save",DEC-001
+DT-002,RULE-006,"loaded graph version differs from current graph version","show conflict and block blind overwrite",DEC-001
+DT-002,RULE-007,"external adapter succeeds","show synced state",DEC-001
+DT-002,RULE-007,"external adapter times out or rejects","preserve local state and show retry",DEC-001

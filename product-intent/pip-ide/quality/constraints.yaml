@@ -1,0 +1,87 @@
+constraints:
+  - id: QC-001
+    dimension: latency
+    status: proposed
+    scope_ids:
+      - CAP-001
+      - API-001
+    measure: End-to-end local save response from submit to visible result.
+    target: Proposed p95 <= 200 ms for a package with 500 artifacts on the supported reference device.
+    load: Proposed single-user local session.
+    verification_method: performance smoke test with a fixed fixture package.
+    owner_authority_id: AUTH-SEAN
+  - id: QC-002
+    dimension: latency
+    status: proposed
+    scope_ids:
+      - CAP-002
+      - API-003
+    measure: View switch from selected stable ID to visible projection.
+    target: Proposed p95 <= 300 ms for a package with 500 artifacts.
+    load: Proposed single-user local session.
+    verification_method: performance test across every requested view family.
+    owner_authority_id: AUTH-SEAN
+  - id: QC-003
+    dimension: data_integrity
+    status: proposed
+    scope_ids:
+      - CAP-001
+    measure: Concurrent save conflict detection.
+    target: 100 percent of saves with an outdated graph version are blocked from blind overwrite.
+    load: Proposed two concurrent sessions.
+    verification_method: integration test with reordered and duplicated saves.
+    owner_authority_id: AUTH-SEAN
+  - id: QC-004
+    dimension: safety
+    status: proposed
+    scope_ids:
+      - CAP-003
+    measure: Canonical writes from product-agent proposals without human approval.
+    target: Zero successful writes without an applicable authority decision.
+    load: All proposal review paths.
+    verification_method: negative integration tests for each reviewer state.
+    owner_authority_id: AUTH-SEAN
+  - id: QC-005
+    dimension: accessibility
+    status: proposed
+    scope_ids:
+      - CAP-001
+      - CAP-002
+      - CAP-003
+      - CAP-004
+    measure: Keyboard, focus, semantic name, contrast, and reduced-motion support.
+    target: Proposed WCAG 2.2 AA for supported surfaces, with no keyboard trap.
+    load: All core screens and their error states.
+    verification_method: automated accessibility check plus keyboard and screen-reader smoke tests.
+    owner_authority_id: AUTH-SEAN
+  - id: QC-006
+    dimension: durability
+    status: proposed
+    scope_ids:
+      - CAP-001
+    measure: Save and reload of a valid package.
+    target: Proposed 100 percent of acknowledged local saves reload with the same stable IDs and graph version.
+    load: Fixed fixture package with 500 artifacts.
+    verification_method: save, close, reload, and graph comparison test.
+    owner_authority_id: AUTH-SEAN
+  - id: QC-007
+    dimension: privacy
+    status: proposed
+    scope_ids:
+      - CAP-003
+    measure: Chat and proposal data exposure.
+    target: 'Proposed: show the retention and context boundary before a chat request and redact secrets from audit output.'
+    load: Chat request with selected package context.
+    verification_method: privacy review and data-flow test after policy confirmation.
+    owner_authority_id: AUTH-SEAN
+  - id: QC-008
+    dimension: availability
+    status: proposed
+    scope_ids:
+      - CAP-002
+      - CAP-004
+    measure: External integration failure visibility.
+    target: 'Proposed: show timeout or denial state within 5 seconds and preserve local package content.'
+    load: one unavailable external adapter.
+    verification_method: integration failure and recovery test.
+    owner_authority_id: AUTH-SEAN

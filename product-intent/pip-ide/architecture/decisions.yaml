@@ -1,0 +1,55 @@
+architecture_decisions:
+  - id: ARCH-001
+    name: system_context_boundary
+    status: proposed
+    statement: Keep the application, canonical graph, storage boundary, agent gateway, and integration adapters as separate responsibility boundaries.
+    authority_id: AUTH-SEAN
+    source_refs:
+      - EVID-006
+  - id: ARCH-002
+    name: purpose_built_shell
+    status: proposed
+    statement: Build a purpose-built application shell instead of using a VS Code base.
+    authority_id: AUTH-SEAN
+    decision_id: DEC-005
+    source_refs:
+      - EVID-006
+  - id: ARCH-003
+    name: canonical_graph_service
+    status: proposed
+    statement: Route view reads, validated edits, and approved proposal writes through one canonical graph service.
+    authority_id: AUTH-SEAN
+    source_refs:
+      - EVID-006
+      - EVID-007
+  - id: ARCH-004
+    name: view_adapters
+    status: proposed
+    statement: Use view adapters so experience, semantic, structured, table, task, and chat surfaces resolve the same stable IDs.
+    authority_id: AUTH-SEAN
+    source_refs:
+      - EVID-006
+  - id: ARCH-005
+    name: agent_gateway
+    status: proposed
+    statement: Keep product-agent context, proposal creation, and approval checks behind an explicit gateway.
+    authority_id: AUTH-SEAN
+    source_refs:
+      - EVID-006
+  - id: ARCH-006
+    name: integration_adapters
+    status: proposed
+    statement: Isolate external systems behind adapters with explicit read, write, and failure contracts.
+    authority_id: AUTH-SEAN
+    source_refs:
+      - EVID-002
+      - EVID-003
+      - EVID-004
+      - EVID-005
+  - id: ARCH-007
+    name: workspace_storage_boundary
+    status: proposed
+    statement: Isolate workspace persistence so a later local or hosted decision does not change view and graph interfaces.
+    authority_id: AUTH-SEAN
+    source_refs:
+      - EVID-006

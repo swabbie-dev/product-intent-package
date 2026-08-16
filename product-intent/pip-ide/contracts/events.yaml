@@ -1,0 +1,45 @@
+events:
+  - id: EVT-001
+    name: artifact.changed
+    status: proposed
+    producer: ARCH-003
+    consumers:
+      - ARCH-004
+      - ARCH-003
+    payload:
+      package_id: string
+      stable_id: string
+      artifact_version: integer
+      graph_version: integer
+      change_kind: create | update | supersede
+    delivery: Proposed at-least-once delivery with stable event identity.
+    failure: A consumer retries without changing the canonical artifact twice.
+  - id: EVT-002
+    name: proposal.created
+    status: proposed
+    producer: ARCH-005
+    consumers:
+      - SCREEN-008
+      - ARCH-003
+    payload:
+      proposal_id: string
+      package_id: string
+      affected_stable_ids: list[string]
+      evidence_ids: list[string]
+    delivery: Proposed durable event while a proposal is pending.
+    failure: Keep the proposal visible and show a retry state.
+  - id: EVT-003
+    name: proposal.reviewed
+    status: proposed
+    producer: ARCH-005
+    consumers:
+      - ARCH-003
+      - ARCH-004
+      - ARCH-003
+    payload:
+      proposal_id: string
+      action: approve | reject | leave_pending
+      decision_id: string
+      reviewer_ref: string
+    delivery: Proposed once per review action with idempotent review identity.
+    failure: Do not apply a proposal when the review result is uncertain.

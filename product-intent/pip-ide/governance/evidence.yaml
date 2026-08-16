@@ -1,0 +1,103 @@
+evidence:
+  - id: EVID-001
+    type: authority_source
+    location: https://linear.app/thereadyroom/project/pip-ide-b3ecbb55ae96/overview
+    captured_at: '2026-08-16T19:00:00Z'
+    claims:
+      - The PIP IDE project lists Sean Hart as Product Lead, Technical Lead, Development Lead, active developer, and direct-push or merge authority.
+      - The project lists Morgan Lacey Hart as Design Lead.
+    confidence: high
+    limitations:
+      - The project is a reused project and its old scope does not prove the PIP IDE release boundary.
+    sensitive_data: none
+  - id: EVID-002
+    type: external_design_source
+    location: https://www.figma.com/design/NMUiwN7LaOsPrsQO3KPP4W/IP-IDE-Experience?node-id=4-17
+    captured_at: '2026-08-16T19:24:30Z'
+    claims:
+      - The supplied Figma file is accessible.
+      - The agent created a low-fidelity workspace concept with linked view cards, a separate task overlay, product-agent chat, and human proposal review.
+    confidence: high
+    limitations:
+      - The concept is a proposal. Morgan Lacey Hart has not approved its visual design or interaction detail.
+    sensitive_data: none
+    related_ids:
+      - MOCK-001
+      - TOKEN-001
+      - COMP-001
+  - id: EVID-003
+    type: external_design_source
+    location: https://miro.com/app/board/uXjVHx4xkvQ=/?share_link_id=821784385006
+    captured_at: '2026-08-16T19:00:00Z'
+    claims:
+      - The supplied Miro URL returns a private-board shell.
+    confidence: medium
+    limitations:
+      - Board content was not available with the current tools. No Miro content is used as intent.
+    sensitive_data: none
+  - id: EVID-004
+    type: external_data_source
+    location: https://docs.google.com/spreadsheets/d/1NzMCST9gNxd_3PO645u3TwqNwHfETTsbiTzg6wfQFbI/edit?usp=sharing
+    captured_at: '2026-08-16T19:00:00Z'
+    claims:
+      - The supplied Google Sheet could not be accessed with the current tools.
+    confidence: high
+    limitations:
+      - The access response does not reveal its sharing state. Direct export returned 401, the active Google account had no Sheets OAuth scope, and no connected Sheets session was available.
+    sensitive_data: none
+  - id: EVID-005
+    type: repository_source
+    location: git@github.com:seanbhart/product-intent-package.git
+    captured_at: '2026-08-16T19:00:00Z'
+    claims:
+      - The private GitHub repository exists and was empty before the initial package push.
+    confidence: high
+    limitations:
+      - Repository history does not define product intent.
+    sensitive_data: none
+  - id: EVID-006
+    type: authority_statement
+    location: conversation:2026-08-16/pip-ide-direction
+    captured_at: '2026-08-16T19:00:00Z'
+    claims:
+      - The product must help people translate thoughts into a PIP and interpret an existing PIP.
+      - The requested views include experience boards, semantic canvases, structured records, data tables, a task manager, and product-agent chat.
+      - The user requested a Linear-style task manager.
+      - The user agreed that the product needs chat for work with a product agent.
+      - The PIP IDE should use a PIP to define its own product.
+    confidence: high
+    limitations:
+      - The statements do not define the complete 0.1 release boundary or detailed behavior.
+    sensitive_data: none
+    related_ids:
+      - DEC-001
+      - DEC-002
+      - DEC-003
+      - DEC-004
+      - DEC-005
+      - CAP-001
+      - CAP-002
+      - CAP-003
+      - CAP-004
+  - id: EVID-007
+    type: package_standard
+    location: skills/product-intent-manager/references/product-intent-package-standard.md
+    captured_at: '2026-08-16T19:00:00Z'
+    claims:
+      - A PIP has twelve required information structures.
+      - Structured package records use YAML and Mermaid diagrams use fenced blocks in Markdown files.
+    confidence: high
+    limitations:
+      - The standard defines package mechanics, not PIP IDE product intent.
+    sensitive_data: none
+  - id: EVID-008
+    type: validation_run
+    location: handoff/readiness-report.generated.yaml
+    captured_at: '2026-08-16T19:24:30Z'
+    claims:
+      - The draft validator ran after the modeled package was populated.
+      - The exact result was one error, zero warnings, 103 registered artifacts, 4 in-scope capabilities, 10 acceptance scenarios, 15 open questions, and zero open contradictions.
+      - The one error was No accountable authority for domain: legal_and_compliance.
+    confidence: high
+    limitations:
+      - The report is a structural check. It does not confirm product intent.
