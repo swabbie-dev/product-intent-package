@@ -62,6 +62,9 @@ edges:
   - from: CAP-001
     relation: constrained_by
     to: QC-001
+  - from: API-001
+    relation: constrained_by
+    to: QC-001
   - from: CAP-001
     relation: verified_by
     to: ACC-001
