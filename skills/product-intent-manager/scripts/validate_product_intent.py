@@ -13,7 +13,7 @@ import hashlib
 import re
 import sys
 from pathlib import Path
-from typing import Any, Iterable, Optional
+from typing import Any, Optional
 
 from yaml_io import dump_yaml, load_yaml as load_yaml_file, write_yaml
 
@@ -172,6 +172,10 @@ PREFIX_KIND = {
 ARTIFACT_ID_RE = re.compile(
     r"\b(?:" + "|".join(sorted(PREFIX_KIND, key=len, reverse=True)) + r")-\d{3,}\b"
 )
+CANONICAL_ID_TOKEN_RE = re.compile(
+    r"(?<![A-Za-z0-9_])([A-Z][A-Z0-9]*)-(\d{3,})([A-Za-z0-9]*)(?![A-Za-z0-9_])"
+)
+GOVERNANCE_ID_PREFIXES = {"AUTH", "EVID", "DEC", "Q", "CHANGE"}
 PLACEHOLDER_RE = re.compile(
     r"(?:\bTBD\b|\bTODO\b|\bUNSET\b|\bUNKNOWN\b|\?\?\?|<placeholder>|\[placeholder\])",
     re.IGNORECASE,
@@ -285,6 +289,83 @@ def require_confirmed_decision(
         errors.append(f"{context}: requires a confirmed decision ID")
 
 
+def validate_canonical_ids(root: Path, errors: list[str]) -> None:
+    reported: set[tuple[str, str]] = set()
+    for path in iter_text_files(root):
+        relative = rel(root, path)
+        if "source-evidence" in Path(relative).parts:
+            continue
+        try:
+            text = path.read_text(encoding="utf-8")
+        except UnicodeDecodeError:
+            continue
+        for match in CANONICAL_ID_TOKEN_RE.finditer(text):
+            prefix, _digits, suffix = match.groups()
+            value = match.group(0)
+            if prefix in GOVERNANCE_ID_PREFIXES:
+                continue
+            key = (relative, value)
+            if key in reported:
+                continue
+            reported.add(key)
+            if prefix not in PREFIX_KIND:
+                errors.append(
+                    f"{relative}: unsupported canonical ID prefix {prefix!r} in {value!r}"
+                )
+            elif suffix:
+                errors.append(f"{relative}: canonical ID {value!r} must end with digits")
+
+
+def related_trace_edges(
+    edges: list[dict[str, Any]],
+    record_id: str,
+    relation: str,
+    other_ids: Optional[set[str]] = None,
+) -> set[tuple[Any, Any, Any]]:
+    related: set[tuple[Any, Any, Any]] = set()
+    for edge in edges:
+        source = edge.get("from")
+        target = edge.get("to")
+        if edge.get("relation") != relation:
+            continue
+        if source == record_id and (other_ids is None or target in other_ids):
+            related.add((source, relation, target))
+        elif target == record_id and (other_ids is None or source in other_ids):
+            related.add((source, relation, target))
+    return related
+
+
+def source_trace_edges(
+    edges: list[dict[str, Any]],
+    source_id: str,
+    relation: str,
+) -> set[tuple[Any, Any, Any]]:
+    return {
+        (edge.get("from"), relation, edge.get("to"))
+        for edge in edges
+        if edge.get("from") == source_id and edge.get("relation") == relation
+    }
+
+
+def compare_declared_traceability(
+    record_id: str,
+    field: str,
+    expected: set[tuple[Any, Any, Any]],
+    actual: set[tuple[Any, Any, Any]],
+    errors: list[str],
+) -> None:
+    for source, relation, target in sorted(expected - actual, key=str):
+        errors.append(
+            f"{record_id}: {field} missing traceability edge "
+            f"{source} -[{relation}]-> {target}"
+        )
+    for source, relation, target in sorted(actual - expected, key=str):
+        errors.append(
+            f"{record_id}: {field} has extra traceability edge "
+            f"{source} -[{relation}]-> {target}"
+        )
+
+
 def validate(root: Path) -> tuple[list[str], list[str], dict[str, Any]]:
     errors: list[str] = []
     warnings: list[str] = []
@@ -334,6 +415,8 @@ def validate(root: Path) -> tuple[list[str], list[str], dict[str, Any]]:
             if not MERMAID_FENCE_RE.search(text):
                 errors.append(f"{file_part}: requires a fenced mermaid block")
             checked_markdown_paths.add(file_part)
+
+    validate_canonical_ids(root, errors)
 
     manifest = parsed.get("manifest.yaml", {}) or {}
     build_ready = bool(manifest.get("build_ready"))
@@ -650,14 +733,41 @@ def validate(root: Path) -> tuple[list[str], list[str], dict[str, Any]]:
             )
 
     capability_map = {c.get("id"): c for c in capabilities if c.get("id")}
+    for cap_id, cap in capability_map.items():
+        cap_actor_ids = cap.get("actor_ids") or []
+        for actor_id in cap_actor_ids:
+            if actor_id not in actor_ids:
+                errors.append(f"{cap_id}: references unknown actor_id {actor_id}")
+        compare_declared_traceability(
+            cap_id,
+            "actor_ids",
+            {
+                (actor_id, "performed_by", cap_id)
+                for actor_id in cap_actor_ids
+            },
+            related_trace_edges(edges, cap_id, "performed_by", actor_ids),
+            errors,
+        )
+        cap_dependency_ids = cap.get("dependency_ids") or []
+        for dependency_id in cap_dependency_ids:
+            if dependency_id not in capability_ids:
+                errors.append(f"{cap_id}: references unknown dependency_id {dependency_id}")
+        compare_declared_traceability(
+            cap_id,
+            "dependency_ids",
+            {
+                (cap_id, "depends_on", dependency_id)
+                for dependency_id in cap_dependency_ids
+            },
+            source_trace_edges(edges, cap_id, "depends_on"),
+            errors,
+        )
+
     for cap_id in in_scope_ids:
         cap = capability_map.get(cap_id) or {}
         cap_actor_ids = cap.get("actor_ids") or []
         if not cap_actor_ids:
             errors.append(f"{cap_id}: at least one actor_id is required")
-        for actor_id in cap_actor_ids:
-            if actor_id not in actor_ids:
-                errors.append(f"{cap_id}: references unknown actor_id {actor_id}")
         requirements = cap.get("coverage_requirements")
         exceptions = cap.get("coverage_exceptions") or {}
         if not isinstance(requirements, dict):
@@ -703,8 +813,54 @@ def validate(root: Path) -> tuple[list[str], list[str], dict[str, Any]]:
         for cap_id in scenario_caps:
             if cap_id not in capability_ids:
                 errors.append(f"{sid}: references unknown capability_id {cap_id}")
+        compare_declared_traceability(
+            sid,
+            "capability_ids",
+            {
+                (cap_id, "verified_by", sid)
+                for cap_id in scenario_caps
+            },
+            related_trace_edges(edges, sid, "verified_by", capability_ids),
+            errors,
+        )
         if not scenario.get("given") or not scenario.get("when") or not scenario.get("then"):
             errors.append(f"{sid}: acceptance scenario requires given, when, and then")
+
+    rules = (parsed.get("behavior/rules.yaml", {}) or {}).get("rules") or []
+    for rule in rules:
+        rule_id = rule.get("id", "<missing-id>")
+        rule_scope_ids = rule.get("scope_ids") or []
+        for scope_id in rule_scope_ids:
+            if scope_id not in artifacts:
+                errors.append(f"{rule_id}: references unknown scope_id {scope_id}")
+        compare_declared_traceability(
+            rule_id,
+            "scope_ids",
+            {
+                (cap_id, "governed_by", rule_id)
+                for cap_id in rule_scope_ids
+            },
+            related_trace_edges(edges, rule_id, "governed_by", set(artifacts)),
+            errors,
+        )
+
+    constraints = (parsed.get("quality/constraints.yaml", {}) or {}).get("constraints") or []
+    for constraint in constraints:
+        constraint_id = constraint.get("id", "<missing-id>")
+        constraint_scope_ids = constraint.get("scope_ids") or []
+        for scope_id in constraint_scope_ids:
+            if scope_id not in artifacts:
+                errors.append(f"{constraint_id}: references unknown scope_id {scope_id}")
+        compare_declared_traceability(
+            constraint_id,
+            "scope_ids",
+            {
+                (cap_id, "constrained_by", constraint_id)
+                for cap_id in constraint_scope_ids
+            },
+            related_trace_edges(edges, constraint_id, "constrained_by", set(artifacts)),
+            errors,
+        )
 
     if build_ready:
         for artifact_id, artifact in artifacts.items():

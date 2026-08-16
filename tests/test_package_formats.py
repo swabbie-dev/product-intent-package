@@ -13,7 +13,7 @@ import yaml
 
 
 ROOT = Path(__file__).resolve().parents[1]
-SKILLS = ("reconstruct-product-intent", "product-intent-manager")
+SKILLS = ("skills/reconstruct-product-intent", "skills/product-intent-manager")
 PACKAGE_TREES = ("assets/product-intent-template", "assets/example-product-intent-package")
 
 STRUCTURED_PATHS = (
@@ -418,6 +418,260 @@ class PackageFormatTests(unittest.TestCase):
                         self.assertNotEqual(0, result.returncode)
                         self.assertIn(expected_error, errors)
 
+    def test_validator_requires_declared_traceability_edges(self) -> None:
+        cases = (
+            (
+                "actor_ids",
+                "CAP-001",
+                {"from": "ACTOR-001", "relation": "performed_by", "to": "CAP-001"},
+                {"from": "CAP-001", "relation": "performed_by", "to": "ACTOR-001"},
+            ),
+            (
+                "dependency_ids",
+                "CAP-001",
+                {"from": "CAP-001", "relation": "depends_on", "to": "CAP-001"},
+                {"from": "CAP-001", "relation": "depends_on", "to": "ARCH-001"},
+            ),
+            (
+                "capability_ids",
+                "ACC-001",
+                {"from": "CAP-001", "relation": "verified_by", "to": "ACC-001"},
+                {"from": "ACC-001", "relation": "verified_by", "to": "CAP-001"},
+            ),
+            (
+                "scope_ids",
+                "RULE-001",
+                {"from": "CAP-001", "relation": "governed_by", "to": "RULE-001"},
+                {"from": "RULE-001", "relation": "governed_by", "to": "CAP-001"},
+            ),
+            (
+                "scope_ids",
+                "QC-001",
+                {"from": "CAP-001", "relation": "constrained_by", "to": "QC-001"},
+                {"from": "QC-001", "relation": "constrained_by", "to": "CAP-001"},
+            ),
+        )
+        for skill in SKILLS:
+            source = ROOT / skill / "assets/example-product-intent-package"
+            for field, record_id, expected_edge, extra_edge in cases:
+                with tempfile.TemporaryDirectory() as temp_dir:
+                    package = Path(temp_dir) / "package"
+                    shutil.copytree(source, package)
+                    if field == "dependency_ids":
+                        capabilities_path = package / "product/capabilities.yaml"
+                        capabilities = yaml.safe_load(
+                            capabilities_path.read_text(encoding="utf-8")
+                        )
+                        capabilities["capabilities"][0]["dependency_ids"] = ["CAP-001"]
+                        capabilities_path.write_text(
+                            yaml.safe_dump(capabilities, sort_keys=False), encoding="utf-8"
+                        )
+                    trace_path = package / "verification/traceability.yaml"
+                    trace = yaml.safe_load(trace_path.read_text(encoding="utf-8"))
+                    if field == "dependency_ids":
+                        trace["edges"].append(expected_edge)
+                    trace["edges"].remove(expected_edge)
+                    trace_path.write_text(yaml.safe_dump(trace, sort_keys=False), encoding="utf-8")
+                    result = run_tool(skill, "validate_product_intent.py", package, "--no-report")
+                    errors = yaml.safe_load(result.stdout)["errors"]
+                    with self.subTest(skill=skill, field=field, record=record_id, kind="missing"):
+                        self.assertNotEqual(0, result.returncode)
+                        self.assertIn(
+                            f"{record_id}: {field} missing traceability edge "
+                            f"{expected_edge['from']} -[{expected_edge['relation']}]-> "
+                            f"{expected_edge['to']}",
+                            errors,
+                        )
+
+                with tempfile.TemporaryDirectory() as temp_dir:
+                    package = Path(temp_dir) / "package"
+                    shutil.copytree(source, package)
+                    trace_path = package / "verification/traceability.yaml"
+                    trace = yaml.safe_load(trace_path.read_text(encoding="utf-8"))
+                    trace["edges"].append(extra_edge)
+                    trace_path.write_text(yaml.safe_dump(trace, sort_keys=False), encoding="utf-8")
+                    result = run_tool(skill, "validate_product_intent.py", package, "--no-report")
+                    errors = yaml.safe_load(result.stdout)["errors"]
+                    with self.subTest(skill=skill, field=field, record=record_id, kind="extra"):
+                        self.assertNotEqual(0, result.returncode)
+                        self.assertIn(
+                            f"{record_id}: {field} has extra traceability edge "
+                            f"{extra_edge['from']} -[{extra_edge['relation']}]-> "
+                            f"{extra_edge['to']}",
+                            errors,
+                        )
+
+    def test_validator_rejects_unknown_and_malformed_canonical_ids(self) -> None:
+        cases = (
+            (
+                "product/capabilities.yaml",
+                lambda document, _index: document["actors"].__setitem__(0, {
+                    **document["actors"][0],
+                    "id": "PATTERN-001",
+                }),
+                "product/capabilities.yaml: unsupported canonical ID prefix 'PATTERN' in 'PATTERN-001'",
+            ),
+            (
+                "governance/artifact-index.yaml",
+                lambda _document, index: next(
+                    artifact for artifact in index["artifacts"] if artifact["id"] == "ARCH-003"
+                ).__setitem__("label", "ARCH-003A"),
+                "governance/artifact-index.yaml: canonical ID 'ARCH-003A' must end with digits",
+            ),
+        )
+        for skill in SKILLS:
+            source = ROOT / skill / "assets/example-product-intent-package"
+            for relative, mutate, expected_error in cases:
+                with tempfile.TemporaryDirectory() as temp_dir:
+                    package = Path(temp_dir) / "package"
+                    shutil.copytree(source, package)
+                    document_path = package / relative
+                    document = yaml.safe_load(document_path.read_text(encoding="utf-8"))
+                    index_path = package / "governance/artifact-index.yaml"
+                    index = yaml.safe_load(index_path.read_text(encoding="utf-8"))
+                    mutate(document, index)
+                    document_path.write_text(yaml.safe_dump(document, sort_keys=False), encoding="utf-8")
+                    index_path.write_text(yaml.safe_dump(index, sort_keys=False), encoding="utf-8")
+                    result = run_tool(skill, "validate_product_intent.py", package, "--no-report")
+                    errors = yaml.safe_load(result.stdout)["errors"]
+                    with self.subTest(skill=skill, path=relative):
+                        self.assertNotEqual(0, result.returncode)
+                        self.assertIn(expected_error, errors)
+
+    def test_validator_allows_governance_ids_and_external_source_evidence(self) -> None:
+        for skill in SKILLS:
+            source = ROOT / skill / "assets/example-product-intent-package"
+            with tempfile.TemporaryDirectory() as temp_dir:
+                package = Path(temp_dir) / "package"
+                shutil.copytree(source, package)
+                evidence_path = package / "governance/evidence.yaml"
+                evidence = yaml.safe_load(evidence_path.read_text(encoding="utf-8"))
+                evidence["evidence"][0]["claims"].extend(
+                    ["AUTH-001", "EVID-001", "DEC-001", "Q-001", "CHANGE-001"]
+                )
+                evidence_path.write_text(yaml.safe_dump(evidence, sort_keys=False), encoding="utf-8")
+                source_evidence = package / "source-evidence"
+                source_evidence.mkdir()
+                (source_evidence / "original.yaml").write_text(
+                    "id: PATTERN-001\nlabel: ARCH-003A\n", encoding="utf-8"
+                )
+                stamp = run_tool(skill, "stamp_package_hash.py", package)
+                result = run_tool(skill, "validate_product_intent.py", package, "--no-report")
+                with self.subTest(skill=skill):
+                    self.assertEqual(0, stamp.returncode, stamp.stderr)
+                    self.assertEqual(0, result.returncode, result.stdout)
+
+    def test_validator_rejects_unknown_ids_in_canonical_text_tokens(self) -> None:
+        cases = (
+            (
+                "product/context.md",
+                "The canonical package must reject PATTERN-001 in prose.\n",
+                "product/context.md: unsupported canonical ID prefix 'PATTERN' in 'PATTERN-001'",
+            ),
+            (
+                "governance/evidence.yaml",
+                "ARCH-003A",
+                "governance/evidence.yaml: canonical ID 'ARCH-003A' must end with digits",
+            ),
+        )
+        for skill in SKILLS:
+            source = ROOT / skill / "assets/example-product-intent-package"
+            for relative, token_or_addition, expected_error in cases:
+                with tempfile.TemporaryDirectory() as temp_dir:
+                    package = Path(temp_dir) / "package"
+                    shutil.copytree(source, package)
+                    path = package / relative
+                    if relative.endswith(".yaml"):
+                        document = yaml.safe_load(path.read_text(encoding="utf-8"))
+                        document["evidence"][0]["claims"].append(
+                            f"Embedded YAML text contains {token_or_addition}."
+                        )
+                        path.write_text(
+                            yaml.safe_dump(document, sort_keys=False), encoding="utf-8"
+                        )
+                    else:
+                        path.write_text(
+                            path.read_text(encoding="utf-8") + token_or_addition,
+                            encoding="utf-8",
+                        )
+                    result = run_tool(skill, "validate_product_intent.py", package, "--no-report")
+                    errors = yaml.safe_load(result.stdout)["errors"]
+                    with self.subTest(skill=skill, path=relative):
+                        self.assertNotEqual(0, result.returncode)
+                        self.assertIn(expected_error, errors)
+
+    def test_validator_requires_non_capability_scope_traceability(self) -> None:
+        cases = (
+            (
+                "behavior/rules.yaml",
+                "rules",
+                "RULE-001",
+                "governed_by",
+                "API-001",
+                "scope_ids",
+            ),
+            (
+                "quality/constraints.yaml",
+                "constraints",
+                "QC-001",
+                "constrained_by",
+                "API-001",
+                "scope_ids",
+            ),
+        )
+        for skill in SKILLS:
+            source = ROOT / skill / "assets/example-product-intent-package"
+            for relative, collection, record_id, relation, scope_id, field in cases:
+                with tempfile.TemporaryDirectory() as temp_dir:
+                    package = Path(temp_dir) / "package"
+                    shutil.copytree(source, package)
+                    declaration_path = package / relative
+                    declaration = yaml.safe_load(declaration_path.read_text(encoding="utf-8"))
+                    record = next(item for item in declaration[collection] if item["id"] == record_id)
+                    if scope_id not in record[field]:
+                        record[field].append(scope_id)
+                    declaration_path.write_text(
+                        yaml.safe_dump(declaration, sort_keys=False), encoding="utf-8"
+                    )
+                    trace_path = package / "verification/traceability.yaml"
+                    trace = yaml.safe_load(trace_path.read_text(encoding="utf-8"))
+                    expected_edge = {
+                        "from": scope_id,
+                        "relation": relation,
+                        "to": record_id,
+                    }
+                    quality_edge = {
+                        "from": "API-001",
+                        "relation": "constrained_by",
+                        "to": "QC-001",
+                    }
+                    if quality_edge not in trace["edges"]:
+                        trace["edges"].append(quality_edge)
+                    if expected_edge not in trace["edges"]:
+                        trace["edges"].append(expected_edge)
+                    trace_path.write_text(yaml.safe_dump(trace, sort_keys=False), encoding="utf-8")
+                    stamp = run_tool(skill, "stamp_package_hash.py", package)
+                    with self.subTest(skill=skill, record=record_id, phase="complete"):
+                        self.assertEqual(0, stamp.returncode, stamp.stderr)
+                    complete = run_tool(skill, "validate_product_intent.py", package, "--no-report")
+                    with self.subTest(skill=skill, record=record_id, phase="complete"):
+                        self.assertEqual(0, complete.returncode, complete.stdout)
+
+                    trace = yaml.safe_load(trace_path.read_text(encoding="utf-8"))
+                    trace["edges"].remove(expected_edge)
+                    trace_path.write_text(yaml.safe_dump(trace, sort_keys=False), encoding="utf-8")
+                    stamp = run_tool(skill, "stamp_package_hash.py", package)
+                    result = run_tool(skill, "validate_product_intent.py", package, "--no-report")
+                    errors = yaml.safe_load(result.stdout)["errors"]
+                    with self.subTest(skill=skill, record=record_id, phase="missing"):
+                        self.assertEqual(0, stamp.returncode, stamp.stderr)
+                        self.assertNotEqual(0, result.returncode)
+                        self.assertIn(
+                            f"{record_id}: {field} missing traceability edge "
+                            f"{scope_id} -[{relation}]-> {record_id}",
+                            errors,
+                        )
+
     def test_validator_rejects_artifact_paths_outside_package(self) -> None:
         for skill in SKILLS:
             source = ROOT / skill / "assets/example-product-intent-package"
@@ -478,9 +732,9 @@ class PackageFormatTests(unittest.TestCase):
                     self.assertEqual(0, validate.returncode, validate.stdout)
 
     def test_manager_impact_analysis_emits_yaml(self) -> None:
-        package = ROOT / "product-intent-manager/assets/example-product-intent-package"
+        package = ROOT / "skills/product-intent-manager/assets/example-product-intent-package"
         result = run_tool(
-            "product-intent-manager",
+            "skills/product-intent-manager",
             "impact_analysis.py",
             package,
             "CAP-001",
@@ -492,7 +746,7 @@ class PackageFormatTests(unittest.TestCase):
         self.assertIn("ACC-001", output["affected_ids"])
 
     def test_inventory_emits_yaml_and_keeps_legacy_source_types(self) -> None:
-        skill = "reconstruct-product-intent"
+        skill = "skills/reconstruct-product-intent"
         with tempfile.TemporaryDirectory() as temp_dir:
             root = Path(temp_dir)
             project = root / "project"
@@ -518,7 +772,7 @@ class PackageFormatTests(unittest.TestCase):
             project = root / "project"
             project.mkdir()
             result = run_tool(
-                "reconstruct-product-intent",
+                "skills/reconstruct-product-intent",
                 "inventory_existing_project.py",
                 project,
                 "--output",
