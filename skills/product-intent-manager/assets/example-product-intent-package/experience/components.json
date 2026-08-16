@@ -1,0 +1,19 @@
+{
+  "components": [
+    {
+      "id": "COMP-001",
+      "name": "Increment button",
+      "variants": [
+        "default",
+        "disabled",
+        "submitting",
+        "error"
+      ],
+      "token_set_id": "TOKEN-001",
+      "accessibility": [
+        "Native button semantics"
+      ]
+    }
+  ],
+  "interaction_patterns": []
+}

@@ -1,0 +1,33 @@
+{
+  "actors": [
+    {
+      "id": "ACTOR-001",
+      "name": "User",
+      "goals": [
+        "Increment and observe the counter"
+      ]
+    }
+  ],
+  "capabilities": [
+    {
+      "id": "CAP-001",
+      "name": "Increment counter",
+      "actor_ids": [
+        "ACTOR-001"
+      ],
+      "dependency_ids": [],
+      "coverage_requirements": {
+        "domain": true,
+        "experience": true,
+        "behavior": true,
+        "data": true,
+        "architecture": true,
+        "contracts": true,
+        "sequence": true,
+        "quality": true,
+        "verification": true
+      },
+      "coverage_exceptions": {}
+    }
+  ]
+}

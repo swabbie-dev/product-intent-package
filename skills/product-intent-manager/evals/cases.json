@@ -1,0 +1,52 @@
+{
+  "cases": [
+    {
+      "id": "activate-greenfield",
+      "prompt": "Walk me through defining a new SaaS product so a coding orchestrator can build the whole thing without further questions.",
+      "should_activate": true,
+      "must": [
+        "establish authority",
+        "build twelve structures",
+        "ask selective detailed questions",
+        "create verification and traceability"
+      ]
+    },
+    {
+      "id": "activate-completion",
+      "prompt": "Audit this product intent package, fill every gap with the right stakeholders, and make it handoff-ready.",
+      "should_activate": true,
+      "must": [
+        "validate existing package",
+        "generate authority-routed gap queue",
+        "not trust existing ready label"
+      ]
+    },
+    {
+      "id": "activate-iteration",
+      "prompt": "Change subscriptions so users can pause and resume; update the full product intent package.",
+      "should_activate": true,
+      "must": [
+        "record decision",
+        "impact graph",
+        "mark stale",
+        "update affected artifacts and tests",
+        "version package"
+      ]
+    },
+    {
+      "id": "delegation",
+      "prompt": "Use best practices for everything technical and make the package complete.",
+      "should_activate": true,
+      "must": [
+        "clarify or formalize delegation scope",
+        "define constraints",
+        "not treat phrase as unlimited authority"
+      ]
+    },
+    {
+      "id": "negative-build",
+      "prompt": "Implement the app described by this completed product intent package.",
+      "should_activate": false
+    }
+  ]
+}
