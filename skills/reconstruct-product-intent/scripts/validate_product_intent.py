@@ -12,6 +12,7 @@ import argparse
 import hashlib
 import re
 import sys
+from collections.abc import Iterator
 from pathlib import Path
 from typing import Any, Optional
 
@@ -224,7 +225,7 @@ def resolve_artifact_file(
     return candidate
 
 
-def iter_text_files(root: Path) -> Iterable[Path]:
+def iter_text_files(root: Path) -> Iterator[Path]:
     for path in sorted(p for p in root.rglob("*") if p.is_file()):
         relative = rel(root, path)
         if path.name.startswith("readiness-report.generated"):
