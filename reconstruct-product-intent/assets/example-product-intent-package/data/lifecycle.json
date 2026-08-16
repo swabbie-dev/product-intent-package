@@ -1,0 +1,14 @@
+{
+  "data_lifecycles": [
+    {
+      "id": "DATA-001",
+      "create": "Seed one record at deployment with value 0.",
+      "update": "Atomic increment only.",
+      "archive": "not applicable",
+      "delete": "Only during full environment teardown.",
+      "retention": "Product lifetime.",
+      "export": "Operational database backup.",
+      "privacy_classification": "non_personal"
+    }
+  ]
+}

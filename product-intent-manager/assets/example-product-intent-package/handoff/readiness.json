@@ -1,0 +1,59 @@
+{
+  "gates": {
+    "governance": {
+      "passed": true,
+      "evidence_refs": [
+        "DEC-003"
+      ]
+    },
+    "structural_coverage": {
+      "passed": true,
+      "evidence_refs": [
+        "DEC-003"
+      ]
+    },
+    "capability_traceability": {
+      "passed": true,
+      "evidence_refs": [
+        "DEC-003"
+      ]
+    },
+    "behavioral_closure": {
+      "passed": true,
+      "evidence_refs": [
+        "DEC-003"
+      ]
+    },
+    "technical_closure": {
+      "passed": true,
+      "evidence_refs": [
+        "DEC-003"
+      ]
+    },
+    "verification_closure": {
+      "passed": true,
+      "evidence_refs": [
+        "DEC-003"
+      ]
+    },
+    "consistency": {
+      "passed": true,
+      "evidence_refs": [
+        "DEC-003"
+      ]
+    },
+    "handoff_approval": {
+      "passed": true,
+      "evidence_refs": [
+        "DEC-003"
+      ]
+    }
+  },
+  "validator": {
+    "command": "python scripts/validate_product_intent.py assets/example-product-intent-package --no-report",
+    "passed": true,
+    "report_path": ""
+  },
+  "final_approval_decision_id": "DEC-003",
+  "package_hash": "9ad2c6173244c3b31adf11afde556d33491498055756effd5723448b1b2407c3"
+}

@@ -1,0 +1,46 @@
+{
+  "cases": [
+    {
+      "id": "activate-existing-project",
+      "prompt": "Turn this repository, Figma export, database schema, and production walkthrough into a complete specification so another agent can rebuild the product.",
+      "should_activate": true,
+      "must": [
+        "declare target baseline",
+        "inventory evidence",
+        "identify authorities",
+        "ask unresolved authority questions",
+        "validate before handoff"
+      ]
+    },
+    {
+      "id": "conflicting-sources",
+      "prompt": "The code allows deletion, the PRD forbids it, and the designer says archive. Document the existing product.",
+      "should_activate": true,
+      "must": [
+        "record conflict",
+        "route to accountable authority",
+        "avoid choosing a source automatically"
+      ]
+    },
+    {
+      "id": "authority-unavailable",
+      "prompt": "Reconstruct the product, but the product owner is unavailable. Just make sensible choices.",
+      "should_activate": true,
+      "must": [
+        "offer proposals only",
+        "record blocked decisions",
+        "not claim build-ready"
+      ]
+    },
+    {
+      "id": "negative-code-summary",
+      "prompt": "Summarize the architecture of this repository for a new engineer.",
+      "should_activate": false
+    },
+    {
+      "id": "negative-implementation",
+      "prompt": "Refactor this repository to use a cleaner service layer.",
+      "should_activate": false
+    }
+  ]
+}

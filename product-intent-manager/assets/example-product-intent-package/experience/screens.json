@@ -1,0 +1,36 @@
+{
+  "screens": [
+    {
+      "id": "SCREEN-001",
+      "name": "Counter screen",
+      "surface": "responsive_web",
+      "route_or_entry": "/",
+      "flow_ids": [
+        "FLOW-001"
+      ],
+      "inputs": [],
+      "actions": [
+        "increment"
+      ],
+      "states": [
+        "loading",
+        "ready",
+        "submitting",
+        "network_error"
+      ],
+      "responsive_rules": [
+        "Single centered column on supported widths"
+      ],
+      "accessibility_rules": [
+        "Increment is a native keyboard-operable button and state changes are announced"
+      ],
+      "component_ids": [
+        "COMP-001"
+      ],
+      "mockup_ids": [
+        "MOCK-001"
+      ],
+      "copy_refs": []
+    }
+  ]
+}

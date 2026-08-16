@@ -1,0 +1,162 @@
+{
+  "structures": [
+    {
+      "name": "product_map",
+      "status": "blocked",
+      "artifact_ids": [],
+      "decision_id": null
+    },
+    {
+      "name": "domain_model",
+      "status": "blocked",
+      "artifact_ids": [],
+      "decision_id": null
+    },
+    {
+      "name": "user_flow_model",
+      "status": "blocked",
+      "artifact_ids": [],
+      "decision_id": null
+    },
+    {
+      "name": "interface_model",
+      "status": "blocked",
+      "artifact_ids": [],
+      "decision_id": null
+    },
+    {
+      "name": "design_system",
+      "status": "blocked",
+      "artifact_ids": [],
+      "decision_id": null
+    },
+    {
+      "name": "behavior_model",
+      "status": "blocked",
+      "artifact_ids": [],
+      "decision_id": null
+    },
+    {
+      "name": "data_model",
+      "status": "blocked",
+      "artifact_ids": [],
+      "decision_id": null
+    },
+    {
+      "name": "system_architecture",
+      "status": "blocked",
+      "artifact_ids": [],
+      "decision_id": null
+    },
+    {
+      "name": "interface_contracts",
+      "status": "blocked",
+      "artifact_ids": [],
+      "decision_id": null
+    },
+    {
+      "name": "runtime_interactions",
+      "status": "blocked",
+      "artifact_ids": [],
+      "decision_id": null
+    },
+    {
+      "name": "quality_constraints",
+      "status": "blocked",
+      "artifact_ids": [],
+      "decision_id": null
+    },
+    {
+      "name": "verification_model",
+      "status": "blocked",
+      "artifact_ids": [],
+      "decision_id": null
+    }
+  ],
+  "lenses": [
+    {
+      "name": "roles_permissions_tenancy",
+      "status": "blocked",
+      "artifact_ids": [],
+      "decision_id": null
+    },
+    {
+      "name": "identity_account_lifecycle",
+      "status": "blocked",
+      "artifact_ids": [],
+      "decision_id": null
+    },
+    {
+      "name": "admin_moderation_support_audit",
+      "status": "blocked",
+      "artifact_ids": [],
+      "decision_id": null
+    },
+    {
+      "name": "billing_entitlements_quotas",
+      "status": "blocked",
+      "artifact_ids": [],
+      "decision_id": null
+    },
+    {
+      "name": "notifications_preferences_delivery",
+      "status": "blocked",
+      "artifact_ids": [],
+      "decision_id": null
+    },
+    {
+      "name": "search_filter_sort_pagination",
+      "status": "blocked",
+      "artifact_ids": [],
+      "decision_id": null
+    },
+    {
+      "name": "files_import_export_migration",
+      "status": "blocked",
+      "artifact_ids": [],
+      "decision_id": null
+    },
+    {
+      "name": "analytics_instrumentation_experiments",
+      "status": "blocked",
+      "artifact_ids": [],
+      "decision_id": null
+    },
+    {
+      "name": "localization_time_currency_units",
+      "status": "blocked",
+      "artifact_ids": [],
+      "decision_id": null
+    },
+    {
+      "name": "offline_partial_failure_resume",
+      "status": "blocked",
+      "artifact_ids": [],
+      "decision_id": null
+    },
+    {
+      "name": "concurrency_duplicates_ordering_idempotency",
+      "status": "blocked",
+      "artifact_ids": [],
+      "decision_id": null
+    },
+    {
+      "name": "privacy_retention_deletion_export",
+      "status": "blocked",
+      "artifact_ids": [],
+      "decision_id": null
+    },
+    {
+      "name": "accessibility_keyboard_assistive_motion",
+      "status": "blocked",
+      "artifact_ids": [],
+      "decision_id": null
+    },
+    {
+      "name": "environments_deploy_rollback_disaster_recovery",
+      "status": "blocked",
+      "artifact_ids": [],
+      "decision_id": null
+    }
+  ]
+}

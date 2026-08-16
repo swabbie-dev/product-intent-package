@@ -1,0 +1,6 @@
+interface:
+  display_name: "Product Intent Manager"
+  short_description: "Create, complete, and iterate a clarification-free product specification"
+  default_prompt: "Create or manage an authority-confirmed Product Intent Package for this software product. Ask the correct authorities for every unresolved build-affecting decision and close all gaps before handoff."
+policy:
+  allow_implicit_invocation: true
