@@ -1,0 +1,2 @@
+default_policy: forbidden_if_behavior_affecting_or_user_observable
+grants: []

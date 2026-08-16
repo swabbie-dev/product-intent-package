@@ -6,24 +6,22 @@ This example is illustrative, not a product default.
 
 `CAP-001 — Create project`
 
-```json
-{
-  "id": "CAP-001",
-  "name": "Create project",
-  "actor_ids": ["ACTOR-001"],
-  "coverage_requirements": {
-    "domain": true,
-    "experience": true,
-    "behavior": true,
-    "data": true,
-    "architecture": true,
-    "contracts": true,
-    "sequence": true,
-    "quality": true,
-    "verification": true
-  },
-  "coverage_exceptions": {}
-}
+```yaml
+id: CAP-001
+name: Create project
+actor_ids:
+  - ACTOR-001
+coverage_requirements:
+  domain: true
+  experience: true
+  behavior: true
+  data: true
+  architecture: true
+  contracts: true
+  sequence: true
+  quality: true
+  verification: true
+coverage_exceptions: {}
 ```
 
 ## Connected structures
@@ -68,23 +66,30 @@ stateDiagram-v2
 
 ## Acceptance records
 
-```json
-[
-  {
-    "id": "ACC-001",
-    "capability_ids": ["CAP-001"],
-    "given": ["authenticated member", "create permission", "valid unique name"],
-    "when": "submit create-project action",
-    "then": ["one project is persisted", "response identifies project", "project.created is emitted once"]
-  },
-  {
-    "id": "ACC-002",
-    "capability_ids": ["CAP-001"],
-    "given": ["authenticated member", "invalid name"],
-    "when": "submit create-project action",
-    "then": ["validation error identifies name rule", "no project is persisted", "entered values remain available"]
-  }
-]
+```yaml
+- id: ACC-001
+  capability_ids:
+    - CAP-001
+  given:
+    - authenticated member
+    - create permission
+    - valid unique name
+  when: submit create-project action
+  then:
+    - one project is persisted
+    - response identifies project
+    - project.created is emitted once
+- id: ACC-002
+  capability_ids:
+    - CAP-001
+  given:
+    - authenticated member
+    - invalid name
+  when: submit create-project action
+  then:
+    - validation error identifies name rule
+    - no project is persisted
+    - entered values remain available
 ```
 
 The labels may be concise because the stable IDs connect the full intent. No artifact repeats all behavior.

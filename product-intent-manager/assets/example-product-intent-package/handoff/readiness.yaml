@@ -1,0 +1,40 @@
+gates:
+  governance:
+    passed: true
+    evidence_refs:
+      - DEC-003
+  structural_coverage:
+    passed: true
+    evidence_refs:
+      - DEC-003
+  capability_traceability:
+    passed: true
+    evidence_refs:
+      - DEC-003
+  behavioral_closure:
+    passed: true
+    evidence_refs:
+      - DEC-003
+  technical_closure:
+    passed: true
+    evidence_refs:
+      - DEC-003
+  verification_closure:
+    passed: true
+    evidence_refs:
+      - DEC-003
+  consistency:
+    passed: true
+    evidence_refs:
+      - DEC-003
+  handoff_approval:
+    passed: true
+    evidence_refs:
+      - DEC-003
+validator:
+  command: python scripts/validate_product_intent.py assets/example-product-intent-package
+    --no-report
+  passed: true
+  report_path: ''
+final_approval_decision_id: DEC-003
+package_hash: f93eb82abd07105f7e75a440092317365bd1ac56d59487a465e749655eeb38e5

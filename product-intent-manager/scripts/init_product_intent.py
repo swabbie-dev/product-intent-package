@@ -4,10 +4,11 @@
 from __future__ import annotations
 
 import argparse
-import json
 import shutil
 from datetime import datetime, timezone
 from pathlib import Path
+
+from yaml_io import load_yaml, write_yaml
 
 
 def main() -> int:
@@ -31,8 +32,8 @@ def main() -> int:
     destination.parent.mkdir(parents=True, exist_ok=True)
     shutil.copytree(source, destination, dirs_exist_ok=True)
 
-    manifest_path = destination / "manifest.json"
-    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    manifest_path = destination / "manifest.yaml"
+    manifest = load_yaml(manifest_path)
     manifest["package_id"] = args.package_id or f"PIP-{args.name.upper().replace(' ', '-')[:40]}"
     manifest["product"]["name"] = args.name
     manifest["product"]["target_version"] = args.target_version
@@ -40,7 +41,7 @@ def main() -> int:
     now = datetime.now(timezone.utc).isoformat()
     manifest["created_at"] = now
     manifest["updated_at"] = now
-    manifest_path.write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
+    write_yaml(manifest_path, manifest)
     print(destination)
     return 0
 

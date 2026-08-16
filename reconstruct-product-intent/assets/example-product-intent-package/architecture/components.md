@@ -1,0 +1,5 @@
+```mermaid
+flowchart TB
+  ARCH_002["ARCH-002 Counter API"] --> API_001["API-001 Increment operation"]
+  API_001 --> DATA_001["DATA-001 CounterRecord"]
+```

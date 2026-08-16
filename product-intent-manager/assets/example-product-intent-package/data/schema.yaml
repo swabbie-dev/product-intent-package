@@ -1,0 +1,21 @@
+entities:
+  - id: DATA-001
+    name: CounterRecord
+    storage_name: counter_record
+    fields:
+      - name: id
+        type: integer
+        constraints:
+          - primary_key
+          - constant_singleton
+      - name: value
+        type: integer
+        constraints:
+          - not_null
+          - minimum_0
+      - name: updated_at
+        type: timestamp
+        constraints:
+          - not_null
+    relationships: []
+    indexes: []

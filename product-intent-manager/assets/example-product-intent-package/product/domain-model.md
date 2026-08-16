@@ -1,0 +1,6 @@
+```mermaid
+classDiagram
+  class DOM_001["DOM-001 Counter"] {
+    +integer value
+  }
+```

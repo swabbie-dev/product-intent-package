@@ -1,0 +1,17 @@
+token_set_id: TOKEN-001
+references: {}
+colors:
+  foreground: '#000000'
+  background: '#ffffff'
+typography:
+  body: system-ui
+spacing:
+  unit: 8
+sizing: {}
+radii:
+  button: 8
+elevation: {}
+motion:
+  reduced_motion: no animation
+breakpoints:
+  compact: 640

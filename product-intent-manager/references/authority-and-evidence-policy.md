@@ -8,7 +8,7 @@ The agent may analyze, compare, and recommend. It may not convert analysis into 
 
 ## Authority registry
 
-`governance/authorities.json` maps decision domains to accountable authorities. Titles are informative; the registry is controlling.
+`governance/authorities.yaml` maps decision domains to accountable authorities. Titles are informative; the registry is controlling.
 
 Required decision domains:
 

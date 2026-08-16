@@ -9,9 +9,10 @@ from __future__ import annotations
 
 import argparse
 import hashlib
-import json
 from datetime import datetime, timezone
 from pathlib import Path
+
+from yaml_io import write_yaml
 
 IGNORED_DIRS = {
     ".git", ".hg", ".svn", "node_modules", "vendor", "dist", "build", "coverage",
@@ -65,6 +66,8 @@ def main() -> int:
     root = args.project.resolve()
     if not root.is_dir():
         raise SystemExit(f"Not a directory: {root}")
+    if args.output.suffix != ".yaml":
+        raise SystemExit(f"Output file must use the .yaml extension: {args.output}")
 
     files = []
     skipped = []
@@ -108,7 +111,7 @@ def main() -> int:
         "skipped": skipped,
     }
     args.output.parent.mkdir(parents=True, exist_ok=True)
-    args.output.write_text(json.dumps(output, indent=2) + "\n", encoding="utf-8")
+    write_yaml(args.output, output)
     print(args.output)
     return 0
 

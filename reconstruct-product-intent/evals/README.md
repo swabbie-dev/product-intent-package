@@ -1,6 +1,6 @@
 # Skill Evaluation Cases
 
-Use the cases in `cases.json` to test both activation and behavior.
+Use the cases in `cases.yaml` to test both activation and behavior.
 
 Minimum must-pass rubric:
 
@@ -13,6 +13,8 @@ Minimum must-pass rubric:
 - does not claim build-ready while validator or gates fail;
 - records bounded implementation discretion rather than vague “best practices”;
 - for iteration, marks dependent artifacts stale and updates acceptance/traceability.
+- writes skill-authored structured records as `.yaml` and Mermaid diagrams as `.md` files with fenced `mermaid` blocks, including diagram-only files;
+- keeps `.json` and `.mmd` only for copied source evidence or required external formats, not canonical package records.
 
 ## Deterministic smoke test
 
