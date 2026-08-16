@@ -1,0 +1,3 @@
+terms:
+  - term: counter
+    definition: A non-negative integer persisted for the product.

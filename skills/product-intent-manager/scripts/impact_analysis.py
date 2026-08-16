@@ -4,9 +4,10 @@
 from __future__ import annotations
 
 import argparse
-import json
 from collections import deque
 from pathlib import Path
+
+from yaml_io import dump_yaml, load_yaml
 
 
 def main() -> int:
@@ -17,10 +18,10 @@ def main() -> int:
     args = parser.parse_args()
 
     root = args.package.resolve()
-    trace_path = root / "verification" / "traceability.json"
-    index_path = root / "governance" / "artifact-index.json"
-    data = json.loads(trace_path.read_text(encoding="utf-8"))
-    index = json.loads(index_path.read_text(encoding="utf-8"))
+    trace_path = root / "verification" / "traceability.yaml"
+    index_path = root / "governance" / "artifact-index.yaml"
+    data = load_yaml(trace_path)
+    index = load_yaml(index_path)
     edges = data.get("edges", [])
 
     registered_ids = {item.get("id") for item in index.get("artifacts", []) if item.get("id")}
@@ -28,7 +29,7 @@ def main() -> int:
     if unknown_ids:
         raise SystemExit(
             "Unknown changed ID(s): " + ", ".join(unknown_ids)
-            + ". Use stable IDs registered in governance/artifact-index.json."
+            + ". Use stable IDs registered in governance/artifact-index.yaml."
         )
 
     outgoing: dict[str, set[str]] = {}
@@ -57,7 +58,7 @@ def main() -> int:
         "affected_ids": sorted(seen - set(args.changed_ids)),
         "instruction": "Mark affected active artifacts stale, review them with the relevant authorities, then reconfirm or supersede them.",
     }
-    print(json.dumps(result, indent=2))
+    print(dump_yaml(result), end="")
     return 0
 
 

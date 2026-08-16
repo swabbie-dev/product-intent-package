@@ -18,7 +18,7 @@ Anything else is an unresolved gap.
 
 1. **Intent is never inferred into existence.** Evidence may support a proposal; only an authorized confirmation makes it canonical.
 2. **One fact, one source of truth.** Reuse stable IDs and links instead of restating the same rule in multiple artifacts.
-3. **Every canonical item is governed.** It has a stable ID, status, authority, confirmation decision, version, source references, and staleness state in `governance/artifact-index.json`.
+3. **Every canonical item is governed.** It has a stable ID, status, authority, confirmation decision, version, source references, and staleness state in `governance/artifact-index.yaml`.
 4. **Observed behavior is not automatically desired behavior.** Code, tests, screenshots, analytics, documents, and runtime behavior are evidence.
 5. **No silent conflict resolution.** Contradictions are routed to the accountable authority and recorded as decisions.
 6. **No silent defaults.** “Standard behavior” is a proposal unless an authority delegates that decision domain.
@@ -39,24 +39,34 @@ Prefer, in order:
 
 Use stable IDs inside diagrams and registries. Prose explains rationale; it must not be the only location of a build-critical rule.
 
+## Human-readable package file format
+
+Use these rules for every Product Intent Package:
+
+- Store every skill-authored structured package record in YAML in a `.yaml` file.
+- Use unique string keys. Do not use YAML aliases or custom tags.
+- Store every Mermaid diagram in a Markdown `.md` file, including files that contain only a diagram. Wrap each diagram in a fenced `mermaid` block so common editors can render it.
+- Do not create canonical `.json` or `.mmd` package files.
+- Preserve the original format for copied source evidence and for media types or file formats required by an external system. Record these files through `governance/evidence.yaml`; do not list them as canonical paths in `governance/artifact-index.yaml`. Preserve media types such as `application/json` when an HTTP boundary requires them.
+
 ## Canonical directory map
 
 | Intent dimension | Canonical structures | Default files |
 |---|---|---|
 | Governance | authority, scope, structure/lens coverage, decisions, questions, contradictions, evidence, artifact registry, change history | `governance/*` |
-| Product map | actors, system boundary, capabilities, external systems, exclusions | `product/context.mmd`, `product/capabilities.json`, `governance/scope.json` |
-| Domain model | conceptual entities, relationships, ownership, invariants, vocabulary | `product/domain-model.mmd`, `governance/glossary.json` |
-| User-flow model | actor goals, entry points, paths, alternatives, recovery | `experience/user-flows.mmd` |
-| Interface model | surface topology, screens, states, responsive behavior, copy references, mockups | `experience/screen-map.mmd`, `experience/screens.json`, `experience/mockups/` |
-| Design system | tokens, components, variants, interaction and motion patterns | `experience/design-tokens.json`, `experience/components.json` |
-| Behavior model | state machines, rules, guards, priorities, decision tables | `behavior/state-machines.mmd`, `behavior/rules.json`, `behavior/decision-tables.csv` |
-| Data model | physical entities, fields, constraints, lifecycle, retention, migration | `data/erd.dbml`, `data/schema.json`, `data/lifecycle.json` |
-| System architecture | context, containers, components, deployment and trust boundaries | `architecture/*.mmd` |
-| Interface contracts | APIs, events, webhooks, third-party boundaries, errors and versioning | `contracts/openapi.json`, `contracts/events.json`, `contracts/integrations.json` |
-| Runtime interactions | ordering, transactions, async work, failures, compensation, retries | `sequences/sequences.mmd` |
-| Quality constraints | measurable performance, reliability, security, privacy, accessibility, compatibility, operations | `quality/constraints.json` |
-| Verification model | acceptance scenarios and complete cross-artifact traceability | `verification/acceptance.json`, `verification/traceability.json` |
-| Handoff contract | allowed implementation discretion and readiness result | `handoff/implementation-discretion.json`, `handoff/readiness.json` |
+| Product map | actors, system boundary, capabilities, external systems, exclusions | `product/context.md`, `product/capabilities.yaml`, `governance/scope.yaml` |
+| Domain model | conceptual entities, relationships, ownership, invariants, vocabulary | `product/domain-model.md`, `governance/glossary.yaml` |
+| User-flow model | actor goals, entry points, paths, alternatives, recovery | `experience/user-flows.md` |
+| Interface model | surface topology, screens, states, responsive behavior, copy references, mockups | `experience/screen-map.md`, `experience/screens.yaml`, `experience/mockups/` |
+| Design system | tokens, components, variants, interaction and motion patterns | `experience/design-tokens.yaml`, `experience/components.yaml` |
+| Behavior model | state machines, rules, guards, priorities, decision tables | `behavior/state-machines.md`, `behavior/rules.yaml`, `behavior/decision-tables.csv` |
+| Data model | physical entities, fields, constraints, lifecycle, retention, migration | `data/erd.dbml`, `data/schema.yaml`, `data/lifecycle.yaml` |
+| System architecture | context, containers, components, deployment and trust boundaries | `architecture/*.md` |
+| Interface contracts | APIs, events, webhooks, third-party boundaries, errors and versioning | `contracts/openapi.yaml`, `contracts/events.yaml`, `contracts/integrations.yaml` |
+| Runtime interactions | ordering, transactions, async work, failures, compensation, retries | `sequences/sequences.md` |
+| Quality constraints | measurable performance, reliability, security, privacy, accessibility, compatibility, operations | `quality/constraints.yaml` |
+| Verification model | acceptance scenarios and complete cross-artifact traceability | `verification/acceptance.yaml`, `verification/traceability.yaml` |
+| Handoff contract | allowed implementation discretion and readiness result | `handoff/implementation-discretion.yaml`, `handoff/readiness.yaml` |
 
 Large products may split any file by stable ID. The semantics and registry remain unchanged.
 
@@ -95,21 +105,20 @@ IDs are immutable. Renames change labels, not IDs. Superseded items retain their
 
 ## Artifact metadata
 
-Every logical artifact is registered in `governance/artifact-index.json`:
+Every logical artifact is registered in `governance/artifact-index.yaml`:
 
-```json
-{
-  "id": "CAP-001",
-  "kind": "capability",
-  "label": "Create project",
-  "path": "product/capabilities.json#/capabilities/0",
-  "status": "confirmed",
-  "authority_id": "AUTH-PRODUCT",
-  "confirmation_decision_id": "DEC-014",
-  "source_refs": ["EVID-003"],
-  "version": 3,
-  "stale": false
-}
+```yaml
+id: CAP-001
+kind: capability
+label: Create project
+path: product/capabilities.yaml#/capabilities/0
+status: confirmed
+authority_id: AUTH-PRODUCT
+confirmation_decision_id: DEC-014
+source_refs:
+  - EVID-003
+version: 3
+stale: false
 ```
 
 Allowed working statuses:
@@ -312,14 +321,12 @@ Each lens must be either represented, explicitly not applicable, or out of scope
 
 ## Traceability model
 
-`verification/traceability.json` is the package graph. Each edge is directional:
+`verification/traceability.yaml` is the package graph. Each edge is directional:
 
-```json
-{
-  "from": "CAP-001",
-  "relation": "verified_by",
-  "to": "ACC-001"
-}
+```yaml
+from: CAP-001
+relation: verified_by
+to: ACC-001
 ```
 
 Canonical relations:
@@ -339,7 +346,7 @@ Canonical relations:
 | `depends_on` | item cannot operate without another item |
 | `supersedes` | item replaces a prior item |
 
-`governance/coverage-matrix.json` separately proves that all twelve canonical structures and every cross-cutting coverage lens are either covered, confirmed not applicable, confirmed out of scope, or blocked.
+`governance/coverage-matrix.yaml` separately proves that all twelve canonical structures and every cross-cutting coverage lens are either covered, confirmed not applicable, confirmed out of scope, or blocked.
 
 Every in-scope capability declares which coverage dimensions apply. A false dimension requires a confirmed exception decision. Every true dimension requires at least one matching traceability edge.
 

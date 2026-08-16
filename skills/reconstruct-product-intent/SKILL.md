@@ -1,15 +1,18 @@
 ---
 name: reconstruct-product-intent
 description: Convert an existing software project—codebase, databases, tests, documents, tickets, designs, media, runtime behavior, analytics, and stakeholder knowledge—into an authority-confirmed, build-ready Product Intent Package. Use for reverse-engineering, rebuild, migration, modernization, audit, or coding-agent handoff. Do not use for greenfield discovery or ordinary codebase documentation.
-compatibility: Portable instructions; bundled deterministic scripts require Python 3.9+ and filesystem access.
-metadata:
-  version: "1.0.0"
-  product-intent-package-version: "1.0.0"
 ---
 
 # Reconstruct Product Intent
 
 Produce a closed-world Product Intent Package for one declared target version of an existing product.
+
+## Requirements
+
+- Use Product Intent Package format 2.0.0 for package files.
+- Use Python 3.9 or newer for bundled scripts.
+- Install the script dependency before use: `python -m pip install -r requirements.txt`.
+- Read `references/product-intent-package-standard.md` before editing a package. Follow its human-readable package file format section for canonical file extensions and Mermaid blocks.
 
 ## Mandatory rules
 

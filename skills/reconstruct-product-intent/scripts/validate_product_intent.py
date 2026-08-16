@@ -10,52 +10,53 @@ from __future__ import annotations
 
 import argparse
 import hashlib
-import json
 import re
 import sys
 from pathlib import Path
-from typing import Any, Iterable
+from typing import Any, Iterable, Optional
+
+from yaml_io import dump_yaml, load_yaml as load_yaml_file, write_yaml
 
 REQUIRED_FILES = [
-    "manifest.json",
-    "governance/authorities.json",
-    "governance/scope.json",
-    "governance/coverage-matrix.json",
-    "governance/artifact-index.json",
-    "governance/decisions.json",
-    "governance/questions.json",
-    "governance/contradictions.json",
-    "governance/evidence.json",
-    "governance/glossary.json",
-    "governance/change-log.json",
-    "product/context.mmd",
-    "product/capabilities.json",
-    "product/domain-model.mmd",
-    "experience/user-flows.mmd",
-    "experience/screen-map.mmd",
-    "experience/screens.json",
-    "experience/design-tokens.json",
-    "experience/components.json",
-    "behavior/state-machines.mmd",
-    "behavior/rules.json",
+    "manifest.yaml",
+    "governance/authorities.yaml",
+    "governance/scope.yaml",
+    "governance/coverage-matrix.yaml",
+    "governance/artifact-index.yaml",
+    "governance/decisions.yaml",
+    "governance/questions.yaml",
+    "governance/contradictions.yaml",
+    "governance/evidence.yaml",
+    "governance/glossary.yaml",
+    "governance/change-log.yaml",
+    "product/context.md",
+    "product/capabilities.yaml",
+    "product/domain-model.md",
+    "experience/user-flows.md",
+    "experience/screen-map.md",
+    "experience/screens.yaml",
+    "experience/design-tokens.yaml",
+    "experience/components.yaml",
+    "behavior/state-machines.md",
+    "behavior/rules.yaml",
     "behavior/decision-tables.csv",
     "data/erd.dbml",
-    "data/schema.json",
-    "data/lifecycle.json",
-    "architecture/system-context.mmd",
-    "architecture/containers.mmd",
-    "architecture/components.mmd",
-    "architecture/deployment.mmd",
-    "architecture/decisions.json",
-    "contracts/openapi.json",
-    "contracts/events.json",
-    "contracts/integrations.json",
-    "sequences/sequences.mmd",
-    "quality/constraints.json",
-    "verification/acceptance.json",
-    "verification/traceability.json",
-    "handoff/implementation-discretion.json",
-    "handoff/readiness.json",
+    "data/schema.yaml",
+    "data/lifecycle.yaml",
+    "architecture/system-context.md",
+    "architecture/containers.md",
+    "architecture/components.md",
+    "architecture/deployment.md",
+    "architecture/decisions.yaml",
+    "contracts/openapi.yaml",
+    "contracts/events.yaml",
+    "contracts/integrations.yaml",
+    "sequences/sequences.md",
+    "quality/constraints.yaml",
+    "verification/acceptance.yaml",
+    "verification/traceability.yaml",
+    "handoff/implementation-discretion.yaml",
+    "handoff/readiness.yaml",
 ]
 
 AUTHORITY_DOMAINS = {
@@ -175,18 +176,48 @@ PLACEHOLDER_RE = re.compile(
     r"(?:\bTBD\b|\bTODO\b|\bUNSET\b|\bUNKNOWN\b|\?\?\?|<placeholder>|\[placeholder\])",
     re.IGNORECASE,
 )
+MERMAID_FENCE_RE = re.compile(r"(?ms)^```mermaid[ \t]*\n.*?^```[ \t]*(?:\n|$)")
 
 
 def rel(root: Path, path: Path) -> str:
     return path.relative_to(root).as_posix()
 
 
-def load_json(path: Path, errors: list[str]) -> Any:
+def load_document(path: Path, errors: list[str]) -> Any:
     try:
-        return json.loads(path.read_text(encoding="utf-8"))
+        return load_yaml_file(path)
     except Exception as exc:  # noqa: BLE001
-        errors.append(f"Invalid JSON: {path}: {exc}")
+        errors.append(f"Invalid YAML: {path}: {exc}")
         return {}
+
+
+def resolve_artifact_file(
+    root: Path,
+    artifact_id: str,
+    path_value: Any,
+    errors: list[str],
+) -> Optional[Path]:
+    if not isinstance(path_value, str) or not path_value:
+        errors.append(f"{artifact_id}: artifact path is required")
+        return None
+
+    file_part = path_value.split("#", 1)[0]
+    declared_path = Path(file_part)
+    if not file_part or declared_path.is_absolute() or ".." in declared_path.parts:
+        errors.append(f"{artifact_id}: artifact path must stay inside package: {path_value}")
+        return None
+
+    candidate = (root / declared_path).resolve()
+    try:
+        candidate.relative_to(root.resolve())
+    except ValueError:
+        errors.append(f"{artifact_id}: artifact path must stay inside package: {path_value}")
+        return None
+
+    if not candidate.is_file():
+        errors.append(f"{artifact_id}: artifact path does not exist: {path_value}")
+        return None
+    return candidate
 
 
 def iter_text_files(root: Path) -> Iterable[Path]:
@@ -194,7 +225,7 @@ def iter_text_files(root: Path) -> Iterable[Path]:
         relative = rel(root, path)
         if path.name.startswith("readiness-report.generated"):
             continue
-        if relative == "handoff/readiness.json":
+        if relative == "handoff/readiness.yaml":
             yield path
             continue
         try:
@@ -209,7 +240,7 @@ def content_hash(root: Path) -> str:
     digest = hashlib.sha256()
     for path in sorted(p for p in root.rglob("*") if p.is_file()):
         relative = rel(root, path)
-        if path.name.startswith("readiness-report.generated") or relative == "handoff/readiness.json":
+        if path.name.startswith("readiness-report.generated") or relative == "handoff/readiness.yaml":
             continue
         digest.update(relative.encode())
         digest.update(b"\0")
@@ -221,7 +252,7 @@ def content_hash(root: Path) -> str:
 def artifact_ids_in_files(root: Path) -> set[str]:
     found: set[str] = set()
     for path in iter_text_files(root):
-        if rel(root, path) == "governance/artifact-index.json":
+        if rel(root, path) == "governance/artifact-index.yaml":
             continue
         try:
             text = path.read_text(encoding="utf-8")
@@ -265,28 +296,67 @@ def validate(root: Path) -> tuple[list[str], list[str], dict[str, Any]]:
     if errors:
         return errors, warnings, {"content_hash": content_hash(root) if root.exists() else None}
 
-    parsed = {rel(root, p): load_json(p, errors) for p in root.rglob("*.json")}
+    for item in REQUIRED_FILES:
+        if not item.endswith(".md"):
+            continue
+        text = (root / item).read_text(encoding="utf-8")
+        if not MERMAID_FENCE_RE.search(text):
+            errors.append(f"{item}: requires a fenced mermaid block")
 
-    manifest = parsed.get("manifest.json", {}) or {}
+    parsed = {
+        item: load_document(root / item, errors)
+        for item in REQUIRED_FILES
+        if item.endswith(".yaml")
+    }
+
+    artifact_records = (parsed.get("governance/artifact-index.yaml", {}) or {}).get("artifacts") or []
+    loaded_yaml_paths = {item for item in parsed}
+    checked_markdown_paths = {item for item in REQUIRED_FILES if item.endswith(".md")}
+    for artifact in artifact_records:
+        artifact_id = artifact.get("id") or "<missing-id>"
+        path_value = artifact.get("path")
+        artifact_file = resolve_artifact_file(root, artifact_id, path_value, errors)
+        if artifact_file is None:
+            continue
+        file_part = path_value.split("#", 1)[0]
+        suffix = Path(file_part).suffix.lower()
+        if suffix in {".json", ".mmd"}:
+            errors.append(
+                f"{artifact_id}: canonical package path cannot use a legacy format: {file_part}"
+            )
+        elif suffix == ".yml":
+            errors.append(f"{artifact_id}: canonical YAML path must use .yaml: {file_part}")
+        elif suffix == ".yaml" and file_part not in loaded_yaml_paths:
+            parsed[file_part] = load_document(artifact_file, errors)
+            loaded_yaml_paths.add(file_part)
+        elif suffix == ".md" and file_part not in checked_markdown_paths:
+            text = artifact_file.read_text(encoding="utf-8")
+            if not MERMAID_FENCE_RE.search(text):
+                errors.append(f"{file_part}: requires a fenced mermaid block")
+            checked_markdown_paths.add(file_part)
+
+    manifest = parsed.get("manifest.yaml", {}) or {}
     build_ready = bool(manifest.get("build_ready"))
     manifest_status = manifest.get("status")
+    if manifest.get("schema_version") != "2.0.0":
+        errors.append("manifest.yaml: schema_version must be '2.0.0'")
     if manifest_status not in MANIFEST_STATUSES:
-        errors.append(f"manifest.json: invalid status {manifest_status!r}")
+        errors.append(f"manifest.yaml: invalid status {manifest_status!r}")
     if build_ready and manifest_status != "build_ready":
-        errors.append("manifest.json: build_ready=true requires status='build_ready'")
+        errors.append("manifest.yaml: build_ready=true requires status='build_ready'")
     if not build_ready and manifest_status == "build_ready":
-        errors.append("manifest.json: status='build_ready' requires build_ready=true")
+        errors.append("manifest.yaml: status='build_ready' requires build_ready=true")
     if manifest.get("package_id") in (None, "", "PIP-UNSET"):
-        errors.append("manifest.json: package_id is unset")
+        errors.append("manifest.yaml: package_id is unset")
     product = manifest.get("product") or {}
     if not product.get("name"):
-        errors.append("manifest.json: product.name is required")
+        errors.append("manifest.yaml: product.name is required")
     if not product.get("target_version"):
-        errors.append("manifest.json: product.target_version is required")
+        errors.append("manifest.yaml: product.target_version is required")
     if product.get("target_baseline") not in {"greenfield", "as_implemented", "intended_current", "target_next"}:
-        errors.append("manifest.json: invalid product.target_baseline")
+        errors.append("manifest.yaml: invalid product.target_baseline")
 
-    authorities_data = parsed.get("governance/authorities.json", {}) or {}
+    authorities_data = parsed.get("governance/authorities.yaml", {}) or {}
     authorities = authorities_data.get("authorities") or []
     duplicate_authorities = duplicate_ids(authorities)
     if duplicate_authorities:
@@ -312,7 +382,7 @@ def validate(root: Path) -> tuple[list[str], list[str], dict[str, Any]]:
         elif auth_id not in authority_ids:
             errors.append(f"Authority domain {domain} points to unknown authority: {auth_id}")
 
-    decisions = (parsed.get("governance/decisions.json", {}) or {}).get("decisions") or []
+    decisions = (parsed.get("governance/decisions.yaml", {}) or {}).get("decisions") or []
     duplicate_decisions = duplicate_ids(decisions)
     if duplicate_decisions:
         errors.append(f"Duplicate decision IDs: {', '.join(sorted(duplicate_decisions))}")
@@ -350,7 +420,7 @@ def validate(root: Path) -> tuple[list[str], list[str], dict[str, Any]]:
             errors.append(f"{did}: delegation requires explicit scope and constraints")
         require_confirmed_decision(delegation.get("decision_id"), confirmed_decision_ids, did, errors)
 
-    questions = (parsed.get("governance/questions.json", {}) or {}).get("questions") or []
+    questions = (parsed.get("governance/questions.yaml", {}) or {}).get("questions") or []
     duplicate_questions = duplicate_ids(questions)
     if duplicate_questions:
         errors.append(f"Duplicate question IDs: {', '.join(sorted(duplicate_questions))}")
@@ -368,7 +438,7 @@ def validate(root: Path) -> tuple[list[str], list[str], dict[str, Any]]:
     if build_ready and open_questions:
         errors.append(f"Build-ready package has unresolved questions: {', '.join(open_questions)}")
 
-    contradictions = (parsed.get("governance/contradictions.json", {}) or {}).get("contradictions") or []
+    contradictions = (parsed.get("governance/contradictions.yaml", {}) or {}).get("contradictions") or []
     duplicate_contradictions = duplicate_ids(contradictions)
     if duplicate_contradictions:
         errors.append(f"Duplicate contradiction IDs: {', '.join(sorted(duplicate_contradictions))}")
@@ -390,7 +460,7 @@ def validate(root: Path) -> tuple[list[str], list[str], dict[str, Any]]:
             f"Build-ready package has unresolved contradictions: {', '.join(open_contradictions)}"
         )
 
-    evidence = (parsed.get("governance/evidence.json", {}) or {}).get("evidence") or []
+    evidence = (parsed.get("governance/evidence.yaml", {}) or {}).get("evidence") or []
     duplicate_evidence = duplicate_ids(evidence)
     if duplicate_evidence:
         errors.append(f"Duplicate evidence IDs: {', '.join(sorted(duplicate_evidence))}")
@@ -402,7 +472,6 @@ def validate(root: Path) -> tuple[list[str], list[str], dict[str, Any]]:
         if item.get("confidence") not in {"high", "medium", "low"}:
             errors.append(f"{eid}: evidence confidence must be high, medium, or low")
 
-    artifact_records = (parsed.get("governance/artifact-index.json", {}) or {}).get("artifacts") or []
     duplicate_artifacts = duplicate_ids(artifact_records)
     if duplicate_artifacts:
         errors.append(f"Duplicate artifact IDs: {', '.join(sorted(duplicate_artifacts))}")
@@ -419,10 +488,6 @@ def validate(root: Path) -> tuple[list[str], list[str], dict[str, Any]]:
             errors.append(
                 f"{artifact_id}: kind must be {expected_kind!r}, got {artifact.get('kind')!r}"
             )
-        path_value = artifact.get("path") or ""
-        file_part = path_value.split("#", 1)[0]
-        if not file_part or not (root / file_part).exists():
-            errors.append(f"{artifact_id}: artifact path does not exist: {path_value}")
         if artifact.get("authority_id") not in authority_ids:
             errors.append(f"{artifact_id}: unknown or missing authority_id")
         if not isinstance(artifact.get("version"), int) or artifact.get("version", 0) < 1:
@@ -450,20 +515,20 @@ def validate(root: Path) -> tuple[list[str], list[str], dict[str, Any]]:
     )
     if orphan_registered:
         errors.append(
-            "Registered active artifacts are not referenced outside artifact-index.json: "
+            "Registered active artifacts are not referenced outside artifact-index.yaml: "
             + ", ".join(orphan_registered)
         )
 
-    coverage = parsed.get("governance/coverage-matrix.json", {}) or {}
+    coverage = parsed.get("governance/coverage-matrix.yaml", {}) or {}
     for key, expected in (("structures", STRUCTURES), ("lenses", COVERAGE_LENSES)):
         records = coverage.get(key) or []
         record_map = {r.get("name"): r for r in records if r.get("name")}
         missing = sorted(expected - set(record_map))
         extra = sorted(set(record_map) - expected)
         if missing:
-            errors.append(f"coverage-matrix.json: missing {key}: {', '.join(missing)}")
+            errors.append(f"coverage-matrix.yaml: missing {key}: {', '.join(missing)}")
         if extra:
-            warnings.append(f"coverage-matrix.json: unrecognized {key}: {', '.join(extra)}")
+            warnings.append(f"coverage-matrix.yaml: unrecognized {key}: {', '.join(extra)}")
         for name in sorted(expected & set(record_map)):
             record = record_map[name]
             status = record.get("status")
@@ -490,7 +555,7 @@ def validate(root: Path) -> tuple[list[str], list[str], dict[str, Any]]:
                     record.get("decision_id"), confirmed_decision_ids, f"Coverage {name}", errors
                 )
 
-    capabilities_data = parsed.get("product/capabilities.json", {}) or {}
+    capabilities_data = parsed.get("product/capabilities.yaml", {}) or {}
     actors = capabilities_data.get("actors") or []
     capabilities = capabilities_data.get("capabilities") or []
     duplicate_actors = duplicate_ids(actors)
@@ -508,17 +573,17 @@ def validate(root: Path) -> tuple[list[str], list[str], dict[str, Any]]:
         if capability_id not in artifacts:
             errors.append(f"Capability missing artifact-index record: {capability_id}")
 
-    scope = parsed.get("governance/scope.json", {}) or {}
+    scope = parsed.get("governance/scope.yaml", {}) or {}
     if build_ready:
         if not scope.get("target_outcome"):
-            errors.append("governance/scope.json: target_outcome is required at handoff")
+            errors.append("governance/scope.yaml: target_outcome is required at handoff")
         if not scope.get("release_boundary"):
-            errors.append("governance/scope.json: release_boundary is required at handoff")
+            errors.append("governance/scope.yaml: release_boundary is required at handoff")
         if not scope.get("success_measures"):
-            errors.append("governance/scope.json: success_measures are required at handoff")
+            errors.append("governance/scope.yaml: success_measures are required at handoff")
     in_scope_ids = scope.get("in_scope_capability_ids") or []
     if len(in_scope_ids) != len(set(in_scope_ids)):
-        errors.append("governance/scope.json: duplicate in-scope capability IDs")
+        errors.append("governance/scope.yaml: duplicate in-scope capability IDs")
     if build_ready and not in_scope_ids:
         errors.append("Build-ready package must contain at least one in-scope capability")
     for cap_id in in_scope_ids:
@@ -545,7 +610,7 @@ def validate(root: Path) -> tuple[list[str], list[str], dict[str, Any]]:
                 item.get("decision_id"), confirmed_decision_ids, "Out-of-scope entry", errors
             )
 
-    trace = parsed.get("verification/traceability.json", {}) or {}
+    trace = parsed.get("verification/traceability.yaml", {}) or {}
     edges = trace.get("edges") or []
     edge_keys: set[tuple[str, str, str]] = set()
     by_source: dict[str, list[dict[str, Any]]] = {}
@@ -623,7 +688,7 @@ def validate(root: Path) -> tuple[list[str], list[str], dict[str, Any]]:
                     errors,
                 )
 
-    acceptance = (parsed.get("verification/acceptance.json", {}) or {}).get("scenarios") or []
+    acceptance = (parsed.get("verification/acceptance.yaml", {}) or {}).get("scenarios") or []
     duplicate_acceptance = duplicate_ids(acceptance)
     if duplicate_acceptance:
         errors.append(f"Duplicate acceptance IDs: {', '.join(sorted(duplicate_acceptance))}")
@@ -649,9 +714,9 @@ def validate(root: Path) -> tuple[list[str], list[str], dict[str, Any]]:
                 if not any(e.get("relation") == "verified_by" for e in by_source.get(artifact_id, [])):
                     errors.append(f"{artifact_id}: confirmed {artifact.get('kind')} lacks verified_by coverage")
 
-    discretion = parsed.get("handoff/implementation-discretion.json", {}) or {}
+    discretion = parsed.get("handoff/implementation-discretion.yaml", {}) or {}
     if discretion.get("default_policy") != "forbidden_if_behavior_affecting_or_user_observable":
-        errors.append("handoff/implementation-discretion.json: invalid default_policy")
+        errors.append("handoff/implementation-discretion.yaml: invalid default_policy")
     grants = discretion.get("grants") or []
     duplicate_grants = duplicate_ids(grants)
     if duplicate_grants:
@@ -669,7 +734,7 @@ def validate(root: Path) -> tuple[list[str], list[str], dict[str, Any]]:
             if not grant.get(field):
                 errors.append(f"{gid}: implementation discretion requires {field}")
 
-    readiness = parsed.get("handoff/readiness.json", {}) or {}
+    readiness = parsed.get("handoff/readiness.yaml", {}) or {}
     gates = readiness.get("gates") or {}
     expected_gates = {
         "governance",
@@ -682,7 +747,7 @@ def validate(root: Path) -> tuple[list[str], list[str], dict[str, Any]]:
         "handoff_approval",
     }
     if set(gates) != expected_gates:
-        errors.append("handoff/readiness.json: gate set is incomplete or unexpected")
+        errors.append("handoff/readiness.yaml: gate set is incomplete or unexpected")
     current_hash = content_hash(root)
     if build_ready:
         for gate_name in sorted(expected_gates):
@@ -736,12 +801,9 @@ def validate(root: Path) -> tuple[list[str], list[str], dict[str, Any]]:
 
 
 def write_reports(root: Path, errors: list[str], warnings: list[str], report: dict[str, Any]) -> None:
-    json_path = root / "handoff" / "readiness-report.generated.json"
+    yaml_path = root / "handoff" / "readiness-report.generated.yaml"
     md_path = root / "handoff" / "readiness-report.generated.md"
-    json_path.write_text(
-        json.dumps({**report, "errors": errors, "warnings": warnings}, indent=2) + "\n",
-        encoding="utf-8",
-    )
+    write_yaml(yaml_path, {**report, "errors": errors, "warnings": warnings})
 
     lines = [
         "# Product Intent Readiness Report",
@@ -780,7 +842,7 @@ def main() -> int:
     if not args.no_report:
         write_reports(root, errors, warnings, report)
 
-    print(json.dumps({**report, "errors": errors, "warnings": warnings}, indent=2))
+    print(dump_yaml({**report, "errors": errors, "warnings": warnings}), end="")
     return 1 if errors else 0
 
 

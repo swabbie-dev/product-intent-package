@@ -108,7 +108,7 @@ Pass when the accountable release/product authority confirms:
 - no additional clarification should be needed for implementation;
 - any known risk is explicitly accepted and linked to a decision.
 
-`handoff/readiness.json` records each gate, evidence IDs, validator result, approval decision, and final package hash/version.
+`handoff/readiness.yaml` records each gate, evidence IDs, validator result, approval decision, and final package hash/version.
 
 ## Handoff output
 

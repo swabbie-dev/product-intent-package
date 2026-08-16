@@ -1,0 +1,97 @@
+edges:
+  - from: ACTOR-001
+    relation: performed_by
+    to: CAP-001
+  - from: CAP-001
+    relation: uses_domain
+    to: DOM-001
+  - from: CAP-001
+    relation: experienced_through
+    to: FLOW-001
+  - from: CAP-001
+    relation: experienced_through
+    to: SCREEN-001
+  - from: CAP-001
+    relation: experienced_through
+    to: COMP-001
+  - from: CAP-001
+    relation: experienced_through
+    to: MOCK-001
+  - from: SCREEN-001
+    relation: depends_on
+    to: TOKEN-001
+  - from: COMP-001
+    relation: depends_on
+    to: TOKEN-001
+  - from: MOCK-001
+    relation: depends_on
+    to: SCREEN-001
+  - from: CAP-001
+    relation: governed_by
+    to: RULE-001
+  - from: CAP-001
+    relation: governed_by
+    to: SM-001
+  - from: CAP-001
+    relation: governed_by
+    to: DT-001
+  - from: CAP-001
+    relation: persists_as
+    to: DATA-001
+  - from: CAP-001
+    relation: implemented_by
+    to: ARCH-002
+  - from: DATA-001
+    relation: implemented_by
+    to: ARCH-003
+  - from: ARCH-002
+    relation: depends_on
+    to: ARCH-004
+  - from: ARCH-001
+    relation: depends_on
+    to: ARCH-004
+  - from: ARCH-003
+    relation: depends_on
+    to: ARCH-004
+  - from: CAP-001
+    relation: exposed_by
+    to: API-001
+  - from: CAP-001
+    relation: executed_by
+    to: SEQ-001
+  - from: CAP-001
+    relation: constrained_by
+    to: QC-001
+  - from: CAP-001
+    relation: verified_by
+    to: ACC-001
+  - from: CAP-001
+    relation: verified_by
+    to: ACC-002
+  - from: CAP-001
+    relation: verified_by
+    to: ACC-003
+  - from: RULE-001
+    relation: verified_by
+    to: ACC-001
+  - from: RULE-001
+    relation: verified_by
+    to: ACC-002
+  - from: SM-001
+    relation: verified_by
+    to: ACC-001
+  - from: SM-001
+    relation: verified_by
+    to: ACC-002
+  - from: DT-001
+    relation: verified_by
+    to: ACC-001
+  - from: DT-001
+    relation: verified_by
+    to: ACC-002
+  - from: QC-001
+    relation: verified_by
+    to: ACC-003
+  - from: ARCH-002
+    relation: depends_on
+    to: DIS-001

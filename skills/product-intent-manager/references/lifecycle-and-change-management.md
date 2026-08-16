@@ -78,7 +78,7 @@ A stale artifact cannot be part of a build-ready graph.
 - Increment package version for every approved change set.
 - Record target product version separately from package version.
 - Preserve superseded decisions and artifacts in history.
-- Record changed IDs, reason, authority, decision, and affected IDs in `governance/change-log.json`.
+- Record changed IDs, reason, authority, decision, and affected IDs in `governance/change-log.yaml`.
 - Recompute readiness and package hash.
 
 ## Drift control

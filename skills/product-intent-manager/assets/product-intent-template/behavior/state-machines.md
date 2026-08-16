@@ -1,0 +1,4 @@
+```mermaid
+stateDiagram-v2
+  %% Define SM-* state machines. Include triggers, guards, side effects, failures, and terminal states.
+```

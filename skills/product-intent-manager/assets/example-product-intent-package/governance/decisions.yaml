@@ -1,0 +1,96 @@
+decisions:
+  - id: DEC-001
+    status: confirmed
+    domain: capabilities_and_behavior
+    statement: The Counter 1.0 product intent represented by the listed artifacts
+      is approved.
+    authority_id: AUTH-OWNER
+    confirmed_at: '2026-08-15T12:00:00Z'
+    confirmation_ref: fixture:core-approval
+    source_refs:
+      - EVID-001
+    affects:
+      - ACTOR-001
+      - CAP-001
+      - DOM-001
+      - FLOW-001
+      - SCREEN-001
+      - MOCK-001
+      - TOKEN-001
+      - COMP-001
+      - RULE-001
+      - SM-001
+      - DT-001
+      - DATA-001
+      - ARCH-001
+      - ARCH-002
+      - ARCH-003
+      - ARCH-004
+      - API-001
+      - SEQ-001
+      - QC-001
+      - ACC-001
+      - ACC-002
+      - ACC-003
+    supersedes: []
+  - id: DEC-002
+    status: confirmed
+    domain: scope_and_priority
+    statement: Billing, notifications, search, file transfer, analytics experiments,
+      and localization are not applicable to Counter 1.0.
+    authority_id: AUTH-OWNER
+    confirmed_at: '2026-08-15T12:01:00Z'
+    confirmation_ref: fixture:lens-exclusions
+    source_refs:
+      - EVID-001
+    affects: []
+    supersedes: []
+  - id: DEC-003
+    status: confirmed
+    domain: release_and_acceptance
+    statement: Counter Product Intent Package 1.0.0 is approved for clarification-free
+      implementation.
+    authority_id: AUTH-OWNER
+    confirmed_at: '2026-08-15T12:02:00Z'
+    confirmation_ref: fixture:handoff-approval
+    source_refs:
+      - EVID-001
+    affects:
+      - ACTOR-001
+      - CAP-001
+      - DOM-001
+      - FLOW-001
+      - SCREEN-001
+      - MOCK-001
+      - TOKEN-001
+      - COMP-001
+      - RULE-001
+      - SM-001
+      - DT-001
+      - DATA-001
+      - ARCH-001
+      - ARCH-002
+      - ARCH-003
+      - ARCH-004
+      - API-001
+      - SEQ-001
+      - QC-001
+      - ACC-001
+      - ACC-002
+      - ACC-003
+      - DIS-001
+    supersedes: []
+  - id: DEC-004
+    status: confirmed
+    domain: technical_architecture
+    statement: The coding orchestrator may choose the internal HTTP client library
+      within DIS-001 constraints.
+    authority_id: AUTH-OWNER
+    confirmed_at: '2026-08-15T12:03:00Z'
+    confirmation_ref: fixture:delegated-choice
+    source_refs:
+      - EVID-001
+    affects:
+      - DIS-001
+      - ARCH-002
+    supersedes: []

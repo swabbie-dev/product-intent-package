@@ -1,0 +1,11 @@
+constraints:
+  - id: QC-001
+    dimension: latency_and_reliability
+    scope_ids:
+      - CAP-001
+      - API-001
+    measure: successful increment completion
+    target: p95 <= 500 ms and no lost accepted increments
+    load: 10 requests per second
+    verification_method: load_and_concurrency_test
+    owner_authority_id: AUTH-OWNER
