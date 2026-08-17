@@ -87,8 +87,13 @@ cases:
       where each state transition occurs.
     should_activate: true
     must:
-      - create a physical runtime-stack map with named services and responsibilities
-      - keep system context limited to actors, the product boundary, and external systems
+      - create `architecture/stack-context.md` as the sole context diagram with named physical services and responsibilities
+      - keep product outcome and scope in the scope/capability records rather than a second context diagram
+      - keep actors, the product boundary, and external systems in stack context
+      - merge screen topology and user flows in `experience/user-flows.md`
+      - merge conceptual domain relationships and the ERD in `data/data-model.md` while keeping DOM and DATA IDs distinct
+      - include deployment in stack context when it clarifies dependencies and product repercussions
+      - use a separate deployment view only when topology complexity requires it, with the same nodes and affected connections or state
       - keep the canonical state machine
       - identify initiator, durable authority, executor, observers, and recovery for cross-service transitions
       - assign stable local IDs to allocated transitions
@@ -96,5 +101,19 @@ cases:
       - place security controls on services, connections, or trust zones
       - name a provider only when evidence, confirmation, or bounded discretion supports it
       - preserve stable IDs and update moved paths and affected governance records
-      - remove canonical architecture components, containers, and deployment files
-      - point every moved architecture artifact path to architecture/runtime-stack.md
+      - retire separate component, container, system-context, and screen-map diagrams after their unique content moves to the consolidated views
+      - point the canonical context path to `architecture/stack-context.md`
+
+  - id: consolidated-diagram-views
+    prompt: Consolidate this Product Intent Package's overlapping diagrams into the six useful views without losing product or implementation detail.
+    should_activate: true
+    must:
+      - keep lifecycle journeys as semantic YAML records with their Markdown table or rationale source
+      - create stack context as the sole context diagram
+      - merge actors, product boundary, external systems, component/container context, and normal deployment placement into stack context
+      - merge screen topology and user flows while retaining screen records and design-board views
+      - merge conceptual domain relationships and the ERD while keeping DOM and DATA IDs distinct
+      - keep state machines and sequences as separate views
+      - add a separate deployment view only when deployment topology is complex enough to make stack context hard to read
+      - reuse the same ARCH nodes and show affected connections or state in a separate deployment view
+      - preserve stable IDs and update all affected paths and traceability

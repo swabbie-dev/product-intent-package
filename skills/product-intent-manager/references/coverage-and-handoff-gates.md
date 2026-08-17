@@ -55,8 +55,8 @@ Pass when:
   remains.
 
 Record this result as the journey_closure readiness gate. A journey does not
-replace detailed flows, screens, rules, state machines, contracts, sequences,
-quality constraints, or acceptance scenarios.
+replace detailed user flows, screen records, rules, state machines, contracts,
+sequences, quality constraints, or acceptance scenarios.
 
 ## Gate 4 — Capability traceability
 
@@ -94,10 +94,12 @@ Pass when:
 
 Pass when:
 
-- every physical runtime or service has one clear responsibility boundary,
+- every stack-context node has one clear responsibility boundary,
   owned state, confirmed provider or runtime, and labelled connections;
 - every cross-boundary exchange has a contract;
-- deployment environments, configuration, secrets, migrations, rollback, backups, and observability are defined;
+- deployment environments, configuration, secrets, migrations, rollback,
+  backups, and observability are defined in stack context or a separate
+  deployment view when topology is complex;
 - security and privacy controls map to data and trust boundaries;
 - measurable quality constraints are feasible or explicitly accepted as risks;
 - implementation choices outside the package are covered by bounded discretion grants.
@@ -119,8 +121,9 @@ Pass when:
 - all stable IDs are unique and resolvable;
 - all traceability edges resolve;
 - no active artifact points to a superseded or stale artifact;
-- the runtime stack, state-transition allocation, sequences, data and boundary
-  records, registries, and acceptance scenarios agree;
+- the stack context, any separate deployment view, state-transition allocation,
+  sequences, data and boundary records, registries, and acceptance scenarios
+  agree;
 - no unresolved contradiction remains;
 - every canonical structure and coverage lens is marked covered, confirmed not applicable, or confirmed out of scope;
 - no `TBD`, `TODO`, `UNSET`, `UNKNOWN`, placeholder, or implicit default remains in active intent;

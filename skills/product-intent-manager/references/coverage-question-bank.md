@@ -44,12 +44,14 @@ Use this as a gap detector, not a questionnaire to dump on the user. Ask only qu
 - Which relationships and cardinalities are invariant?
 - Which states are conceptually valid or impossible?
 - What tenancy, sharing, delegation, or hierarchy exists?
+- Which `DATA-*` records persist or derive each `DOM-*` concept?
 
 ## Flows
 
 - What starts the flow, and what must already be true?
 - What is the shortest successful path?
 - What alternatives, cancellations, undo, and resume paths exist?
+- Which `SCREEN-*` surfaces expose each step and branch?
 - What occurs on invalid input, missing data, permission loss, timeout, partial failure, and external failure?
 - What is the final observable outcome and side effect?
 
@@ -92,6 +94,9 @@ Use this as a gap detector, not a questionnaire to dump on the user. Ask only qu
 - What is synchronous versus asynchronous?
 - What queues, jobs, cache, search, file/object storage, and external services exist?
 - What environments, configuration, secrets, deploy, rollback, and disaster-recovery behavior applies?
+- Can deployment placement stay clear in stack context, or do region, network,
+  failover, or rollout details require a separate deployment view? If separate,
+  which stack connections or state does it affect?
 - Which choices are mandated versus delegated implementation discretion?
 
 ## Contracts

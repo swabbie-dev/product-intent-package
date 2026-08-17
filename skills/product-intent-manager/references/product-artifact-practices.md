@@ -8,7 +8,8 @@ it, and how to keep it useful to people who review the product directly.
 - [Artifact order](#artifact-order)
 - [Intent status](#intent-status)
 - [Lifecycle journey maps](#lifecycle-journey-maps)
-- [Runtime architecture and state placement](#runtime-architecture-and-state-placement)
+- [Consolidated diagram views](#consolidated-diagram-views)
+- [Stack context and deployment](#stack-context-and-deployment)
 - [Sequence diagrams](#sequence-diagrams)
 - [Design-board organization](#design-board-organization)
 - [Changes and handoff](#changes-and-handoff)
@@ -21,15 +22,15 @@ decision.
 
 | Artifact | Create when | Primary form |
 | --- | --- | --- |
-| Product map | The product boundary, actors, outcomes, capabilities, external systems, or exclusions are not clear. | Context diagram plus YAML registries |
+| Product map | The product boundary, actors, outcomes, capabilities, external systems, or exclusions are not clear. | Scope and capability registries; the context diagram is in stack context |
 | Lifecycle journey | An actor, entity, task, operation, service, integration, or relationship has a meaningful lifecycle. | Journey registry in YAML plus Markdown source |
-| Domain model | Terms, ownership, relationships, or lifecycle rules need a shared meaning. | Concept diagram and glossary |
-| User flow | An actor must reach an outcome through paths, branches, cancellation, or recovery. | Flow diagram keyed by a stable ID |
-| Interface model | A user-visible surface has screens, states, inputs, outputs, or responsive behavior. | Screen map, state records, and board views |
+| Domain model | Terms, ownership, relationships, or lifecycle rules need a shared meaning. | Concept view in `data/data-model.md` and glossary |
+| User flow | An actor must reach an outcome through paths, screens, branches, cancellation, or recovery. | Combined flow and screen-topology diagram in `experience/user-flows.md` |
+| Interface model | A user-visible surface has screens, states, inputs, outputs, or responsive behavior. | Screen records, mockups, and board views linked from user flows |
 | Design system | Repeated visual or interaction patterns need shared rules. | YAML tokens and component records |
 | Behavior model | States, rules, permissions, timing, or side effects change the outcome. | State diagrams, rules, decision tables, and cross-service transition allocation |
-| Data model | Product behavior depends on stored, derived, retained, exported, or deleted data. | ERD, schema, and lifecycle records |
-| Architecture model | Responsibilities, trust boundaries, deployment, or system ownership affect the product. | System context, physical runtime stack, and architecture decisions |
+| Data model | Product behavior depends on stored, derived, retained, exported, or deleted data. | Combined domain and ERD view in `data/data-model.md`, schema, and lifecycle records |
+| Stack context and deployment | Responsibilities, trust boundaries, deployment, or system ownership affect the product. | `architecture/stack-context.md`; separate `architecture/deployment.md` only for complex topology |
 | Contract model | An API, event, webhook, payment boundary, or external integration affects an outcome. | YAML contract records |
 | Sequence diagram | The product behavior depends on ordered interactions or time between actors and systems. | `SEQ-*` artifact metadata plus Markdown Mermaid source |
 | Quality model | Performance, reliability, security, privacy, accessibility, compatibility, or operations affect the outcome. | Measurable YAML constraints |
@@ -98,20 +99,56 @@ source in `experience/journeys/JOURNEY-*.md`. The source may contain a fenced
 only a Mermaid diagram is still a Markdown `.md` source. Use stable IDs rather
 than copying detailed behavior into the map.
 
-## Runtime architecture and state placement
+## Consolidated diagram views
 
-Keep the system-context diagram at the product boundary: actors, the product,
-and external systems. Put deployment services, managed platforms, data stores,
-workers, and their connections in the runtime-stack map.
+Keep the five default source files below. Populate each diagram when it applies,
+or record a confirmed not-applicable result in coverage. Add the deployment
+source only when deployment needs a separate view.
 
-Create a physical runtime-stack map when the product uses more than one client,
-deployed service, managed platform, worker, data store, queue, file store, or
-external provider. Use one node for each physical runtime or service boundary.
-Name the actual provider, platform, or runtime when it is confirmed. If it is
-not confirmed, show its status and route the choice to an authority or bounded
+| View | Purpose | Canonical source |
+| --- | --- | --- |
+| Stack context | Actors, product boundary, external systems, physical services, responsibilities, connections, and normally deployment placement | `architecture/stack-context.md` |
+| User flows | Actor paths, screen topology, branches, failure, and recovery | `experience/user-flows.md` |
+| State machines | Valid states and transitions, including cross-service placement | `behavior/state-machines.md` |
+| Data model / ERD | Conceptual domain relationships and persisted data relationships | `data/data-model.md` |
+| Sequences | Ordered messages for one consequential outcome | `sequences/sequences.md` |
+| Deployment | Complex environment, region, network, failover, or rollout topology | `architecture/deployment.md` only when needed |
+
+Use `governance/scope.yaml` and `product/capabilities.yaml` for product
+outcome, release boundary, exclusions, and capability records. Do not create a
+second product context diagram. Stack context is the sole context diagram.
+
+Merge screen topology into the user-flow view. Keep `SCREEN-*` details in
+`experience/screens.yaml`, mockups, and the design board. Do not create a
+separate canonical screen-map diagram.
+
+Merge the conceptual domain view and ERD in `data/data-model.md`. Keep
+`DOM-*` IDs conceptually distinct from persisted or derived `DATA-*` IDs. Keep
+schema, lifecycle, and glossary records as supporting files.
+
+## Stack context and deployment
+
+Use `architecture/stack-context.md` as the one physical architecture diagram.
+It combines the product context with physical clients, deployed services,
+managed platforms, workers, data stores, queues, files, trust zones, and their
+connections. It normally includes deployment placement when that placement is
+simple enough to understand in the same view.
+
+Create a separate `architecture/deployment.md` only when environment, region,
+network, failover, or rollout complexity would make the combined view hard to
+understand. Keep deployment in stack context when that makes deployment
+dependencies and product repercussions easier to understand. The separate view
+must reuse the same physical stack-node IDs, link to the stack context, show
+affected connections or state, and avoid repeating service responsibilities.
+
+Create a stack-context map when the product uses more than one client, deployed
+service, managed platform, worker, data store, queue, file store, or external
+provider. Use one node for each physical runtime or service boundary. Name the
+actual provider, platform, or runtime when it is confirmed. If it is not
+confirmed, show its status and route the choice to an authority or bounded
 implementation-discretion record.
 
-For each runtime-stack node, show:
+For each stack-context node, show:
 
 - what is deployed there;
 - the responsibilities it owns;
@@ -126,13 +163,13 @@ connection, or trust zone where they apply. Do not draw a security policy as a
 peer service unless it is a separately deployed service.
 
 Do not mix logical API, event, data, and product-capability artifacts into the
-runtime stack as if they were physical services. Link those artifacts to the
+stack context as if they were physical services. Link those artifacts to the
 physical service that exposes, stores, or executes them. Model internal modules
 only when their boundary changes ownership, deployment, trust, failure,
 scaling, or an observable outcome.
 
 Preserve an existing `ARCH-*` ID when the same responsibility moves to the
-runtime-stack file. If one broad architecture item hides several independent
+stack-context file. If one broad architecture item hides several independent
 physical boundaries, keep the ID for the responsibility that still matches or
 supersede it through a decision. Create new `ARCH-*` IDs only for the additional
 physical boundaries. Update paths, versions, decisions, staleness, and
@@ -208,10 +245,11 @@ this order:
    each view.
 3. **Actors and journeys:** actor goals, actor coverage, journey phases,
    ownership, handoffs, exceptions, and journey status.
-4. **Capabilities and flows:** capability boundaries, entry points, happy paths,
-   alternate paths, permissions, cancellation, failure, and recovery.
-5. **Screens and states:** navigation, screen IDs, state transitions, inputs,
-   outputs, and links to flows and behavior records.
+4. **Capabilities and user flows:** capability boundaries, entry points, screen
+   topology, happy paths, alternate paths, permissions, cancellation, failure,
+   and recovery.
+5. **Screen records and states:** screen IDs, state transitions, inputs,
+   outputs, mockups, and links to the combined user-flow diagram.
 6. **Components and tokens:** shared components, variants, interaction states,
    content patterns, responsive rules, and design-token references.
 7. **Annotations and decisions:** evidence notes, assumptions, proposals,
@@ -272,8 +310,10 @@ Before handoff, confirm:
 - every journey has actor actions, product responses, terminal outcomes,
   exception and recovery coverage, and detailed links;
 - every sequence situation listed above has a focused sequence when applicable;
-- every physical runtime node states its responsibilities and every
-  cross-service state transition has a complete transition allocation;
+- every stack-context node states its responsibilities and every cross-service
+  state transition has a complete transition allocation;
+- a separate deployment view exists only when deployment complexity requires it,
+  and it reuses stack-context node IDs without repeating responsibilities;
 - every screen and component has the states and responsive behavior that affect
   the outcome;
 - every item has the correct status, owner, source, and authority decision; and

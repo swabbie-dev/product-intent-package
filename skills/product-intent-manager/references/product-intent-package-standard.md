@@ -16,11 +16,14 @@ Anything else is an unresolved gap.
 
 ## Format version
 
-This standard defines Product Intent Package format `4.0.0`.
-`manifest.yaml` must set `schema_version: 4.0.0`. This breaking version replaces
-parallel container, component, and deployment diagrams with one physical
-runtime-stack map and adds runtime allocation for cross-service state
-transitions.
+This standard defines Product Intent Package format `5.0.0`.
+`manifest.yaml` must set `schema_version: 5.0.0`. This breaking version
+consolidates the context, component, container, and normal deployment views in
+`architecture/stack-context.md`; combines screen maps and user flows; and
+combines conceptual domain relationships and ERDs in `data/data-model.md`.
+Projects with complex environment, region, network, failover, or rollout
+topology may add `architecture/deployment.md` as a linked view of the same
+stack nodes.
 
 ## Non-negotiable invariants
 
@@ -62,15 +65,15 @@ Use these rules for every Product Intent Package:
 | Intent dimension | Canonical structures | Default files |
 |---|---|---|
 | Governance | authority, scope, structure/lens coverage, decisions, questions, contradictions, evidence, artifact registry, change history | `governance/*` |
-| Product map | actors, system boundary, capabilities, external systems, exclusions | `product/context.md`, `product/capabilities.yaml`, `governance/scope.yaml` |
+| Product map | outcome, release boundary, actors, product boundary, capabilities, external systems, exclusions | `product/capabilities.yaml`, `governance/scope.yaml`; the context diagram is in `architecture/stack-context.md` |
 | Lifecycle journey | actor lifecycle, phases, actions, product responses, exceptions, recurrence, and dependent detail | `experience/journeys/index.yaml`, `experience/journeys/JOURNEY-*.md` |
-| Domain model | conceptual entities, relationships, ownership, invariants, vocabulary | `product/domain-model.md`, `governance/glossary.yaml` |
-| User-flow model | actor goals, entry points, paths, alternatives, recovery | `experience/user-flows.md` |
-| Interface model | surface topology, screens, states, responsive behavior, copy references, mockups | `experience/screen-map.md`, `experience/screens.yaml`, `experience/mockups/` |
+| Domain model | conceptual entities, relationships, ownership, invariants, vocabulary | `data/data-model.md`, `governance/glossary.yaml` |
+| User-flow model | actor goals, screen topology, entry points, paths, alternatives, recovery | `experience/user-flows.md`, `experience/screens.yaml`, `experience/mockups/` |
+| Interface model | screen states, inputs, outputs, responsive behavior, copy references, mockups | `experience/screens.yaml`, `experience/mockups/`; the screen map is part of `experience/user-flows.md` |
 | Design system | tokens, components, variants, interaction and motion patterns | `experience/design-tokens.yaml`, `experience/components.yaml` |
 | Behavior model | state machines, rules, guards, priorities, decision tables, cross-service transition allocation | `behavior/state-machines.md`, `behavior/rules.yaml`, `behavior/decision-tables.csv` |
-| Data model | physical entities, fields, constraints, lifecycle, retention, migration | `data/erd.dbml`, `data/schema.yaml`, `data/lifecycle.yaml` |
-| System architecture | context, physical runtime stack, deployment and trust boundaries | `architecture/system-context.md`, `architecture/runtime-stack.md`, `architecture/decisions.yaml` |
+| Data model | conceptual and physical entities, fields, relationships, constraints, lifecycle, retention, migration | `data/data-model.md`, `data/schema.yaml`, `data/lifecycle.yaml` |
+| Stack context and deployment | actors, product boundary, external systems, physical runtime, service responsibilities, deployment placement, and trust boundaries | `architecture/stack-context.md`, `architecture/decisions.yaml`; optional `architecture/deployment.md` for complex topology |
 | Interface contracts | APIs, events, webhooks, third-party boundaries, errors and versioning | `contracts/openapi.yaml`, `contracts/events.yaml`, `contracts/integrations.yaml` |
 | Runtime interactions | ordering, transactions, async work, failures, compensation, retries | `sequences/sequences.md` |
 | Quality constraints | measurable performance, reliability, security, privacy, accessibility, compatibility, operations | `quality/constraints.yaml` |
@@ -78,6 +81,42 @@ Use these rules for every Product Intent Package:
 | Handoff contract | allowed implementation discretion and readiness result | `handoff/implementation-discretion.yaml`, `handoff/readiness.yaml` |
 
 Large products may split any file by stable ID. The semantics and registry remain unchanged.
+
+## Consolidated diagram views
+
+Keep the five default source files listed below. Populate each diagram when it
+applies, or record a confirmed not-applicable result in coverage. Add the sixth
+deployment source only when deployment needs a separate view. Each view answers
+a different question and links to the supporting YAML records.
+
+| View | Question it answers | Canonical source |
+|---|---|---|
+| Stack context | Who uses the product, what physical services exist, what each owns, and how the system connects | `architecture/stack-context.md` |
+| User flows | How an actor reaches an outcome through screens, branches, failure, and recovery | `experience/user-flows.md` |
+| State machines | Which states and transitions are valid, and where each cross-service transition is placed | `behavior/state-machines.md` |
+| Data model / ERD | Which domain concepts and persisted records exist, and how they relate | `data/data-model.md` |
+| Sequences | Which ordered messages produce one consequential outcome | `sequences/sequences.md` |
+| Deployment | Which environment, region, network, failover, or rollout dependencies need a separate view | `architecture/deployment.md` when needed |
+
+`architecture/stack-context.md` is the sole context diagram. It normally also
+shows deployment placement when that makes deployment dependencies and product
+repercussions easier to understand. Create `architecture/deployment.md` only
+when environment, region, network, failover, or rollout complexity would make
+the combined view difficult to understand. A separate deployment view must use
+the same physical node IDs, link back to stack context, and show affected
+connections or state; do not repeat service responsibilities or create a
+second architecture model.
+
+`experience/user-flows.md` includes screen topology. Keep screen states,
+inputs, outputs, and mockup links in `experience/screens.yaml` and supporting
+design records. `data/data-model.md` combines the conceptual domain view and
+the ERD, but `DOM-*` IDs remain conceptual and `DATA-*` IDs remain persisted or
+derived data records. Supporting schema, lifecycle, and glossary records remain
+separate.
+
+Lifecycle journeys remain required semantic records. Their Markdown sources may
+contain a lifecycle table, rationale, or an optional Mermaid view, but a journey
+is not a seventh consolidated system diagram.
 
 ## Stable ID vocabulary
 
@@ -161,7 +200,9 @@ Must define:
 - external systems and major inputs/outputs;
 - explicit exclusions.
 
-Primary form: context diagram + capability registry + scope registry.
+Primary form: capability and scope registries. Store the outcome, release
+boundary, exclusions, and measures there. Do not create a second product
+context diagram; `architecture/stack-context.md` is the sole context diagram.
 
 ### 2. Lifecycle journey model
 
@@ -193,7 +234,9 @@ Must define conceptual entities independently of storage:
 - lifecycle concepts;
 - tenancy and boundary rules where applicable.
 
-Primary form: concept/relationship diagram + glossary.
+Primary form: the conceptual section of `data/data-model.md` plus the glossary.
+Keep conceptual `DOM-*` records distinct from persisted or derived `DATA-*`
+records even when one diagram shows both.
 
 ### 4. User-flow model
 
@@ -207,7 +250,8 @@ For every actor goal, define:
 - permission and account-state branches;
 - terminal outcomes.
 
-Primary form: flow diagrams keyed by `FLOW-*` IDs.
+Primary form: `experience/user-flows.md`, with flow and screen-topology views
+keyed by `FLOW-*` and `SCREEN-*` IDs.
 
 ### 5. Interface model
 
@@ -221,7 +265,9 @@ For every user-visible surface, define:
 - content/copy source;
 - mockup or prototype reference.
 
-Primary form: screen map + screen-state registry + mockups.
+Primary form: `experience/screens.yaml` plus the screen sections of
+`experience/user-flows.md` and mockups. Do not create a separate canonical
+screen-map diagram.
 
 ### 6. Design system
 
@@ -273,13 +319,16 @@ Define:
 - migration, bootstrap, and seed requirements;
 - privacy classification.
 
-Primary form: ERD/DBML + schema registry + lifecycle matrix.
+Primary form: the ERD and conceptual data view in `data/data-model.md`, plus
+the schema registry and lifecycle matrix. Keep DBML only when an external tool
+requires it; a skill-authored diagram belongs in a fenced Mermaid Markdown
+file.
 
-### 9. System architecture
+### 9. Stack context and deployment
 
 Define:
 
-- system context with actors, the product boundary, and external systems;
+- actors, the product boundary, and external systems;
 - physical clients, deployed services, managed platforms, workers, and data
   stores;
 - the confirmed provider or runtime for each physical node;
@@ -289,7 +338,12 @@ Define:
 - trust boundaries and security zones;
 - storage, queues, cache, search, jobs, and files;
 - deployment topology, environments, and configuration boundaries in the
-  runtime-stack map;
+  stack-context map when that makes deployment dependencies and product
+  repercussions easier to understand;
+- a separate deployment diagram only when environment, region, network,
+  failover, or rollout complexity would make the combined view hard to
+  understand; the separate view must reuse stack-node IDs, show affected
+  connections or state, and must not repeat their responsibilities;
 - build-vs-buy decisions that affect behavior or constraints.
 
 Label each physical connection with its direction, protocol or transport, and
@@ -298,8 +352,9 @@ physical stack and link them to the service that exposes, executes, or stores
 them. Model internal modules only when their boundary affects ownership,
 deployment, trust, failure, scaling, or an observable outcome.
 
-Primary form: system-context and physical runtime-stack diagrams plus
-architecture decisions.
+Primary form: `architecture/stack-context.md` plus architecture decisions and,
+when needed, `architecture/deployment.md`. Stack context is the sole context
+diagram and normally includes deployment placement.
 
 ### 10. Interface contracts
 

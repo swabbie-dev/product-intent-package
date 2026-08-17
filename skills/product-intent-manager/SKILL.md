@@ -39,12 +39,16 @@ separate from implementation detail.
    exceptions, recovery, and links to detailed artifacts. Read
    [Lifecycle Journey Maps](references/lifecycle-journey-maps.md) for the
    journey rules.
-4. Build the product map, domain model, flows, interface and design system,
-   behavior, data, physical runtime stack, boundary definitions, sequences,
-   quality constraints, and verification. For each state machine that crosses
-   physical services, record who initiates, commits, executes, observes, and
-   recovers each transition. Use [Product Artifact Practices](references/product-artifact-practices.md)
-   for runtime-stack, transition-placement, sequence, and design-board rules.
+4. Build the product map, consolidated stack context, lifecycle journeys, user
+   flows, behavior, data model, contracts, sequences, quality constraints, and
+   verification. For each state machine that crosses physical services, record
+   who initiates, commits, executes, observes, and recovers each transition.
+   The consolidated diagram views are stack context, user flows, state
+   machines, data model/ERD, sequences, and deployment only when deployment
+   topology is complex. Lifecycle journeys remain semantic product records.
+   Use [Product Artifact Practices](references/product-artifact-practices.md)
+   for diagram selection, transition placement, sequence, and design-board
+   rules.
 5. Ask the accountable authority the smallest question that closes each
    build-affecting gap. Record the answer, source, affected stable IDs, and any
    explicit exclusion or bounded discretion. Do not hide uncertainty in prose.
@@ -66,10 +70,25 @@ Track the Product Intent Package in Git so its history remains reviewable.
 - Use stable IDs and links. Keep one authoritative value for each fact; do not
   copy detailed rules between a journey, flow, screen, state, contract, or
   sequence.
-- Use a physical runtime-stack map, not a mixed component diagram. Name each
-  confirmed deployment service or runtime, state its responsibilities, and
-  label its connections. Show security controls on the service, connection, or
-  trust zone where they apply.
+- Use one `architecture/stack-context.md` diagram for actors, the product
+  boundary, external systems, physical services, responsibilities, connections,
+  and normally deployment placement. Do not create separate component,
+  container, or context diagrams. Use `architecture/deployment.md` only when
+  environment, region, network, failover, or rollout complexity would make the
+  combined view hard to understand. Keep deployment in stack context when that
+  makes its dependencies and product repercussions easier to understand. The
+  separate deployment view must reuse the same stack-node IDs and must show
+  affected connections or state without repeating responsibilities.
+- Merge screen topology and user flows in `experience/user-flows.md`. Keep
+  `SCREEN-*` records in YAML and keep design-board views as supporting records.
+- Merge conceptual domain relationships and the ERD in
+  `data/data-model.md`. Keep `DOM-*` and `DATA-*` IDs semantically distinct.
+- Keep product outcome, release boundary, exclusions, and measures in the
+  governance scope and capability records. The stack context is the sole
+  context diagram.
+- Name each confirmed physical service or runtime, state its responsibilities,
+  and label its connections. Show security controls on the service, connection,
+  or trust zone where they apply.
 - A journey frames detailed artifacts. It does not replace a flow, screen,
   rule, state machine, contract, sequence, quality constraint, or acceptance
   scenario.

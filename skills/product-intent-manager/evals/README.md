@@ -15,20 +15,33 @@ Minimum must-pass rubric:
 - for iteration, marks dependent artifacts stale and updates acceptance and traceability;
 - writes skill-authored structured records as `.yaml` and Mermaid diagrams as `.md` files with fenced `mermaid` blocks, including diagram-only files;
 - keeps `.json` and `.mmd` only for copied source evidence or required external formats, not canonical package records.
-- uses a physical runtime-stack map with named services, responsibilities,
-  owned state, and labelled connections instead of a mixed logical component
-  diagram;
-- keeps system context limited to actors, the product boundary, and external
-  systems;
+- uses Product Intent Package format `5.0.0` for the consolidated diagram paths.
+- keeps the five default diagram sources for stack context, user flows, state
+  machines, data model/ERD, and sequences; populates each applicable diagram or
+  records a confirmed not-applicable result; and adds deployment only when it
+  needs a separate view;
+- uses `architecture/stack-context.md` as the sole context diagram. It combines
+  actors, the product boundary, external systems, physical services,
+  responsibilities, owned state, labelled connections, and normally deployment
+  placement;
+- keeps product outcome, release boundary, exclusions, and measures in the
+  scope and capability records rather than a second context diagram;
+- merges screen topology and user flows in `experience/user-flows.md`, while
+  retaining screen YAML and design-board records;
+- merges conceptual domain relationships and the ERD in `data/data-model.md`,
+  while keeping `DOM-*` and `DATA-*` IDs semantically distinct;
+- uses `architecture/deployment.md` only when environment, region, network,
+  failover, or rollout complexity makes stack context hard to understand. The
+  separate view reuses stack-node IDs and shows affected connections or state
+  without repeating responsibilities;
 - keeps canonical state machines and allocates each cross-service transition to
   its initiator, durable authority, executor, observers, and recovery path;
 - gives each allocated transition a stable local ID and uses transition-level
   traceability when needed;
 - does not invent a provider or runtime, and preserves stable IDs while it
   updates moved paths and affected governance records;
-- retires canonical `architecture/components.md`, `architecture/containers.md`,
-  and `architecture/deployment.md` after their unique content moves to
-  `architecture/runtime-stack.md`;
+- retires separate component, container, system-context, and screen-map
+  diagrams after their unique content moves to the consolidated views;
 
 Additional journey rubric:
 

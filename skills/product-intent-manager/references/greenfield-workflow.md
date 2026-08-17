@@ -28,7 +28,11 @@ Elicit and confirm:
 - release scope, priorities, and exclusions;
 - confirmed constraints and non-goals.
 
-Render product context and capability map before detailed flows. Do not proceed with an unstable boundary unless later work is explicitly exploratory.
+Record the outcome, release boundary, exclusions, and measures in the scope and
+capability records. Build the single context diagram later in
+`architecture/stack-context.md`; do not create a separate product context
+diagram. Do not proceed with an unstable boundary unless later work is
+explicitly exploratory.
 
 ## Phase 2 — Lifecycle journey model
 
@@ -47,11 +51,11 @@ material lifecycle before writing detailed flows:
 - label the journey observed, inferred, proposed, or confirmed and obtain
   product-authority confirmation.
 
-Do not use a journey to replace detailed flows, screens, rules, state machines,
+Do not use a journey to replace detailed user flows, screen records, rules, state machines,
 contracts, sequences, quality constraints, or acceptance scenarios. A proposed
 or unresolved journey blocks build-ready handoff.
 
-## Phase 3 — Domain model
+## Phase 3 — Domain and data model
 
 Elicit and confirm:
 
@@ -59,9 +63,13 @@ Elicit and confirm:
 - conceptual entities and identity;
 - ownership, tenancy, relationships, and cardinality;
 - invariants and lifecycle concepts;
-- sensitive or regulated concepts.
+- sensitive or regulated concepts;
+- persisted entities, fields, constraints, lifecycle, retention, and privacy
+  where they affect the product.
 
-Keep storage design separate until domain intent is stable.
+Use one `data/data-model.md` for the conceptual domain view and ERD. Keep
+`DOM-*` and `DATA-*` IDs semantically distinct. Keep schema, lifecycle, and
+glossary records as supporting files.
 
 ## Phase 4 — Experience model
 
@@ -69,8 +77,8 @@ For each actor/capability:
 
 1. map entry points and preconditions;
 2. map happy, alternate, cancellation, invalid, permission, failure, and recovery paths;
-3. derive screen topology;
-4. enumerate screen states;
+3. combine actor paths and screen topology in `experience/user-flows.md`;
+4. enumerate screen states in `experience/screens.yaml`;
 5. create low-fidelity mockups;
 6. define tokens/components/interactions;
 7. refine mockups and obtain design/product confirmations.
@@ -97,8 +105,15 @@ With technical and data authorities:
 
 - map domain concepts to storage entities;
 - define data lifecycle, privacy, retention, export, deletion, audit, migrations, and seed data;
-- define system context and the physical runtime stack, including deployment,
-  environment, and trust zones;
+- define the physical stack context, including actors, the product boundary,
+  external systems, services, deployment placement, environment, and trust
+  zones;
+- add a separate deployment diagram only when environment, region, network,
+  failover, or rollout complexity would make the combined view hard to
+  understand. Keep deployment in stack context when that makes deployment
+  dependencies and product repercussions easier to understand. If separate,
+  reuse the same stack-node IDs, show affected connections or state, and do not
+  repeat responsibilities;
 - name each confirmed provider or runtime, state each physical service's
   responsibilities and owned state, and label every physical connection;
 - define every API/event/integration contract;

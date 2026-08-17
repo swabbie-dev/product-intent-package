@@ -59,7 +59,7 @@ may not capture.
 | behavioral | flow, rule, state, permission, notification, copy with legal meaning | product/domain/design; acceptance update |
 | data | schema, retention, deletion, migration, export | product/domain/technical/privacy; migration and recovery update |
 | contract | API/event/integration shape or semantics | technical and affected product authorities; compatibility update |
-| architectural | responsibility, trust, deployment, storage, async boundary | technical/security/operations; sequences and quality update |
+| architectural | stack-context responsibility, trust, deployment, storage, async boundary | technical/security/operations; sequences and quality update |
 | scope | capability added, removed, deferred, or reprioritized | product/release authority; full traceability impact |
 | quality | SLO, security, accessibility, compatibility, cost ceiling | product tradeoff owner plus technical/operations authority |
 
@@ -72,7 +72,7 @@ Typical propagation:
 ```text
 Capability or rule change
   -> domain/flow/screen/state
-  -> data/architecture/contracts/sequences
+  -> data/stack-context/deployment/contracts/sequences
   -> quality constraints
   -> acceptance scenarios
   -> traceability and handoff readiness

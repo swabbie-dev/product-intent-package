@@ -36,13 +36,14 @@ artifacts:
   - id: DOM-001
     kind: domain_concept
     label: DOM-001
-    path: product/domain-model.md
+    path: data/data-model.md
     status: confirmed
     authority_id: AUTH-OWNER
-    confirmation_decision_id: DEC-001
+    confirmation_decision_id: DEC-007
     source_refs:
       - EVID-001
-    version: 1
+      - EVID-003
+    version: 2
     stale: false
   - id: FLOW-001
     kind: flow
@@ -50,10 +51,11 @@ artifacts:
     path: experience/user-flows.md
     status: confirmed
     authority_id: AUTH-OWNER
-    confirmation_decision_id: DEC-001
+    confirmation_decision_id: DEC-007
     source_refs:
       - EVID-001
-    version: 1
+      - EVID-003
+    version: 2
     stale: false
   - id: SCREEN-001
     kind: screen
@@ -149,50 +151,54 @@ artifacts:
   - id: ARCH-001
     kind: architecture
     label: ARCH-001
-    path: architecture/runtime-stack.md
+    path: architecture/stack-context.md
     status: confirmed
     authority_id: AUTH-OWNER
-    confirmation_decision_id: DEC-005
+    confirmation_decision_id: DEC-007
     source_refs:
       - EVID-001
       - EVID-002
-    version: 2
+      - EVID-003
+    version: 3
     stale: false
   - id: ARCH-002
     kind: architecture
     label: ARCH-002
-    path: architecture/runtime-stack.md
+    path: architecture/stack-context.md
     status: confirmed
     authority_id: AUTH-OWNER
-    confirmation_decision_id: DEC-005
+    confirmation_decision_id: DEC-007
     source_refs:
       - EVID-001
       - EVID-002
-    version: 2
+      - EVID-003
+    version: 3
     stale: false
   - id: ARCH-003
     kind: architecture
     label: ARCH-003
-    path: architecture/runtime-stack.md
+    path: architecture/stack-context.md
     status: confirmed
     authority_id: AUTH-OWNER
-    confirmation_decision_id: DEC-005
+    confirmation_decision_id: DEC-007
     source_refs:
       - EVID-001
       - EVID-002
-    version: 2
+      - EVID-003
+    version: 3
     stale: false
   - id: ARCH-004
     kind: architecture
     label: ARCH-004
-    path: architecture/runtime-stack.md
+    path: architecture/stack-context.md
     status: confirmed
     authority_id: AUTH-OWNER
-    confirmation_decision_id: DEC-005
+    confirmation_decision_id: DEC-007
     source_refs:
       - EVID-001
       - EVID-002
-    version: 2
+      - EVID-003
+    version: 3
     stale: false
   - id: API-001
     kind: api_contract

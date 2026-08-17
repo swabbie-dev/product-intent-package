@@ -50,12 +50,13 @@ pattern.
 ## 4. Reconstruct the product model
 
 Build the same thirteen structures used for a new product. Start with actors,
-scope, capabilities, and lifecycle journeys. Then create detailed flows,
-screens, behavior, data, the observed physical runtime stack, boundary records,
-sequence diagrams, quality constraints, and acceptance scenarios. For each
-cross-service state transition, identify the observed initiator, durable
-authority, executor, observers, and recovery path. Keep an unverified placement
-as inferred or blocked.
+scope, capabilities, and lifecycle journeys. Then create the six consolidated
+diagram views: stack context, user flows, state machines, data model/ERD,
+sequences, and deployment only when its topology is complex. Keep screen
+records, schema, lifecycle, glossary, and other YAML records as supporting
+artifacts. For each cross-service state transition, identify the observed
+initiator, durable authority, executor, observers, and recovery path. Keep an
+unverified placement as inferred or blocked.
 
 Keep four layers separate:
 
@@ -67,7 +68,10 @@ Keep four layers separate:
 | confirmed | the accountable authority approved it |
 
 Use `references/product-artifact-practices.md` for diagram selection and design
-board organization. Preserve links from each reconstructed record to its
+board organization. Keep `architecture/stack-context.md` as the sole context
+diagram. Combine screen topology and user flows in `experience/user-flows.md`,
+and combine conceptual domain relationships and the ERD in
+`data/data-model.md`. Preserve links from each reconstructed record to its
 evidence.
 
 ## 5. Find gaps and conflicts
@@ -81,7 +85,7 @@ statements. Record:
 - different behavior across environments or product surfaces;
 - apparent defects that can be accepted behavior or implementation drift;
 - dead, hidden, or feature-flagged capabilities;
-- competing rules, concepts, data models, and screen designs;
+- competing rules, concepts, data models, and user-flow or screen designs;
 - implicit limits, timing, ordering, retries, and concurrency behavior;
 - missing security, privacy, accessibility, operational, and quality choices;
 - facts that have no accountable authority.
@@ -98,11 +102,11 @@ proposal, or out of scope.
 Route decisions to the correct authority:
 
 - product: users, outcomes, scope, priorities, capabilities, and behavior;
-- design: information architecture, screens, states, components, content, and
-  accessibility details;
-- technical and data: physical runtime responsibilities, state-transition
-  placement, data, interfaces, sequences, security, operations, and measurable
-  constraints;
+- design: user flows, screen topology, screens, states, components, content,
+  and accessibility details;
+- technical and data: stack-context and optional deployment responsibilities,
+  state-transition placement, data model/ERD, interfaces, sequences, security,
+  operations, and measurable constraints;
 - specialist authorities: legal, privacy, compliance, operations, or domain
   rules.
 

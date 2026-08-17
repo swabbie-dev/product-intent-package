@@ -43,7 +43,7 @@ quality, and acceptance artifacts below remain the detailed sources of truth.
 ## Connected structures
 
 This illustrative slice assumes that the technical authority confirmed Vercel
-and Supabase in the runtime-stack and decision records. Do not copy these
+and Supabase in the stack-context and decision records. Do not copy these
 providers as a product default.
 
 ```mermaid

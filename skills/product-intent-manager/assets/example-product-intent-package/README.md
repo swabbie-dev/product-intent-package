@@ -19,6 +19,10 @@ This directory is the canonical product-intent graph. Replace placeholders with 
 
 Lifecycle journey maps are editable Markdown with fenced Mermaid. Keep the YAML registry and qualified traceability edges in sync. Canonical product facts belong in diagrams, registries, schemas, contracts, or matrices. Use prose only for rationale and decision context.
 
-Use `architecture/runtime-stack.md` for physical services, environments, and
-their responsibilities. Put cross-service transition allocation directly below
-each applicable state machine in `behavior/state-machines.md`.
+Use `architecture/stack-context.md` for actors, the product boundary, physical
+services, environments, deployment dependencies, and their responsibilities.
+Use `experience/user-flows.md` for screen maps and user flows. Use
+`data/data-model.md` for the conceptual domain model, physical ERD, and their
+mapping. Put cross-service transition allocation directly below each applicable
+state machine in `behavior/state-machines.md`. Add `architecture/deployment.md`
+only when deployment topology is too complex for the stack context.
