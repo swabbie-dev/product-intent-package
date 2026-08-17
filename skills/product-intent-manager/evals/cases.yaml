@@ -8,12 +8,22 @@ cases:
       - build thirteen structures, including lifecycle journeys
       - ask selective detailed questions
       - create verification and traceability
+  - id: activate-reconstruction
+    prompt: Reconstruct the intent of this existing product from its screens, behavior,
+      documents, and stakeholder decisions.
+    should_activate: true
+    must:
+      - declare one target baseline
+      - treat existing behavior as evidence
+      - separate observed, inferred, proposed, and confirmed intent
+      - route gaps and conflicts to accountable authorities
+      - build the same product artifacts used for a new product
   - id: activate-completion
     prompt: Audit this product intent package, fill every gap with the right stakeholders,
       and make it handoff-ready.
     should_activate: true
     must:
-      - validate existing package
+      - review the existing package
       - generate authority-routed gap queue
       - not trust existing ready label
   - id: activate-iteration
@@ -24,7 +34,7 @@ cases:
       - record decision
       - impact graph
       - mark stale
-      - update affected artifacts and tests
+      - update affected artifacts and acceptance cases
       - version package
   - id: delegation
     prompt: Use best practices for everything technical and make the package complete.

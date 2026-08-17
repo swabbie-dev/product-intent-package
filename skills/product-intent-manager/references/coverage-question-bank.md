@@ -124,4 +124,4 @@ Use this as a gap detector, not a questionnaire to dump on the user. Ask only qu
 - Which choices may the coding orchestrator make without approval?
 - What observable outcomes are forbidden even within delegated discretion?
 - Are all exclusions, risks, and compatibility breaks accepted?
-- Has the final authority approved this exact package version and hash?
+- Has the final authority approved this package version and target scope?
