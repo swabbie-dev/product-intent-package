@@ -36,7 +36,28 @@ Elicit and confirm:
 
 Render product context and capability map before detailed flows. Do not proceed with an unstable boundary unless later work is explicitly exploratory.
 
-## Phase 2 — Domain model
+## Phase 2 — Lifecycle journey model
+
+After product boundary and actor/capability scope are confirmed, map each
+material lifecycle before writing detailed flows:
+
+- select a journey type and record its rationale;
+- choose single-actor, role-specific, or multi-actor-coordinated structure;
+- define the time axis, topology, recurrence, trigger, outcome, and terminal
+  conditions;
+- divide the lifecycle into phases with stable local IDs;
+- record each actor action and the product response;
+- cover failure, pause/resume, abandonment, exit, and recovery;
+- link each response to detailed artifacts and route complex branches to FLOW
+  records;
+- label the journey observed, inferred, proposed, or confirmed and obtain
+  product-authority confirmation.
+
+Do not use a journey to replace detailed flows, screens, rules, state machines,
+contracts, sequences, quality constraints, or acceptance scenarios. A proposed
+or unresolved journey blocks build-ready handoff.
+
+## Phase 3 — Domain model
 
 Elicit and confirm:
 
@@ -48,7 +69,7 @@ Elicit and confirm:
 
 Keep storage design separate until domain intent is stable.
 
-## Phase 3 — Experience model
+## Phase 4 — Experience model
 
 For each actor/capability:
 
@@ -62,7 +83,7 @@ For each actor/capability:
 
 A mockup without state and behavior links is incomplete.
 
-## Phase 4 — Behavior model
+## Phase 5 — Behavior model
 
 For each domain object and capability:
 
@@ -73,7 +94,7 @@ For each domain object and capability:
 - define permissions and account-state behavior;
 - confirm business rules with the correct authority.
 
-## Phase 5 — Data and technical model
+## Phase 6 — Data and technical model
 
 With technical and data authorities:
 
@@ -86,7 +107,7 @@ With technical and data authorities:
 
 Technical recommendations remain proposals until the technical authority confirms them or delegates the domain.
 
-## Phase 6 — Verification and traceability
+## Phase 7 — Verification and traceability
 
 For every capability and constraint:
 
@@ -95,6 +116,6 @@ For every capability and constraint:
 - identify any false coverage dimension and obtain a confirmed exception decision;
 - confirm observable results with product/design/technical authorities as applicable.
 
-## Phase 7 — Closure and handoff
+## Phase 8 — Closure and handoff
 
 Apply all handoff gates, run draft validation, resolve every issue, stamp the content hash, obtain and record final release/product approval for that hash, set the package to build-ready, and run final validation. Do not hand off a package with open decisions under the theory that the coding agent can “figure them out.”

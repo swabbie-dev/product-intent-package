@@ -5,7 +5,7 @@ cases:
     should_activate: true
     must:
       - establish authority
-      - build twelve structures
+      - build thirteen structures, including lifecycle journeys
       - ask selective detailed questions
       - create verification and traceability
   - id: activate-completion
@@ -36,3 +36,38 @@ cases:
   - id: negative-build
     prompt: Implement the app described by this completed product intent package.
     should_activate: false
+  - id: operational-not-marketing-funnel
+    prompt: Map the operator lifecycle for an incident. Do not turn it into a marketing funnel.
+    should_activate: true
+    must:
+      - choose and justify an operational_case journey type
+      - model operational phases and product responses
+      - reject unsupported funnel framing
+  - id: separate-materially-different-actors
+    prompt: Map one workflow used by customers, support agents, and administrators when their paths differ.
+    should_activate: true
+    must:
+      - use role-specific or multi-actor-coordinated variants
+      - preserve distinct goals, actions, and product responses
+      - avoid merging materially different actors
+  - id: missing-product-response-lane
+    prompt: Review this lifecycle map. It lists actor actions but no product response after each action.
+    should_activate: true
+    must:
+      - identify missing product-response lanes
+      - keep the journey blocked until responses are confirmed
+      - link responses to detailed artifacts
+  - id: missing-failure-exit-recovery
+    prompt: Complete a task journey that has only a happy path. Close every exception and exit gap.
+    should_activate: true
+    must:
+      - cover failure, pause/resume, abandonment, exit, and recovery
+      - ask authority questions for unknown dispositions
+      - block build-ready while required dispositions are open
+  - id: missing-detailed-artifact-links
+    prompt: Audit a journey that has phases but no links to flows, rules, screens, or acceptance scenarios.
+    should_activate: true
+    must:
+      - require detailed artifact links
+      - state that a journey does not replace detailed artifacts
+      - update traceability and readiness

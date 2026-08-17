@@ -75,6 +75,30 @@ Use these techniques to expose unstated assumptions:
 | counterexample | “Give one valid and one invalid example near the boundary.” |
 | acceptance inversion | “What observable result would prove this implementation wrong?” |
 
+## Lifecycle journey questions
+
+Ask these after actor and capability scope is confirmed and before detailed flow
+design:
+
+- What lifecycle is in scope: customer relationship, job task, operational case,
+  entity/asset, developer integration, ecosystem/marketplace, service blueprint,
+  or another type with a confirmed rationale?
+- Is this one actor, role-specific, or multi-actor coordinated? Which goals or
+  outcomes differ enough to require separate journeys?
+- What starts the journey, what does the actor do in each phase, and what does
+  the product show, change, emit, or refuse after each action?
+- Which time axis, topology, recurrence rule, and terminal conditions apply?
+- What happens on failure, pause/resume, abandonment, explicit exit, and
+  recovery?
+- Which detailed FLOW, SCREEN, RULE, SM, DATA, API, EVT, SEQ, QC, or ACC record
+  owns each product response?
+- Is the journey observed, inferred, proposed, or confirmed? Which evidence
+  supports it, and which authority must confirm it?
+
+Do not ask a participant to confirm emotion or intent from a diagram alone.
+Record the diagram as evidence, state the limit, and ask the accountable
+authority or participant for the missing claim.
+
 ## Question-complete criterion
 
 A topic is not complete merely because no stakeholder volunteered more detail. It is complete when:

@@ -14,6 +14,18 @@ Confirm:
 - monetization, entitlement, policy, risk, and acceptance authority;
 - domains delegated to PM, design, engineering, legal, or the agent.
 
+For each lifecycle journey, confirm:
+
+- the journey type and why it is a product lifecycle rather than a marketing
+  funnel;
+- actor variant, actor goals, trigger, outcome, phases, terminal conditions,
+  time axis, topology, and recurrence;
+- the product response after each actor action;
+- failure, pause/resume, abandonment, exit, and recovery;
+- whether each item is observed, inferred, proposed, or confirmed.
+
+Do not accept emotion, motive, or intent inferred from a diagram as a decision.
+
 ## Product manager
 
 For each capability:
@@ -27,6 +39,8 @@ For each capability:
 - acceptance examples and edge cases.
 
 Ask explicitly which observed behavior is intentional versus accidental.
+Ask which observed journey phases and product responses are target behavior,
+defect, legacy constraint, or out of scope.
 
 ## Designer
 
@@ -40,6 +54,9 @@ For each flow/screen/component:
 - design tokens, component variants, content/copy source, and motion;
 - discrepancies between mockups and running product;
 - which details are approved, proposed, historical, or exploratory.
+
+For journey sources and diagrams, confirm touchpoints and visible product
+responses. Do not infer actor emotion or desired intent from visual layout.
 
 ## Technical lead / architect
 
@@ -65,6 +82,10 @@ Ask when relevant:
 - threat model, abuse cases, data classification, retention, export, deletion, and audit;
 - operational workflows, escalation, incident response, reconciliation, and manual overrides;
 - compliance-specific acceptance criteria.
+
+For an operational or domain lifecycle, confirm the domain facts that the
+journey references. The product authority still confirms product scope and
+outcomes; do not create a separate journey authority domain.
 
 ## Conflict interview
 

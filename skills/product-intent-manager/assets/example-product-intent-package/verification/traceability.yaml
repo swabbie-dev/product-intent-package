@@ -2,6 +2,212 @@ edges:
   - from: ACTOR-001
     relation: performed_by
     to: CAP-001
+  - from: ACTOR-001
+    relation: performed_by
+    to: JOURNEY-001
+  - from: CAP-001
+    relation: experienced_through
+    to: JOURNEY-001
+  - from: JOURNEY-001
+    source_part_id: JOURNEY-001.phase-01
+    relation: experienced_through
+    to: FLOW-001
+  - from: JOURNEY-001
+    source_part_id: JOURNEY-001.action-01
+    relation: experienced_through
+    to: FLOW-001
+  - from: JOURNEY-001
+    source_part_id: JOURNEY-001.action-01
+    relation: experienced_through
+    to: SCREEN-001
+  - from: JOURNEY-001
+    source_part_id: JOURNEY-001.phase-01
+    relation: experienced_through
+    to: SCREEN-001
+  - from: JOURNEY-001
+    source_part_id: JOURNEY-001.phase-01
+    relation: experienced_through
+    to: COMP-001
+  - from: JOURNEY-001
+    source_part_id: JOURNEY-001.phase-01
+    relation: experienced_through
+    to: MOCK-001
+  - from: JOURNEY-001
+    source_part_id: JOURNEY-001.phase-01
+    relation: governed_by
+    to: SM-001
+  - from: JOURNEY-001
+    source_part_id: JOURNEY-001.phase-01
+    relation: persists_as
+    to: DATA-001
+  - from: JOURNEY-001
+    source_part_id: JOURNEY-001.phase-01
+    relation: executed_by
+    to: SEQ-001
+  - from: JOURNEY-001
+    source_part_id: JOURNEY-001.phase-01
+    relation: constrained_by
+    to: QC-001
+  - from: JOURNEY-001
+    source_part_id: JOURNEY-001.phase-01
+    relation: verified_by
+    to: ACC-001
+  - from: JOURNEY-001
+    source_part_id: JOURNEY-001.action-02
+    relation: experienced_through
+    to: FLOW-001
+  - from: JOURNEY-001
+    source_part_id: JOURNEY-001.phase-02
+    relation: experienced_through
+    to: SCREEN-001
+  - from: JOURNEY-001
+    source_part_id: JOURNEY-001.phase-02
+    relation: experienced_through
+    to: COMP-001
+  - from: JOURNEY-001
+    source_part_id: JOURNEY-001.action-02
+    relation: governed_by
+    to: RULE-001
+  - from: JOURNEY-001
+    source_part_id: JOURNEY-001.action-02
+    relation: governed_by
+    to: SM-001
+  - from: JOURNEY-001
+    source_part_id: JOURNEY-001.phase-02
+    relation: governed_by
+    to: SM-001
+  - from: JOURNEY-001
+    source_part_id: JOURNEY-001.action-02
+    relation: governed_by
+    to: DT-001
+  - from: JOURNEY-001
+    source_part_id: JOURNEY-001.phase-02
+    relation: persists_as
+    to: DATA-001
+  - from: JOURNEY-001
+    source_part_id: JOURNEY-001.action-02
+    relation: exposed_by
+    to: API-001
+  - from: JOURNEY-001
+    source_part_id: JOURNEY-001.phase-02
+    relation: exposed_by
+    to: API-001
+  - from: JOURNEY-001
+    source_part_id: JOURNEY-001.phase-02
+    relation: executed_by
+    to: SEQ-001
+  - from: JOURNEY-001
+    source_part_id: JOURNEY-001.phase-02
+    relation: constrained_by
+    to: QC-001
+  - from: JOURNEY-001
+    source_part_id: JOURNEY-001.action-02
+    relation: verified_by
+    to: ACC-001
+  - from: JOURNEY-001
+    source_part_id: JOURNEY-001.action-02
+    relation: verified_by
+    to: ACC-002
+  - from: JOURNEY-001
+    source_part_id: JOURNEY-001.phase-03
+    relation: experienced_through
+    to: FLOW-001
+  - from: JOURNEY-001
+    source_part_id: JOURNEY-001.action-03
+    relation: experienced_through
+    to: FLOW-001
+  - from: JOURNEY-001
+    source_part_id: JOURNEY-001.phase-03
+    relation: experienced_through
+    to: SCREEN-001
+  - from: JOURNEY-001
+    source_part_id: JOURNEY-001.phase-03
+    relation: experienced_through
+    to: COMP-001
+  - from: JOURNEY-001
+    source_part_id: JOURNEY-001.action-03
+    relation: governed_by
+    to: RULE-001
+  - from: JOURNEY-001
+    source_part_id: JOURNEY-001.action-03
+    relation: governed_by
+    to: SM-001
+  - from: JOURNEY-001
+    source_part_id: JOURNEY-001.phase-03
+    relation: governed_by
+    to: SM-001
+  - from: JOURNEY-001
+    source_part_id: JOURNEY-001.phase-03
+    relation: persists_as
+    to: DATA-001
+  - from: JOURNEY-001
+    source_part_id: JOURNEY-001.phase-03
+    relation: exposed_by
+    to: API-001
+  - from: JOURNEY-001
+    source_part_id: JOURNEY-001.phase-03
+    relation: executed_by
+    to: SEQ-001
+  - from: JOURNEY-001
+    source_part_id: JOURNEY-001.phase-03
+    relation: constrained_by
+    to: QC-001
+  - from: JOURNEY-001
+    source_part_id: JOURNEY-001.action-03
+    relation: verified_by
+    to: ACC-001
+  - from: JOURNEY-001
+    source_part_id: JOURNEY-001.action-03
+    relation: verified_by
+    to: ACC-002
+  - from: JOURNEY-001
+    source_part_id: JOURNEY-001.phase-04
+    relation: experienced_through
+    to: FLOW-001
+  - from: JOURNEY-001
+    source_part_id: JOURNEY-001.action-04
+    relation: experienced_through
+    to: FLOW-001
+  - from: JOURNEY-001
+    source_part_id: JOURNEY-001.phase-04
+    relation: experienced_through
+    to: SCREEN-001
+  - from: JOURNEY-001
+    source_part_id: JOURNEY-001.phase-04
+    relation: experienced_through
+    to: COMP-001
+  - from: JOURNEY-001
+    source_part_id: JOURNEY-001.action-04
+    relation: governed_by
+    to: RULE-001
+  - from: JOURNEY-001
+    source_part_id: JOURNEY-001.action-04
+    relation: governed_by
+    to: SM-001
+  - from: JOURNEY-001
+    source_part_id: JOURNEY-001.action-04
+    relation: governed_by
+    to: DT-001
+  - from: JOURNEY-001
+    source_part_id: JOURNEY-001.phase-04
+    relation: persists_as
+    to: DATA-001
+  - from: JOURNEY-001
+    source_part_id: JOURNEY-001.phase-04
+    relation: executed_by
+    to: SEQ-001
+  - from: JOURNEY-001
+    source_part_id: JOURNEY-001.phase-04
+    relation: constrained_by
+    to: QC-001
+  - from: JOURNEY-001
+    source_part_id: JOURNEY-001.action-04
+    relation: verified_by
+    to: ACC-001
+  - from: JOURNEY-001
+    source_part_id: JOURNEY-001.action-04
+    relation: verified_by
+    to: ACC-002
   - from: CAP-001
     relation: uses_domain
     to: DOM-001

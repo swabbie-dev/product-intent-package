@@ -5,6 +5,9 @@ gates:
   structural_coverage:
     passed: false
     evidence_refs: []
+  journey_closure:
+    passed: false
+    evidence_refs: []
   capability_traceability:
     passed: false
     evidence_refs: []

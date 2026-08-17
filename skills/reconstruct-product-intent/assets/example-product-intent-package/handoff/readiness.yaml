@@ -7,6 +7,10 @@ gates:
     passed: true
     evidence_refs:
       - DEC-003
+  journey_closure:
+    passed: true
+    evidence_refs:
+      - DEC-003
   capability_traceability:
     passed: true
     evidence_refs:
@@ -37,4 +41,4 @@ validator:
   passed: true
   report_path: ''
 final_approval_decision_id: DEC-003
-package_hash: 9dcfeec81c8e4c83b3f8835c466357529f873f868987921fd936155719877b22
+package_hash: 020f3a9e4d63590fd2dc587c266337ce7cb734b30d954263dbced2d8c615656f

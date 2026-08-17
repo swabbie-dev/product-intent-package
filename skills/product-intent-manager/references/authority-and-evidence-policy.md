@@ -27,6 +27,13 @@ Required decision domains:
 
 One person may hold several domains. A single originator may hold all domains, but the role must be explicit. The agent does not become an authority merely because no human has been named.
 
+Lifecycle journey intent is governed by the existing `product_strategy` and
+`capabilities_and_behavior` authorities. They confirm the journey scope, actor
+goals, product responses, outcomes, and exclusions. Do not create a required
+`journey` authority domain. Design, technical, data/security/privacy,
+quality/operations, legal/compliance, and release authorities still own facts
+inside their domains.
+
 ## Delegation
 
 An authority may delegate a domain or bounded subset to another person or to the agent. Record:
@@ -37,6 +44,10 @@ An authority may delegate a domain or bounded subset to another person or to the
 - constraints;
 - effective date/version;
 - revocation conditions.
+
+For validator-checkable delegation, put each affected stable artifact ID in
+the exact `scope` text. The delegate's decision must use the delegated domain
+and name one of those IDs in `affects`.
 
 A statement such as “choose the usual technical approach” is incomplete until the delegated scope and constraints are explicit. Once a valid delegation exists, the delegate’s decision is authoritative within that boundary.
 
@@ -56,6 +67,10 @@ A statement such as “choose the usual technical approach” is incomplete unti
 | support/customer evidence | pain points and real scenarios | final solution choice |
 | stakeholder statement | claimed intent or interpretation | authority unless speaker owns/delegates the domain |
 | authority confirmation | canonical target decision within owned domain | decisions outside that authority’s domain |
+
+A journey map is evidence of what was recorded or observed until its
+`intent_status` is `confirmed` by the accountable product authority. A diagram
+cannot establish an actor emotion, motive, desired outcome, or product intent.
 
 ## Evidence records
 
@@ -84,6 +99,11 @@ For each build-affecting gap or contradiction:
 7. record `DEC-*`, authority, confirmation reference, affected IDs, and superseded decisions;
 8. update affected structures and traceability;
 9. mark dependent artifacts stale until reviewed.
+
+For a journey change, the dependent set includes the parent journey, linked
+phases and actions, detailed flows, screens, rules, state machines, data,
+contracts, sequences, quality constraints, acceptance scenarios, and readiness
+records. Reconfirm the relevant domain authorities before restoring readiness.
 
 ## Conflict rules
 

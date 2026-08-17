@@ -1,6 +1,6 @@
 ---
 name: reconstruct-product-intent
-description: Convert an existing software project—codebase, databases, tests, documents, tickets, designs, media, runtime behavior, analytics, and stakeholder knowledge—into an authority-confirmed, build-ready Product Intent Package. Use for reverse-engineering, rebuild, migration, modernization, audit, or coding-agent handoff. Do not use for greenfield discovery or ordinary codebase documentation.
+description: Convert an existing software project into an authority-confirmed, build-ready Product Intent Package with Lifecycle Journey Maps. Use for reverse-engineering, rebuild, migration, modernization, audit, or coding-agent handoff. Do not use for greenfield discovery or ordinary codebase documentation.
 ---
 
 # Reconstruct Product Intent
@@ -9,7 +9,7 @@ Produce a closed-world Product Intent Package for one declared target version of
 
 ## Requirements
 
-- Use Product Intent Package format 2.0.0 for package files.
+- Use Product Intent Package format 3.0.0 for package files.
 - Use Python 3.9 or newer for bundled scripts.
 - Install the script dependency before use: `python -m pip install -r requirements.txt`.
 - Read `references/product-intent-package-standard.md` before editing a package. Follow its human-readable package file format section for canonical file extensions and Mermaid blocks.
@@ -24,9 +24,22 @@ Produce a closed-world Product Intent Package for one declared target version of
 - Ask only unanswered, build-affecting questions, routed to the correct authority.
 - Never silently resolve contradictions among code, tests, docs, mockups, runtime behavior, or stakeholder statements.
 - Do not label the package build-ready while any blocking question, contradiction, missing authority, uncovered capability, stale artifact, placeholder, or unbounded implementation choice remains.
+- Model lifecycle journeys after actor and capability scope and before detailed
+  flows. Keep observed, inferred, proposed, and confirmed journey intent
+  separate. Never infer emotion or intent from diagrams.
+- Require product-response lanes, failure/pause/abandonment/exit/recovery
+  dispositions, qualified local links, safe Markdown sources, and detailed
+  artifact links.
+- A journey phase or action change marks the parent journey and all linked
+  dependents stale until review and confirmation.
 - Do not implement or refactor the product as part of this skill.
 
 ## Load these references
+
+Read [references/lifecycle-journey-maps.md](references/lifecycle-journey-maps.md)
+with the standard before modeling. It
+defines journey types, actor variants, local IDs, product-response lanes,
+authority boundaries, and Markdown source rules.
 
 1. Read `references/product-intent-package-standard.md`, `references/authority-and-evidence-policy.md`, `references/registry-schemas.md`, and `references/source-safety.md` before modeling.
 2. Follow `references/reconstruction-workflow.md`.
@@ -37,16 +50,23 @@ Produce a closed-world Product Intent Package for one declared target version of
 
 ## Workflow
 
+The workflow has thirteen structures. Model lifecycle journeys after actor and
+capability scope and before detailed flows. Keep journey intent observed,
+inferred, proposed, or confirmed, and do not infer emotion from diagrams.
+
 1. Establish target baseline, version, scope, authorities, and evidence access.
 2. Initialize the package from `assets/product-intent-template/` using `scripts/init_product_intent.py` or copy it exactly.
 3. Inventory sources. When filesystem access exists, run `scripts/inventory_existing_project.py`; register the output as evidence.
 4. Observe runtime behavior and inspect code, data, tests, contracts, designs, operations, and historical decisions.
-5. Build all twelve structures as `observed`, `hypothesis`, or `proposed`; preserve source references and limitations.
+5. Build all thirteen structures, including lifecycle journeys, as `observed`,
+   `hypothesis`, or `proposed`; preserve source references and limitations.
 6. Generate a contradiction/gap matrix and authority-routed question queue.
 7. Interview the product owner/originator, product manager, designer, technical lead, and specialist authorities. Normalize answers into diagrams, tables, schemas, contracts, and acceptance scenarios.
 8. Canonicalize only confirmed target intent; record decisions, supersessions, sources, authority, and staleness.
-9. Complete traceability and bounded implementation-discretion grants.
-10. Run draft validation with `scripts/validate_product_intent.py <package-directory>` and resolve every error. Stamp the content hash with `scripts/stamp_package_hash.py <package-directory>`.
+9. Complete qualified traceability and bounded implementation-discretion grants.
+10. Run draft validation with `scripts/validate_product_intent.py <package-directory>`
+    and resolve every error, including `journey_closure`. Stamp the content hash
+    with `scripts/stamp_package_hash.py <package-directory>`.
 11. Obtain and record final approval for the exact version and hash, set the package to build-ready, then run final validation. Otherwise emit a blocked-handoff report with the exact unresolved decisions and affected artifacts.
 
 ## Output

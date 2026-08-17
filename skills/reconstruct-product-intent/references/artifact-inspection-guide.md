@@ -20,9 +20,14 @@
 | tickets/docs/roadmaps | stated requirements and rationale | current validity, conflict resolution, release target |
 | support/research | real pain and edge cases | solution choice and priority |
 
+For journey candidates, inspect actor actions, product responses, state/data/event
+effects, exceptions, hand-offs, recurrence, and terminal conditions. Register
+each claim as evidence first. A journey diagram, funnel, screenshot, or
+rendered image cannot prove lifecycle intent.
+
 ## Runtime capture checklist
 
-For each `FLOW-*` candidate, capture as evidence where available:
+For each `JOURNEY-*` and `FLOW-*` candidate, capture as evidence where available:
 
 - actor, role, account state, entitlement, and environment;
 - initial data state;
@@ -34,6 +39,8 @@ For each `FLOW-*` candidate, capture as evidence where available:
 - background operations;
 - failures, retries, timeouts, cancellation, undo, and recovery;
 - final state and side effects;
+- lifecycle phase, actor action, product response, failure, pause/resume,
+  abandonment, exit, and recovery disposition;
 - version/commit/feature flags.
 
 ## Static-analysis cautions
@@ -49,6 +56,9 @@ Do not assume:
 - comments are current;
 - a missing error branch means the intended behavior is to crash;
 - repeated implementation patterns are product requirements.
+- a marketing funnel is a product lifecycle;
+- a diagram proves actor emotion, motivation, or desired intent;
+- one actor lane represents materially different roles.
 
 ## Evidence confidence
 
@@ -59,3 +69,7 @@ Use confidence only for the evidence claim, never for intent:
 - `low`: heuristic interpretation requiring confirmation.
 
 Even high-confidence evidence remains non-canonical until the accountable authority confirms it as target intent.
+
+For reconstruction, keep observed, inferred, proposed, and confirmed journey
+intent separate. When a journey phase changes, mark the parent journey and all
+linked detailed artifacts stale until review and confirmation.

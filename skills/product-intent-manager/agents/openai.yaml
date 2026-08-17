@@ -1,6 +1,6 @@
 interface:
   display_name: "Product Intent Manager"
-  short_description: "Create, complete, and iterate a clarification-free product specification"
-  default_prompt: "Create or manage an authority-confirmed Product Intent Package for this software product. Ask the correct authorities for every unresolved build-affecting decision and close all gaps before handoff."
+  short_description: "Create lifecycle journeys and maintain a clarification-free product specification"
+  default_prompt: "Create or manage an authority-confirmed Product Intent Package in format 3.0.0. After actor and capability scope, model Lifecycle Journey Maps before detailed flows. Ask the correct authorities for unresolved lifecycle and build-affecting decisions, keep observed intent separate from confirmed intent, and close every journey and handoff gate before approval."
 policy:
   allow_implicit_invocation: true

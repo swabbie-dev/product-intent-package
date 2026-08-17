@@ -13,7 +13,7 @@ For an existing package:
 1. validate structure;
 2. inventory all active, missing, stale, proposed, and blocked artifacts;
 3. verify authority assignments and target baseline;
-4. audit all twelve structures and coverage lenses;
+4. audit all thirteen structures, lifecycle journeys, and coverage lenses;
 5. generate an authority-routed decision queue;
 6. resolve, update, trace, run draft validation, stamp the content hash, approve that hash, and run final validation.
 
@@ -34,6 +34,17 @@ For every requested change:
 9. update acceptance and traceability;
 10. reconfirm cross-domain consequences;
 11. run draft validation, stamp the content hash, obtain approval for that hash, run final validation, and issue the new package version.
+
+For a journey change, perform this additional review:
+
+1. identify the parent JOURNEY-* and the changed phase, action, transition,
+   actor, outcome, or product response;
+2. run reverse impact analysis from the parent journey;
+3. mark the parent journey and every linked dependent stale;
+4. update detailed flows, screens, rules, state machines, data, contracts,
+   sequences, quality constraints, acceptance scenarios, and readiness;
+5. obtain product-authority confirmation and all affected domain confirmations;
+6. restore stale false only after validation and the new package hash.
 
 Use:
 
@@ -69,6 +80,12 @@ Capability or rule change
   -> quality constraints
   -> acceptance scenarios
   -> traceability and handoff readiness
+
+Journey phase/action/response change
+  -> parent JOURNEY-* and local links
+  -> detailed flow/screen/rule/state/data/contract/sequence
+  -> quality and acceptance
+  -> traceability, journey_closure, and handoff readiness
 ```
 
 A stale artifact cannot be part of a build-ready graph.

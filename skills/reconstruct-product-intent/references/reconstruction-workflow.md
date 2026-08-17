@@ -64,9 +64,31 @@ Map:
 
 Register every finding as evidence-backed `observed` or `hypothesis`. A clean architecture inferred from messy code is still a proposal.
 
-## Phase 4 — Build an as-observed model
+## Phase 4 — Reconstruct lifecycle journeys
 
-Construct all twelve structures using observed evidence. Keep these distinctions explicit:
+After source inventory and actor/capability scope, map each material lifecycle
+before detailed flows:
+
+- choose the smallest journey type and record its rationale;
+- separate one actor, role-specific, and multi-actor-coordinated journeys;
+- define trigger, actor goals, product responses, time axis, topology,
+  recurrence, outcomes, and terminal conditions;
+- preserve only observed phases and actions as observed evidence;
+- mark inferred links and proposed target behavior explicitly;
+- record failure, pause/resume, abandonment, exit, and recovery dispositions;
+- link phases and actions to detailed artifacts without promoting local IDs to
+  global artifact records;
+- route missing or conflicting product responses to the product authority.
+
+Do not infer emotion, motivation, or desired intent from a diagram, screenshot,
+click path, or repeated implementation pattern. A rendered image is evidence;
+the editable journey source is a Markdown file. The product authority confirms
+lifecycle intent. Other authorities confirm facts in their own domains.
+
+## Phase 5 — Build an as-observed model
+
+Construct all thirteen structures, including lifecycle journeys, using observed
+evidence. Keep these distinctions explicit:
 
 | Layer | Meaning |
 |---|---|
@@ -77,7 +99,7 @@ Construct all twelve structures using observed evidence. Keep these distinctions
 
 Do not collapse the layers.
 
-## Phase 5 — Gap and contradiction matrix
+## Phase 6 — Gap and contradiction matrix
 
 Compare every structure and coverage lens. Create `Q-*` records for:
 
@@ -94,7 +116,7 @@ Compare every structure and coverage lens. Create `Q-*` records for:
 
 Group questions by authority and capability. Include affected artifacts and implementation risk.
 
-## Phase 6 — Stakeholder reconstruction interviews
+## Phase 7 — Stakeholder reconstruction interviews
 
 Interview in evidence-first order:
 
@@ -114,7 +136,7 @@ For each topic:
 
 Use `references/stakeholder-interviews.md` for domain-specific question prompts.
 
-## Phase 7 — Canonicalize the target
+## Phase 8 — Canonicalize the target
 
 Move only confirmed items into active target intent. For each active artifact:
 
@@ -126,7 +148,7 @@ Move only confirmed items into active target intent. For each active artifact:
 
 Do not preserve implementation accidents unless the authority explicitly chooses them as target behavior.
 
-## Phase 8 — Close the package
+## Phase 9 — Close the package
 
 Apply the coverage and handoff gates. Run draft validation:
 
