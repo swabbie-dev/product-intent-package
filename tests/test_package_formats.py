@@ -29,6 +29,7 @@ STRUCTURED_PATHS = (
     "governance/glossary.yaml",
     "governance/change-log.yaml",
     "product/capabilities.yaml",
+    "experience/journeys/index.yaml",
     "experience/screens.yaml",
     "experience/design-tokens.yaml",
     "experience/components.yaml",
@@ -137,16 +138,16 @@ class PackageFormatTests(unittest.TestCase):
                     with self.subTest(skill=skill, path=path.relative_to(skill_root), legacy=legacy_path):
                         self.assertNotIn(legacy_path, text)
 
-    def test_package_schema_version_is_2(self) -> None:
+    def test_package_schema_version_is_3(self) -> None:
         for skill in SKILLS:
             for tree in PACKAGE_TREES:
                 manifest = yaml.safe_load(
                     (ROOT / skill / tree / "manifest.yaml").read_text(encoding="utf-8")
                 )
                 with self.subTest(skill=skill, tree=tree):
-                    self.assertEqual("2.0.0", manifest["schema_version"])
+                    self.assertEqual("3.0.0", manifest["schema_version"])
             self.assertIn(
-                "Product Intent Package format 2.0.0",
+                "Product Intent Package format 3.0.0",
                 (ROOT / skill / "SKILL.md").read_text(encoding="utf-8"),
             )
 
@@ -245,7 +246,7 @@ class PackageFormatTests(unittest.TestCase):
                 shutil.copytree(source, package)
                 manifest_path = package / "manifest.yaml"
                 manifest = yaml.safe_load(manifest_path.read_text(encoding="utf-8"))
-                manifest["schema_version"] = "1.0.0"
+                manifest["schema_version"] = "2.0.0"
                 manifest_path.write_text(
                     yaml.safe_dump(manifest, sort_keys=False),
                     encoding="utf-8",
@@ -254,7 +255,7 @@ class PackageFormatTests(unittest.TestCase):
                 with self.subTest(skill=skill):
                     self.assertNotEqual(0, result.returncode)
                     self.assertIn(
-                        "manifest.yaml: schema_version must be '2.0.0'",
+                        "manifest.yaml: schema_version must be '3.0.0'",
                         yaml.safe_load(result.stdout)["errors"],
                     )
 
@@ -717,7 +718,7 @@ class PackageFormatTests(unittest.TestCase):
                     )
                     self.assertEqual("Example Product", manifest["product"]["name"])
                     self.assertEqual("2.3.4", manifest["product"]["target_version"])
-                    self.assertEqual("2.0.0", manifest["schema_version"])
+                    self.assertEqual("3.0.0", manifest["schema_version"])
 
     def test_hash_stamping_preserves_valid_example(self) -> None:
         for skill in SKILLS:
