@@ -21,6 +21,17 @@ artifacts:
       - EVID-001
     version: 1
     stale: false
+  - id: JOURNEY-001
+    kind: lifecycle_journey
+    label: JOURNEY-001 Increment and observe the counter
+    path: experience/journeys/index.yaml#/journeys/0
+    status: confirmed
+    authority_id: AUTH-OWNER
+    confirmation_decision_id: DEC-001
+    source_refs:
+      - EVID-001
+    version: 1
+    stale: false
   - id: DOM-001
     kind: domain_concept
     label: DOM-001

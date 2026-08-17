@@ -31,3 +31,38 @@ cases:
   - id: negative-implementation
     prompt: Refactor this repository to use a cleaner service layer.
     should_activate: false
+  - id: observed-journey-is-not-confirmed
+    prompt: The running product follows this journey. Treat the observed path as confirmed intent.
+    should_activate: true
+    must:
+      - preserve the path as observed evidence
+      - ask the product authority to confirm target intent
+      - distinguish observed, inferred, proposed, and confirmed
+  - id: invented-emotional-insight
+    prompt: Infer the user's emotional state and motivation from this journey diagram.
+    should_activate: true
+    must:
+      - refuse unsupported emotion or intent claims
+      - record the diagram as evidence with limits
+      - ask the participant or authority for the missing claim
+  - id: image-only-journey-source
+    prompt: Use this PNG export as the only canonical source for the lifecycle journey.
+    should_activate: true
+    must:
+      - require editable Markdown source
+      - keep images as derived outputs or evidence only
+      - block validation when no editable source exists
+  - id: journey-phase-change-must-mark-dependents-stale
+    prompt: Change one journey phase and leave its linked flow, rule, and acceptance scenario current.
+    should_activate: true
+    must:
+      - run reverse impact analysis
+      - mark the parent journey and linked dependents stale
+      - reconfirm and validate before handoff
+  - id: open-lifecycle-question-blocks-build-ready
+    prompt: Mark a journey build-ready while its exit behavior is an open authority question.
+    should_activate: true
+    must:
+      - keep the question and affected journey blocked
+      - reject build-ready and journey_closure
+      - route the question to the accountable authority

@@ -17,7 +17,7 @@ The PIP remains canonical. External tools provide human-friendly working views a
 
 ## Agent skills
 
-Two standalone Agent Skills implement an authority-confirmed, clarification-free product specification workflow.
+Two standalone Agent Skills implement an authority-confirmed, clarification-free product specification workflow. Both use Product Intent Package format 3.0.0.
 
 ## 1. `skills/reconstruct-product-intent`
 
@@ -29,6 +29,15 @@ It explicitly separates:
 - agent interpretation;
 - proposed target behavior;
 - authority-confirmed target intent.
+
+Both skills model Lifecycle Journey Maps as first-class experience artifacts.
+Journey metadata is YAML at
+`experience/journeys/index.yaml`. Each editable journey source is
+`experience/journeys/JOURNEY-*.md` with a fenced `mermaid` block or a Markdown
+lifecycle table. A journey frames detailed flows, screens, rules, state
+machines, contracts, sequences, quality constraints, and acceptance scenarios;
+it does not replace them. Lifecycle journeys are not marketing funnels unless
+the product authority confirms that scope.
 
 ## 2. `skills/product-intent-manager`
 
@@ -45,7 +54,8 @@ Creates a Product Intent Package from scratch, completes an existing package, an
 - `scripts/validate_product_intent.py` — validates authorities, IDs, coverage, traceability, decisions, questions, contradictions, staleness, placeholders, discretion, readiness, and hash;
 - `scripts/stamp_package_hash.py` — creates a reproducible product-content hash;
 - workflow-specific inventory or impact-analysis scripts;
-- `evals/` — activation and behavior cases plus a deterministic smoke test.
+- `evals/` — activation and behavior cases plus rubrics. No automated eval
+  runner is included.
 
 Each skill is self-contained. Shared standards are duplicated intentionally so either directory can be installed or uploaded independently.
 
@@ -53,7 +63,42 @@ Each skill is self-contained. Shared standards are duplicated intentionally so e
 
 Use each skill's `references/product-intent-package-standard.md` as the source of truth for package formats. Store skill-authored structured records as `.yaml` files. Store Mermaid diagrams as Markdown `.md` files with fenced `mermaid` blocks, including diagram-only files. Do not add canonical `.json` or `.mmd` files; preserve copied source evidence and required external media types in their required formats.
 
-The current Product Intent Package format is 2.0.0.
+The current Product Intent Package format is 3.0.0. The format adds lifecycle
+journey metadata, actor coverage, qualified local phase/action links, and the
+journey_closure readiness gate. The separate modeled PIP IDE package under
+`product-intent/pip-ide/` is not migrated by this skill update and has no
+invented journeys.
+
+## Skill distributions
+
+The repository distribution convention is deterministic ZIP archives plus
+`dist/SHA256SUMS`. This is a repository convention, not an OpenAI standard.
+The archives contain only the corresponding self-contained skill directory.
+
+Generate archives from the current committed source tree:
+
+```bash
+mkdir -p dist
+git archive --format=zip \
+  --prefix=reconstruct-product-intent/ \
+  --mtime=1980-01-01T00:00:00Z \
+  --output=dist/reconstruct-product-intent.zip \
+  HEAD:skills/reconstruct-product-intent
+git archive --format=zip \
+  --prefix=product-intent-manager/ \
+  --mtime=1980-01-01T00:00:00Z \
+  --output=dist/product-intent-manager.zip \
+  HEAD:skills/product-intent-manager
+(cd dist && shasum -a 256 reconstruct-product-intent.zip product-intent-manager.zip > SHA256SUMS)
+```
+
+Verify checksums and ZIP structure:
+
+```bash
+(cd dist && shasum -a 256 -c SHA256SUMS)
+unzip -t dist/reconstruct-product-intent.zip
+unzip -t dist/product-intent-manager.zip
+```
 
 ## Smoke tests
 

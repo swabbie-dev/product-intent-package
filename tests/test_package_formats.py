@@ -15,6 +15,23 @@ import yaml
 ROOT = Path(__file__).resolve().parents[1]
 SKILLS = ("skills/reconstruct-product-intent", "skills/product-intent-manager")
 PACKAGE_TREES = ("assets/product-intent-template", "assets/example-product-intent-package")
+SHARED_REFERENCES = (
+    "authority-and-evidence-policy.md",
+    "coverage-and-handoff-gates.md",
+    "example-capability-slice.md",
+    "lifecycle-journey-maps.md",
+    "product-intent-package-standard.md",
+    "questioning-protocol.md",
+    "registry-schemas.md",
+    "source-safety.md",
+)
+SHARED_SCRIPTS = (
+    "init_product_intent.py",
+    "journey_validation.py",
+    "stamp_package_hash.py",
+    "validate_product_intent.py",
+    "yaml_io.py",
+)
 
 STRUCTURED_PATHS = (
     "manifest.yaml",
@@ -112,6 +129,16 @@ class PackageFormatTests(unittest.TestCase):
                         self.assertEqual(1, text.count("```mermaid\n"))
                         self.assertTrue(text.rstrip().endswith("```"))
 
+    def test_markdown_fences_are_balanced(self) -> None:
+        for skill in SKILLS:
+            skill_root = ROOT / skill
+            for path in skill_root.rglob("*.md"):
+                with self.subTest(skill=skill, path=path.relative_to(skill_root)):
+                    self.assertEqual(
+                        0,
+                        path.read_text(encoding="utf-8").count("```") % 2,
+                    )
+
     def test_all_authored_yaml_is_safe_loadable(self) -> None:
         for skill in SKILLS:
             skill_root = ROOT / skill
@@ -149,6 +176,14 @@ class PackageFormatTests(unittest.TestCase):
             self.assertIn(
                 "Product Intent Package format 3.0.0",
                 (ROOT / skill / "SKILL.md").read_text(encoding="utf-8"),
+            )
+            self.assertIn(
+                "Product Intent Package format `3.0.0`",
+                (
+                    ROOT
+                    / skill
+                    / "references/product-intent-package-standard.md"
+                ).read_text(encoding="utf-8"),
             )
 
     def test_yaml_loader_rejects_duplicate_keys_and_custom_tags(self) -> None:
@@ -548,7 +583,14 @@ class PackageFormatTests(unittest.TestCase):
                 evidence_path = package / "governance/evidence.yaml"
                 evidence = yaml.safe_load(evidence_path.read_text(encoding="utf-8"))
                 evidence["evidence"][0]["claims"].extend(
-                    ["AUTH-001", "EVID-001", "DEC-001", "Q-001", "CHANGE-001"]
+                    [
+                        "AUTH-001",
+                        "EVID-001",
+                        "DEC-001",
+                        "Q-001",
+                        "CON-001",
+                        "CHANGE-001",
+                    ]
                 )
                 evidence_path.write_text(yaml.safe_dump(evidence, sort_keys=False), encoding="utf-8")
                 source_evidence = package / "source-evidence"
@@ -791,6 +833,22 @@ class PackageFormatTests(unittest.TestCase):
         for relative in sorted(left_files):
             with self.subTest(path=relative):
                 self.assertEqual((left / relative).read_bytes(), (right / relative).read_bytes())
+
+    def test_shared_skill_files_stay_identical(self) -> None:
+        left = ROOT / SKILLS[0]
+        right = ROOT / SKILLS[1]
+        for folder, names in (
+            ("references", SHARED_REFERENCES),
+            ("scripts", SHARED_SCRIPTS),
+        ):
+            for name in names:
+                relative = Path(folder) / name
+                with self.subTest(path=relative):
+                    self.assertTrue((left / relative).is_file())
+                    self.assertEqual(
+                        (left / relative).read_bytes(),
+                        (right / relative).read_bytes(),
+                    )
 
 
 if __name__ == "__main__":

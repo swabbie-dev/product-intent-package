@@ -17,6 +17,7 @@ from pathlib import Path
 from typing import Any, Optional
 
 from yaml_io import dump_yaml, load_yaml as load_yaml_file, write_yaml
+from journey_validation import validate_lifecycle_journeys
 
 REQUIRED_FILES = [
     "manifest.yaml",
@@ -30,6 +31,7 @@ REQUIRED_FILES = [
     "governance/evidence.yaml",
     "governance/glossary.yaml",
     "governance/change-log.yaml",
+    "experience/journeys/index.yaml",
     "product/context.md",
     "product/capabilities.yaml",
     "product/domain-model.md",
@@ -86,6 +88,7 @@ STRUCTURES = {
     "runtime_interactions",
     "quality_constraints",
     "verification_model",
+    "lifecycle_journey_model",
 }
 
 COVERAGE_LENSES = {
@@ -167,6 +170,7 @@ PREFIX_KIND = {
     "SEQ": "sequence",
     "QC": "quality_constraint",
     "ACC": "acceptance_scenario",
+    "JOURNEY": "lifecycle_journey",
     "DIS": "implementation_discretion",
 }
 
@@ -176,7 +180,7 @@ ARTIFACT_ID_RE = re.compile(
 CANONICAL_ID_TOKEN_RE = re.compile(
     r"(?<![A-Za-z0-9_])([A-Z][A-Z0-9]*)-(\d{3,})([A-Za-z0-9]*)(?![A-Za-z0-9_])"
 )
-GOVERNANCE_ID_PREFIXES = {"AUTH", "EVID", "DEC", "Q", "CHANGE"}
+GOVERNANCE_ID_PREFIXES = {"AUTH", "EVID", "DEC", "Q", "CON", "CHANGE"}
 PLACEHOLDER_RE = re.compile(
     r"(?:\bTBD\b|\bTODO\b|\bUNSET\b|\bUNKNOWN\b|\?\?\?|<placeholder>|\[placeholder\])",
     re.IGNORECASE,
@@ -186,6 +190,14 @@ MERMAID_FENCE_RE = re.compile(r"(?ms)^```mermaid[ \t]*\n.*?^```[ \t]*(?:\n|$)")
 
 def rel(root: Path, path: Path) -> str:
     return path.relative_to(root).as_posix()
+
+
+def find_package_symlinks(root: Path) -> list[Path]:
+    if root.is_symlink():
+        return [root]
+    if not root.exists():
+        return []
+    return sorted(path for path in root.rglob("*") if path.is_symlink())
 
 
 def load_document(path: Path, errors: list[str]) -> Any:
@@ -212,7 +224,11 @@ def resolve_artifact_file(
         errors.append(f"{artifact_id}: artifact path must stay inside package: {path_value}")
         return None
 
-    candidate = (root / declared_path).resolve()
+    declared_candidate = root / declared_path
+    if declared_candidate.is_symlink():
+        errors.append(f"{artifact_id}: artifact path cannot be a symbolic link: {path_value}")
+        return None
+    candidate = declared_candidate.resolve()
     try:
         candidate.relative_to(root.resolve())
     except ValueError:
@@ -226,7 +242,9 @@ def resolve_artifact_file(
 
 
 def iter_text_files(root: Path) -> Iterator[Path]:
-    for path in sorted(p for p in root.rglob("*") if p.is_file()):
+    for path in sorted(
+        p for p in root.rglob("*") if not p.is_symlink() and p.is_file()
+    ):
         relative = rel(root, path)
         if path.name.startswith("readiness-report.generated"):
             continue
@@ -243,7 +261,9 @@ def iter_text_files(root: Path) -> Iterator[Path]:
 def content_hash(root: Path) -> str:
     """Hash product content while excluding mutable readiness/report metadata."""
     digest = hashlib.sha256()
-    for path in sorted(p for p in root.rglob("*") if p.is_file()):
+    for path in sorted(
+        p for p in root.rglob("*") if not p.is_symlink() and p.is_file()
+    ):
         relative = rel(root, path)
         if path.name.startswith("readiness-report.generated") or relative == "handoff/readiness.yaml":
             continue
@@ -290,6 +310,37 @@ def require_confirmed_decision(
         errors.append(f"{context}: requires a confirmed decision ID")
 
 
+def has_applicable_delegation(
+    decision: dict[str, Any],
+    accountable_authority_id: str,
+    delegations: Any,
+    confirmed_decision_ids: set[str],
+) -> bool:
+    decision_authority_id = decision.get("authority_id")
+    affected_ids = {
+        value
+        for value in (decision.get("affects") or [])
+        if isinstance(value, str)
+    }
+    if not isinstance(delegations, list) or not affected_ids:
+        return False
+    for delegation in delegations:
+        if not isinstance(delegation, dict):
+            continue
+        if (
+            delegation.get("delegator_id") != accountable_authority_id
+            or delegation.get("delegate_id") != decision_authority_id
+            or delegation.get("decision_id") not in confirmed_decision_ids
+        ):
+            continue
+        scope = delegation.get("scope")
+        if not isinstance(scope, str):
+            continue
+        if affected_ids & set(ARTIFACT_ID_RE.findall(scope)):
+            return True
+    return False
+
+
 def validate_canonical_ids(root: Path, errors: list[str]) -> None:
     reported: set[tuple[str, str]] = set()
     for path in iter_text_files(root):
@@ -325,6 +376,8 @@ def related_trace_edges(
 ) -> set[tuple[Any, Any, Any]]:
     related: set[tuple[Any, Any, Any]] = set()
     for edge in edges:
+        if edge.get("source_part_id") is not None:
+            continue
         source = edge.get("from")
         target = edge.get("to")
         if edge.get("relation") != relation:
@@ -344,7 +397,9 @@ def source_trace_edges(
     return {
         (edge.get("from"), relation, edge.get("to"))
         for edge in edges
-        if edge.get("from") == source_id and edge.get("relation") == relation
+        if edge.get("from") == source_id
+        and edge.get("relation") == relation
+        and edge.get("source_part_id") is None
     }
 
 
@@ -370,6 +425,15 @@ def compare_declared_traceability(
 def validate(root: Path) -> tuple[list[str], list[str], dict[str, Any]]:
     errors: list[str] = []
     warnings: list[str] = []
+
+    package_symlinks = find_package_symlinks(root)
+    for path in package_symlinks:
+        location = "." if path == root else rel(root, path)
+        errors.append(
+            f"{location}: symbolic links are not allowed in a Product Intent Package"
+        )
+    if package_symlinks:
+        return errors, warnings, {"content_hash": None}
 
     for item in REQUIRED_FILES:
         if not (root / item).is_file():
@@ -422,8 +486,8 @@ def validate(root: Path) -> tuple[list[str], list[str], dict[str, Any]]:
     manifest = parsed.get("manifest.yaml", {}) or {}
     build_ready = bool(manifest.get("build_ready"))
     manifest_status = manifest.get("status")
-    if manifest.get("schema_version") != "2.0.0":
-        errors.append("manifest.yaml: schema_version must be '2.0.0'")
+    if manifest.get("schema_version") != "3.0.0":
+        errors.append("manifest.yaml: schema_version must be '3.0.0'")
     if manifest_status not in MANIFEST_STATUSES:
         errors.append(f"manifest.yaml: invalid status {manifest_status!r}")
     if build_ready and manifest_status != "build_ready":
@@ -475,6 +539,7 @@ def validate(root: Path) -> tuple[list[str], list[str], dict[str, Any]]:
     confirmed_decision_ids = {
         decision_id for decision_id, decision in decision_map.items() if decision.get("status") == "confirmed"
     }
+    delegations = authorities_data.get("delegations") or []
     for decision_id, decision in decision_map.items():
         status = decision.get("status")
         if status not in DECISION_STATUSES:
@@ -482,6 +547,24 @@ def validate(root: Path) -> tuple[list[str], list[str], dict[str, Any]]:
         authority_id = decision.get("authority_id")
         if authority_id not in authority_ids:
             errors.append(f"{decision_id}: unknown or missing authority_id")
+        decision_domain = decision.get("domain")
+        if not isinstance(decision_domain, str) or decision_domain not in domain_map:
+            errors.append(f"{decision_id}: unknown or missing decision domain")
+        else:
+            accountable_authority_id = domain_map[decision_domain]
+            if (
+                authority_id != accountable_authority_id
+                and not has_applicable_delegation(
+                    decision,
+                    accountable_authority_id,
+                    delegations,
+                    confirmed_decision_ids,
+                )
+            ):
+                errors.append(
+                    f"{decision_id}: authority_id has no authority for domain "
+                    f"{decision_domain!r} and has no applicable delegation"
+                )
         if status == "confirmed":
             if not decision.get("statement"):
                 errors.append(f"{decision_id}: confirmed decision requires statement")
@@ -493,7 +576,7 @@ def validate(root: Path) -> tuple[list[str], list[str], dict[str, Any]]:
             if superseded not in decision_ids:
                 errors.append(f"{decision_id}: supersedes unknown decision {superseded}")
 
-    for delegation in authorities_data.get("delegations") or []:
+    for delegation in delegations:
         did = delegation.get("id", "<missing-id>")
         if delegation.get("delegator_id") not in authority_ids:
             errors.append(f"{did}: delegation has unknown delegator_id")
@@ -695,18 +778,43 @@ def validate(root: Path) -> tuple[list[str], list[str], dict[str, Any]]:
             )
 
     trace = parsed.get("verification/traceability.yaml", {}) or {}
+    if not isinstance(trace, dict):
+        errors.append("verification/traceability.yaml: must be a mapping")
+        trace = {}
     edges = trace.get("edges") or []
-    edge_keys: set[tuple[str, str, str]] = set()
+    if not isinstance(edges, list):
+        errors.append("verification/traceability.yaml: edges must be a list")
+        edges = []
+    edge_keys: set[tuple[Any, Any, Any, Any]] = set()
     by_source: dict[str, list[dict[str, Any]]] = {}
     connected_ids: set[str] = set()
-    for edge in edges:
+    valid_edges: list[dict[str, Any]] = []
+    for edge_index, edge in enumerate(edges):
+        if not isinstance(edge, dict):
+            errors.append(f"verification/traceability.yaml: edges[{edge_index}] must be a mapping")
+            continue
         source = edge.get("from")
         relation = edge.get("relation")
         target = edge.get("to")
-        key = (source, relation, target)
+        source_part_id = edge.get("source_part_id")
+        edge_context = f"verification/traceability.yaml: edges[{edge_index}]"
+        invalid_edge = False
+        for field, value in (("from", source), ("relation", relation), ("to", target)):
+            if not isinstance(value, str) or not value:
+                errors.append(f"{edge_context}: {field} must be a non-empty string")
+                invalid_edge = True
+        if source_part_id is not None and (
+            not isinstance(source_part_id, str) or not source_part_id
+        ):
+            errors.append(f"{edge_context}: source_part_id must be a non-empty string")
+            invalid_edge = True
+        if invalid_edge:
+            continue
+        key = (source, relation, target, source_part_id)
         if key in edge_keys:
             warnings.append(f"Duplicate traceability edge: {source} -[{relation}]-> {target}")
         edge_keys.add(key)
+        valid_edges.append(edge)
         if relation not in ALLOWED_RELATIONS:
             errors.append(f"Invalid traceability relation: {relation!r}")
         if source not in artifacts:
@@ -721,6 +829,8 @@ def validate(root: Path) -> tuple[list[str], list[str], dict[str, Any]]:
         if target:
             connected_ids.add(target)
 
+    edges = valid_edges
+
     if build_ready:
         unconnected = sorted(
             artifact_id
@@ -734,6 +844,23 @@ def validate(root: Path) -> tuple[list[str], list[str], dict[str, Any]]:
             )
 
     capability_map = {c.get("id"): c for c in capabilities if c.get("id")}
+    journey_counts = validate_lifecycle_journeys(
+        root,
+        parsed.get("experience/journeys/index.yaml", {}),
+        artifacts,
+        evidence_ids,
+        decision_ids,
+        confirmed_decision_ids,
+        decision_map,
+        {q.get("id") for q in questions if isinstance(q, dict) and q.get("id")},
+        {c.get("id") for c in contradictions if isinstance(c, dict) and c.get("id")},
+        actor_ids,
+        capability_map,
+        in_scope_ids,
+        edges,
+        build_ready,
+        errors,
+    )
     for cap_id, cap in capability_map.items():
         cap_actor_ids = cap.get("actor_ids") or []
         for actor_id in cap_actor_ids:
@@ -896,6 +1023,7 @@ def validate(root: Path) -> tuple[list[str], list[str], dict[str, Any]]:
     expected_gates = {
         "governance",
         "structural_coverage",
+        "journey_closure",
         "capability_traceability",
         "behavioral_closure",
         "technical_closure",
@@ -945,6 +1073,12 @@ def validate(root: Path) -> tuple[list[str], list[str], dict[str, Any]]:
         "artifact_count": len(artifacts),
         "registered_id_count": len(artifacts),
         "found_id_count": len(found_artifact_ids),
+        "journey_count": journey_counts.get("journey_count", 0),
+        "phase_count": journey_counts.get("phase_count", 0),
+        "action_count": journey_counts.get("action_count", 0),
+        "uncovered_in_scope_actor_count": journey_counts.get(
+            "uncovered_in_scope_actor_count", 0
+        ),
         "in_scope_capability_count": len(in_scope_ids),
         "acceptance_scenario_count": len(acceptance_ids),
         "open_question_count": len(open_questions),
@@ -958,8 +1092,14 @@ def validate(root: Path) -> tuple[list[str], list[str], dict[str, Any]]:
 
 
 def write_reports(root: Path, errors: list[str], warnings: list[str], report: dict[str, Any]) -> None:
-    yaml_path = root / "handoff" / "readiness-report.generated.yaml"
-    md_path = root / "handoff" / "readiness-report.generated.md"
+    handoff = root / "handoff"
+    if handoff.is_symlink() or not handoff.is_dir():
+        raise ValueError("handoff must be a regular directory inside the package")
+    yaml_path = handoff / "readiness-report.generated.yaml"
+    md_path = handoff / "readiness-report.generated.md"
+    for path in (yaml_path, md_path):
+        if path.is_symlink() or (path.exists() and not path.is_file()):
+            raise ValueError(f"Report path must be a regular file: {path}")
     write_yaml(yaml_path, {**report, "errors": errors, "warnings": warnings})
 
     lines = [
@@ -968,6 +1108,10 @@ def write_reports(root: Path, errors: list[str], warnings: list[str], report: di
         f"- Result: **{'PASS' if not errors else 'FAIL'}**",
         f"- Declared build-ready: `{report.get('build_ready_declared')}`",
         f"- Artifacts: `{report.get('artifact_count')}`",
+        f"- Lifecycle journeys: `{report.get('journey_count')}`",
+        f"- Journey phases: `{report.get('phase_count')}`",
+        f"- Journey actions: `{report.get('action_count')}`",
+        f"- Uncovered in-scope actors: `{report.get('uncovered_in_scope_actor_count')}`",
         f"- In-scope capabilities: `{report.get('in_scope_capability_count')}`",
         f"- Acceptance scenarios: `{report.get('acceptance_scenario_count')}`",
         f"- Open questions: `{report.get('open_question_count')}`",
@@ -990,13 +1134,19 @@ def main() -> int:
     parser.add_argument("--no-report", action="store_true")
     args = parser.parse_args()
 
+    if args.package.is_symlink():
+        errors, warnings, report = validate(args.package)
+        print(dump_yaml({**report, "errors": errors, "warnings": warnings}), end="")
+        return 1
+
     root = args.package.resolve()
     if not root.is_dir():
         print(f"Not a directory: {root}", file=sys.stderr)
         return 2
 
+    package_has_symlinks = bool(find_package_symlinks(root))
     errors, warnings, report = validate(root)
-    if not args.no_report:
+    if not args.no_report and not package_has_symlinks:
         write_reports(root, errors, warnings, report)
 
     print(dump_yaml({**report, "errors": errors, "warnings": warnings}), end="")

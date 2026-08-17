@@ -12,6 +12,7 @@ decisions:
     affects:
       - ACTOR-001
       - CAP-001
+      - JOURNEY-001
       - DOM-001
       - FLOW-001
       - SCREEN-001
@@ -48,7 +49,7 @@ decisions:
   - id: DEC-003
     status: confirmed
     domain: release_and_acceptance
-    statement: Counter Product Intent Package 1.0.0 is approved for clarification-free
+    statement: Counter Product Intent Package 1.1.0 is approved for clarification-free
       implementation.
     authority_id: AUTH-OWNER
     confirmed_at: '2026-08-15T12:02:00Z'
@@ -58,6 +59,7 @@ decisions:
     affects:
       - ACTOR-001
       - CAP-001
+      - JOURNEY-001
       - DOM-001
       - FLOW-001
       - SCREEN-001

@@ -14,6 +14,13 @@ The target consumer is a coding-agent orchestrator. A handoff-ready package must
 
 Anything else is an unresolved gap.
 
+## Format version
+
+This standard defines Product Intent Package format `3.0.0`.
+`manifest.yaml` must set `schema_version: 3.0.0`. This breaking version adds
+first-class lifecycle journey records, actor coverage, qualified local links,
+and the `journey_closure` readiness gate.
+
 ## Non-negotiable invariants
 
 1. **Intent is never inferred into existence.** Evidence may support a proposal; only an authorized confirmation makes it canonical.
@@ -55,6 +62,7 @@ Use these rules for every Product Intent Package:
 |---|---|---|
 | Governance | authority, scope, structure/lens coverage, decisions, questions, contradictions, evidence, artifact registry, change history | `governance/*` |
 | Product map | actors, system boundary, capabilities, external systems, exclusions | `product/context.md`, `product/capabilities.yaml`, `governance/scope.yaml` |
+| Lifecycle journey | actor lifecycle, phases, actions, product responses, exceptions, recurrence, and dependent detail | `experience/journeys/index.yaml`, `experience/journeys/JOURNEY-*.md` |
 | Domain model | conceptual entities, relationships, ownership, invariants, vocabulary | `product/domain-model.md`, `governance/glossary.yaml` |
 | User-flow model | actor goals, entry points, paths, alternatives, recovery | `experience/user-flows.md` |
 | Interface model | surface topology, screens, states, responsive behavior, copy references, mockups | `experience/screen-map.md`, `experience/screens.yaml`, `experience/mockups/` |
@@ -78,6 +86,7 @@ Recommended prefixes:
 |---|---|
 | `ACTOR` | user, operator, service, or external actor |
 | `CAP` | capability |
+| `JOURNEY` | lifecycle journey map |
 | `DOM` | domain concept |
 | `FLOW` | user or operational flow |
 | `SCREEN` | screen, page, view, or interaction surface |
@@ -134,7 +143,7 @@ Allowed working statuses:
 
 Only active `confirmed`, `out_of_scope`, and `not_applicable` items may remain at build-ready handoff. Historical superseded items may remain outside the active graph.
 
-## The twelve required information structures
+## The thirteen required information structures
 
 ### 1. Product map
 
@@ -149,7 +158,26 @@ Must define:
 
 Primary form: context diagram + capability registry + scope registry.
 
-### 2. Domain model
+### 2. Lifecycle journey model
+
+For each in-scope actor, define the confirmed lifecycle context for applicable
+capabilities before detailed flows:
+
+- journey type and rationale;
+- actor variant, actor lanes, scope, target view, and intent status;
+- time axis, topology, recurrence, trigger, desired outcome, and terminal states;
+- phases with entry/exit conditions and local IDs;
+- actor actions, product responses, state/data/event effects, and detailed links;
+- failure, pause/resume, abandonment, exit, and recovery dispositions;
+- transitions and detailed flows for complex branches;
+- authority, confirmation decision, evidence, and source Markdown path.
+
+Primary form: `experience/journeys/index.yaml` plus editable Markdown sources
+with a fenced `mermaid` block, a Markdown lifecycle table, or both. A journey
+frames detailed artifacts; it does not replace a flow, screen, rule, state
+machine, contract, sequence, quality, or acceptance artifact.
+
+### 3. Domain model
 
 Must define conceptual entities independently of storage:
 
@@ -162,7 +190,7 @@ Must define conceptual entities independently of storage:
 
 Primary form: concept/relationship diagram + glossary.
 
-### 3. User-flow model
+### 4. User-flow model
 
 For every actor goal, define:
 
@@ -176,7 +204,7 @@ For every actor goal, define:
 
 Primary form: flow diagrams keyed by `FLOW-*` IDs.
 
-### 4. Interface model
+### 5. Interface model
 
 For every user-visible surface, define:
 
@@ -190,7 +218,7 @@ For every user-visible surface, define:
 
 Primary form: screen map + screen-state registry + mockups.
 
-### 5. Design system
+### 6. Design system
 
 Define:
 
@@ -204,7 +232,7 @@ Define:
 
 Primary form: machine-readable tokens + component/interaction catalog. Mockups must reference these components rather than redefine them.
 
-### 6. Behavior model
+### 7. Behavior model
 
 Define:
 
@@ -217,7 +245,7 @@ Define:
 
 Primary form: state machines + rules registry + decision tables.
 
-### 7. Data model
+### 8. Data model
 
 Define:
 
@@ -230,7 +258,7 @@ Define:
 
 Primary form: ERD/DBML + schema registry + lifecycle matrix.
 
-### 8. System architecture
+### 9. System architecture
 
 Define:
 
@@ -245,7 +273,7 @@ Define:
 
 Primary form: context, container, component, and deployment diagrams.
 
-### 9. Interface contracts
+### 10. Interface contracts
 
 For every boundary, define:
 
@@ -259,7 +287,7 @@ For every boundary, define:
 
 Primary form: OpenAPI-compatible contract, event registry, and integration contract registry.
 
-### 10. Runtime interaction model
+### 11. Runtime interaction model
 
 Create sequence diagrams wherever ordering or component coordination matters, including:
 
@@ -273,7 +301,7 @@ Create sequence diagrams wherever ordering or component coordination matters, in
 
 Primary form: sequence diagrams keyed by `SEQ-*` IDs.
 
-### 11. Quality constraints
+### 12. Quality constraints
 
 Every constraint must be measurable or testable. Cover applicable dimensions:
 
@@ -287,7 +315,7 @@ Every constraint must be measurable or testable. Cover applicable dimensions:
 
 Primary form: constraint matrix keyed by `QC-*` IDs.
 
-### 12. Verification model
+### 13. Verification model
 
 Define:
 
@@ -300,7 +328,7 @@ Primary form: acceptance registry + traceability graph.
 
 ## Coverage lenses
 
-The twelve structures are canonical. Apply these lenses across them so common omissions do not hide between documents:
+The thirteen structures are canonical. Apply these lenses across them so common omissions do not hide between documents:
 
 - roles, permissions, tenancy, and delegated access;
 - onboarding, authentication, account recovery, suspension, and deletion;
@@ -321,7 +349,9 @@ Each lens must be either represented, explicitly not applicable, or out of scope
 
 ## Traceability model
 
-`verification/traceability.yaml` is the package graph. Each edge is directional:
+`verification/traceability.yaml` is the package graph. Each edge is directional.
+An edge from a journey to one of its local phases or actions includes
+`source_part_id`; local IDs are not global artifact-index entries:
 
 ```yaml
 from: CAP-001
@@ -329,11 +359,18 @@ relation: verified_by
 to: ACC-001
 ```
 
+```yaml
+from: JOURNEY-001
+source_part_id: JOURNEY-001.action-01
+relation: governed_by
+to: RULE-001
+```
+
 Canonical relations:
 
 | Relation | Meaning |
 |---|---|
-| `performed_by` | capability or flow is available to actor |
+| `performed_by` | actor performs or participates in the target item |
 | `uses_domain` | item depends on a domain concept |
 | `experienced_through` | capability is realized by a flow, screen, mockup, or component |
 | `governed_by` | item is constrained by a rule, state machine, or decision table |
@@ -346,7 +383,13 @@ Canonical relations:
 | `depends_on` | item cannot operate without another item |
 | `supersedes` | item replaces a prior item |
 
-`governance/coverage-matrix.yaml` separately proves that all twelve canonical structures and every cross-cutting coverage lens are either covered, confirmed not applicable, confirmed out of scope, or blocked.
+Use `performed_by` from an actor to a journey and `experienced_through` from a
+capability to a journey when the lifecycle frames that actor experience. Link
+journey phases and actions with `source_part_id` on the parent journey edge.
+
+`governance/coverage-matrix.yaml` separately proves that all thirteen canonical
+structures and every cross-cutting coverage lens are either covered, confirmed
+not applicable, confirmed out of scope, or blocked.
 
 Every in-scope capability declares which coverage dimensions apply. A false dimension requires a confirmed exception decision. Every true dimension requires at least one matching traceability edge.
 
@@ -378,6 +421,9 @@ A package is build-ready only when:
 - all required authority domains have accountable owners or explicit delegations;
 - scope and target baseline are confirmed;
 - every in-scope capability is confirmed and fully traced across all applicable dimensions;
+- every in-scope actor has journey coverage, and every active journey has
+  confirmed metadata, product-response lanes, exception dispositions, and
+  detailed artifact links;
 - every user-visible and operational path has defined states, errors, permissions, and recovery;
 - every behavior-affecting rule and lifecycle is explicit;
 - every data and system boundary has a contract;
@@ -386,8 +432,11 @@ A package is build-ready only when:
 - every capability and constraint has acceptance coverage;
 - all contradictions are resolved;
 - no blocking questions, unresolved contradictions, placeholders, stale artifacts, or unconfirmed active items remain;
+- no open journey question, assumption, contradiction, or stale journey
+  dependent remains;
 - every unspecified choice is covered by a bounded discretion grant;
 - deterministic validation passes;
 - the accountable product authority confirms the final handoff version.
 
-A package that fails any condition is still useful, but it must be labeled `draft` or `blocked`, never `build_ready`.
+A package that fails any condition is still useful, but it must be labeled
+`modeled` or `blocked`, never `build_ready`.

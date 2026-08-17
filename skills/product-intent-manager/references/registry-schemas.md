@@ -67,6 +67,7 @@ Canonical kinds by prefix:
 |---|---|
 | `ACTOR` | `actor` |
 | `CAP` | `capability` |
+| `JOURNEY` | `lifecycle_journey` |
 | `DOM` | `domain_concept` |
 | `FLOW` | `flow` |
 | `SCREEN` | `screen` |
@@ -194,6 +195,225 @@ coverage_exceptions: {}
 
 Every false dimension except `verification` requires a confirmed exception decision in `coverage_exceptions`.
 
+## Actor journey coverage
+
+Use one record for every in-scope actor. Derive the required actor set from the
+actor registry and capability scope; do not merge roles with different goals.
+
+```yaml
+actor_coverage:
+  - actor_id: ACTOR-001
+    status: covered
+    journey_ids:
+      - JOURNEY-001
+    decision_id: DEC-001
+```
+
+Allowed status is `covered`, `not_applicable`, `out_of_scope`, or `blocked`.
+`covered` requires at least one confirmed journey ID and a confirmed decision.
+An exclusion requires a confirmed decision. Use `blocked` only before
+build-ready, with its blocking question in the question ledger. A journey does
+not replace detailed capability coverage.
+
+## Lifecycle journey
+
+The journey is the global artifact. Its phase and action IDs are local parts,
+not separate artifact-index records.
+
+```yaml
+journeys:
+  - id: JOURNEY-001
+    title: Complete a task
+    status: confirmed
+    intent_status: confirmed
+    journey_type: job_task
+    type_rationale: The actor completes a bounded task.
+    structural_variant: single_actor
+    actor_ids:
+      - ACTOR-001
+    scope: Product actions from start to terminal result.
+    target_view: intended_current
+    initiating_trigger: Actor starts the task.
+    desired_outcome: The task has its confirmed result.
+    success_conditions:
+      - Result is visible and persisted.
+    terminal_conditions:
+      - Completed
+      - Abandoned
+      - Blocked
+    time_axis: task
+    topology:
+      - linear
+    recurrence_model: Actor may retry after a recoverable failure.
+    authority_id: AUTH-PRODUCT
+    confirmation_decision_id: DEC-001
+    source_refs:
+      - EVID-001
+    version: 1
+    source_path: experience/journeys/JOURNEY-001.md
+    capability_ids:
+      - CAP-001
+    exception_coverage:
+      failure:
+        status: covered
+        phase_ids:
+          - JOURNEY-001.phase-02
+        artifact_ids:
+          - FLOW-001
+      pause_resume:
+        status: not_applicable
+        decision_id: DEC-002
+      abandonment:
+        status: covered
+        phase_ids:
+          - JOURNEY-001.phase-02
+        artifact_ids:
+          - FLOW-001
+      exit:
+        status: covered
+        phase_ids:
+          - JOURNEY-001.phase-02
+        artifact_ids:
+          - ACC-001
+      recovery:
+        status: covered
+        phase_ids:
+          - JOURNEY-001.phase-02
+        artifact_ids:
+          - FLOW-001
+    phases:
+      - id: JOURNEY-001.phase-01
+        name: Start
+        product_scope: inside
+        actor_goal: Begin the task.
+        entry_conditions:
+          - Actor is eligible.
+        exit_conditions:
+          - Task is ready.
+        touchpoint_ids:
+          - SCREEN-001
+        actions:
+          - id: JOURNEY-001.action-01
+            actor_action: Start the task.
+            product_response: Show the task state.
+            response_artifact_ids:
+              - FLOW-001
+        state_data_event_ids:
+          - SM-001
+        exceptions_recovery:
+          failure: Show a visible start error.
+          recovery: Permit a retry.
+        intent_items:
+          - type: decision
+            decision_id: DEC-001
+        linked_artifacts:
+          - id: FLOW-001
+            relation: experienced_through
+            source_part_id: JOURNEY-001.action-01
+      - id: JOURNEY-001.phase-02
+        name: Complete
+        product_scope: inside
+        actor_goal: Finish or leave the task.
+        entry_conditions:
+          - Task is ready.
+        exit_conditions:
+          - Task is completed, abandoned, or blocked.
+        touchpoint_ids:
+          - SCREEN-001
+        actions:
+          - id: JOURNEY-001.action-02
+            actor_action: Submit the task.
+            product_response: Persist the result and show success or failure.
+            response_artifact_ids:
+              - FLOW-001
+              - RULE-001
+        state_data_event_ids:
+          - SM-001
+          - DATA-001
+        exceptions_recovery:
+          - Failure returns a visible error.
+          - Recovery permits a retry.
+        intent_items:
+          - type: evidence
+            ref_id: EVID-001
+        linked_artifacts:
+          - id: FLOW-001
+            relation: experienced_through
+            source_part_id: JOURNEY-001.action-02
+          - id: RULE-001
+            relation: governed_by
+            source_part_id: JOURNEY-001.action-02
+    transitions:
+      - from_phase_id: JOURNEY-001.phase-01
+        to_phase_id: JOURNEY-001.phase-02
+        condition: Task is ready.
+        complex: false
+        flow_ids: []
+```
+
+Required journey fields are `id`, `title`, `status`, `intent_status`,
+`journey_type`, `type_rationale`, `structural_variant`, `actor_ids`, `scope`,
+`target_view`, `initiating_trigger`, `desired_outcome`, `success_conditions`,
+`terminal_conditions`, `time_axis`, `topology`, `recurrence_model`,
+`authority_id`, `confirmation_decision_id`, `source_refs`, `version`,
+`source_path`, `capability_ids`, `exception_coverage`, `phases`, and
+`transitions`. Keep `kind` and `stale` in the artifact-index record only.
+
+Allowed `journey_type` values are
+`customer_relationship`, `job_task`, `operational_case`, `entity_asset`,
+`developer_integration`, `ecosystem_marketplace`, `service_blueprint`, and
+`custom`. A `custom` type needs a specific authority-confirmed rationale.
+Allowed `structural_variant` values are `single_actor`, `role_specific`, and
+`multi_actor_coordinated`. Allowed `target_view` values are `as_observed`,
+`intended_current`, and `target_next`. Allowed `intent_status` values are
+`observed`, `inferred`, `proposed`, and `confirmed`. `status` keeps the normal
+artifact status and is separate from `intent_status`.
+`single_actor` requires exactly one actor. `role_specific` and
+`multi_actor_coordinated` require at least two actors. `cyclical` and
+`recurring` require a directed transition cycle. `branching` requires at least
+two outgoing transition records from one phase.
+
+The confirmation decision must use `product_strategy` or
+`capabilities_and_behavior`, include the journey ID in `affects`, and come from
+the journey authority or an applicable recorded delegation. Actor-coverage and
+exception decisions use the same domains and must name the actor or journey
+that they affect.
+
+Each phase requires `id`, `name`, `product_scope`, `actor_goal`,
+`entry_conditions`, `exit_conditions`, `touchpoint_ids`, `actions`,
+`state_data_event_ids`, `exceptions_recovery`, `intent_items`, and
+`linked_artifacts`. Each action requires `id`, `actor_action`,
+`product_response`, and `response_artifact_ids`. The list can be empty only
+when `response_exception_decision_id` names a confirmed decision. Local IDs
+must start with the parent journey ID and use `.phase-` or `.action-`.
+Each response artifact also requires a `linked_artifacts` record with the same
+action ID and a matching qualified trace edge.
+
+Each `linked_artifacts` record requires `id`, `relation`, and `source_part_id`.
+The parent trace edge also carries `source_part_id`. It must equal a phase or
+action ID in the parent journey.
+The artifact index and journey registry must contain the same set of global
+`JOURNEY-*` IDs.
+
+Each journey has exactly these exception categories:
+`failure`, `pause_resume`, `abandonment`, `exit`, and `recovery`. A
+`covered` category requires phase and artifact links, including a qualified
+link to at least one behavior or verification artifact from a listed phase or
+its action. `not_applicable` and
+`out_of_scope` require a confirmed decision. An unresolved category blocks
+handoff.
+
+Intent items use `evidence`, `assumption`, `decision`, `question`, or
+`contradiction`. Evidence links to `EVID-*`, decisions to `DEC-*`, questions to
+`Q-*`, and contradictions to `CON-*`. Build-ready rejects active assumptions,
+questions, contradictions, and journeys whose `intent_status` is not
+`confirmed`.
+
+The `source_path` must be a safe relative Markdown `.md` path under the package
+root. It must contain a fenced `mermaid` block or a Markdown lifecycle table.
+An image or `.mmd` file is never the canonical journey source. Rendered images
+are derived outputs only.
+
 ## Screen
 
 ```yaml
@@ -290,6 +510,35 @@ from: CAP-001
 relation: verified_by
 to: ACC-001
 ```
+
+```yaml
+from: JOURNEY-001
+source_part_id: JOURNEY-001.action-01
+relation: governed_by
+to: RULE-001
+```
+
+The parent `JOURNEY-*` is the only global trace endpoint. A
+`source_part_id` must be a local phase or action ID declared by that journey.
+Use the existing relations; do not add a second journey-specific relation.
+
+## Readiness gate
+
+Add this gate to `handoff/readiness.yaml`:
+
+```yaml
+gates:
+  journey_closure:
+    passed: true
+    evidence_refs:
+      - DEC-001
+```
+
+`journey_closure` passes only when all active journeys have actor coverage,
+confirmed metadata, product-response lanes, exception dispositions, qualified
+trace links, detailed artifact links, safe Markdown sources, and no unresolved
+journey intent. An open question, assumption, contradiction, or stale journey
+dependent blocks `build_ready`.
 
 ## Implementation discretion
 

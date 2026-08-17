@@ -47,6 +47,10 @@ structures:
     status: blocked
     artifact_ids: []
     decision_id: null
+  - name: lifecycle_journey_model
+    status: blocked
+    artifact_ids: []
+    decision_id: null
 lenses:
   - name: roles_permissions_tenancy
     status: blocked

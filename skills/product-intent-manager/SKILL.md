@@ -1,6 +1,6 @@
 ---
 name: product-intent-manager
-description: Create, complete, validate, and maintain an authority-confirmed Product Intent Package for a software product. Use for greenfield product definition, filling gaps in an existing intent package, managing product iterations, propagating changes, or preparing a clarification-free coding-agent handoff. Do not implement the product or silently decide unconfirmed product behavior.
+description: Create, complete, validate, and maintain an authority-confirmed Product Intent Package with Lifecycle Journey Maps for a software product. Use for greenfield product definition, filling gaps in an existing intent package, managing product iterations, propagating changes, or preparing a clarification-free coding-agent handoff. Do not implement the product or silently decide unconfirmed product behavior.
 ---
 
 # Manage Product Intent
@@ -9,7 +9,7 @@ Create and maintain a closed-world Product Intent Package that a coding-agent or
 
 ## Requirements
 
-- Use Product Intent Package format 2.0.0 for package files.
+- Use Product Intent Package format 3.0.0 for package files.
 - Use Python 3.9 or newer for bundled scripts.
 - Install the script dependency before use: `python -m pip install -r requirements.txt`.
 - Read `references/product-intent-package-standard.md` before editing a package. Follow its human-readable package file format section for canonical file extensions and Mermaid blocks.
@@ -24,15 +24,26 @@ Create and maintain a closed-world Product Intent Package that a coding-agent or
 - Convert answers into diagrams, tables, schemas, contracts, state machines, and acceptance scenarios; use prose only for rationale.
 - Never leave a gap for the coding orchestrator to “figure out” when different choices could alter observable behavior.
 - For every change, create a decision, impact analysis, staleness propagation, updated verification, validation, and package version.
+- Model lifecycle journeys after actor and capability scope and before detailed
+  flows. Require actor-action and product-response lanes, exception coverage,
+  qualified local links, authority confirmation, and detailed artifact links.
+- A journey phase or action change marks the parent journey and all linked
+  dependents stale until review and confirmation.
 - Do not mark or preserve `build_ready` while any blocking question, contradiction, stale artifact, missing authority, uncovered capability, placeholder, or unbounded choice exists.
 - Do not implement the product as part of this skill.
 
 ## Load these references
 
-1. Read `references/product-intent-package-standard.md`, `references/authority-and-evidence-policy.md`, `references/registry-schemas.md`, and `references/source-safety.md` first.
-2. For a new product, follow `references/greenfield-workflow.md` and use `references/coverage-question-bank.md` selectively.
-3. For an existing package or iteration, follow `references/lifecycle-and-change-management.md`.
-4. Use `references/questioning-protocol.md` to obtain authority-confirmed decisions.
+1. Read `references/product-intent-package-standard.md`,
+   [references/lifecycle-journey-maps.md](references/lifecycle-journey-maps.md),
+   `references/authority-and-evidence-policy.md`,
+   `references/registry-schemas.md`, and `references/source-safety.md` first.
+2. For a new product, follow `references/greenfield-workflow.md` and use
+   `references/coverage-question-bank.md` selectively.
+3. For an existing package or iteration, follow
+   `references/lifecycle-and-change-management.md`.
+4. Use `references/questioning-protocol.md` to obtain authority-confirmed
+   decisions.
 5. Apply `references/coverage-and-handoff-gates.md` before handoff.
 6. Use `references/example-capability-slice.md` only as a structural example.
 
@@ -45,13 +56,26 @@ Create and maintain a closed-world Product Intent Package that a coding-agent or
 ## Core workflow
 
 1. Establish target version, release boundary, authority registry, delegations, and confirmation method.
-2. Build or audit the twelve canonical structures in dependency order: product map, domain, flows, interface, design system, behavior, data, architecture, contracts, sequences, quality, verification.
-3. For every gap, identify the accountable authority, show relevant evidence, ask the smallest decision question, normalize the answer, and record `DEC-*`.
-4. Maintain stable IDs, artifact metadata, source references, traceability, and staleness.
-5. For changes, run `scripts/impact_analysis.py <package> <changed-ids> --reverse`; review the result semantically and reconfirm affected domains.
-6. Define only explicit, bounded `DIS-*` implementation-discretion grants.
-7. Run draft validation with `scripts/validate_product_intent.py <package-directory>` and resolve every error. Stamp the content hash with `scripts/stamp_package_hash.py <package-directory>`.
-8. Obtain and record final product/release approval for the exact version and hash, set the package to build-ready, then run final validation. Otherwise return a blocked decision queue, not a build-ready claim.
+2. Build or audit the thirteen canonical structures in dependency order:
+   product map, lifecycle journeys, domain, flows, interface, design system,
+   behavior, data, architecture, contracts, sequences, quality, verification.
+3. Model each journey after actor/capability scope and before detailed flows.
+4. For every gap, identify the accountable authority, show relevant evidence,
+   ask the smallest decision question, normalize the answer, and record
+   `DEC-*`.
+5. Maintain stable IDs, artifact metadata, source references, qualified
+   traceability, and staleness.
+6. For changes, run
+   `scripts/impact_analysis.py <package> <changed-ids> --reverse`; review the
+   result semantically and reconfirm affected domains.
+7. Define only explicit, bounded `DIS-*` implementation-discretion grants.
+8. Run draft validation with
+   `scripts/validate_product_intent.py <package-directory>` and resolve every
+   error, including `journey_closure`. Stamp the content hash with
+   `scripts/stamp_package_hash.py <package-directory>`.
+9. Obtain and record final product/release approval for the exact version and
+   hash, set the package to build-ready, then run final validation. Otherwise
+   return a blocked decision queue, not a build-ready claim.
 
 ## Output
 
