@@ -27,10 +27,11 @@ artifacts:
     path: experience/journeys/index.yaml#/journeys/0
     status: confirmed
     authority_id: AUTH-OWNER
-    confirmation_decision_id: DEC-001
+    confirmation_decision_id: DEC-006
     source_refs:
       - EVID-001
-    version: 1
+      - EVID-002
+    version: 2
     stale: false
   - id: DOM-001
     kind: domain_concept
@@ -60,10 +61,11 @@ artifacts:
     path: experience/screens.yaml#/screens/0
     status: confirmed
     authority_id: AUTH-OWNER
-    confirmation_decision_id: DEC-001
+    confirmation_decision_id: DEC-006
     source_refs:
       - EVID-001
-    version: 1
+      - EVID-002
+    version: 2
     stale: false
   - id: MOCK-001
     kind: mockup
@@ -104,10 +106,11 @@ artifacts:
     path: behavior/rules.yaml#/rules/0
     status: confirmed
     authority_id: AUTH-OWNER
-    confirmation_decision_id: DEC-001
+    confirmation_decision_id: DEC-006
     source_refs:
       - EVID-001
-    version: 1
+      - EVID-002
+    version: 2
     stale: false
   - id: SM-001
     kind: state_machine
@@ -115,10 +118,11 @@ artifacts:
     path: behavior/state-machines.md
     status: confirmed
     authority_id: AUTH-OWNER
-    confirmation_decision_id: DEC-001
+    confirmation_decision_id: DEC-006
     source_refs:
       - EVID-001
-    version: 1
+      - EVID-002
+    version: 2
     stale: false
   - id: DT-001
     kind: decision_table
@@ -145,46 +149,50 @@ artifacts:
   - id: ARCH-001
     kind: architecture
     label: ARCH-001
-    path: architecture/containers.md
+    path: architecture/runtime-stack.md
     status: confirmed
     authority_id: AUTH-OWNER
-    confirmation_decision_id: DEC-001
+    confirmation_decision_id: DEC-005
     source_refs:
       - EVID-001
-    version: 1
+      - EVID-002
+    version: 2
     stale: false
   - id: ARCH-002
     kind: architecture
     label: ARCH-002
-    path: architecture/components.md
+    path: architecture/runtime-stack.md
     status: confirmed
     authority_id: AUTH-OWNER
-    confirmation_decision_id: DEC-001
+    confirmation_decision_id: DEC-005
     source_refs:
       - EVID-001
-    version: 1
+      - EVID-002
+    version: 2
     stale: false
   - id: ARCH-003
     kind: architecture
     label: ARCH-003
-    path: architecture/containers.md
+    path: architecture/runtime-stack.md
     status: confirmed
     authority_id: AUTH-OWNER
-    confirmation_decision_id: DEC-001
+    confirmation_decision_id: DEC-005
     source_refs:
       - EVID-001
-    version: 1
+      - EVID-002
+    version: 2
     stale: false
   - id: ARCH-004
     kind: architecture
     label: ARCH-004
-    path: architecture/deployment.md
+    path: architecture/runtime-stack.md
     status: confirmed
     authority_id: AUTH-OWNER
-    confirmation_decision_id: DEC-001
+    confirmation_decision_id: DEC-005
     source_refs:
       - EVID-001
-    version: 1
+      - EVID-002
+    version: 2
     stale: false
   - id: API-001
     kind: api_contract
@@ -197,15 +205,38 @@ artifacts:
       - EVID-001
     version: 1
     stale: false
+  - id: API-002
+    kind: api_contract
+    label: API-002
+    path: contracts/openapi.yaml#/paths/~1counter/get
+    status: confirmed
+    authority_id: AUTH-OWNER
+    confirmation_decision_id: DEC-006
+    source_refs:
+      - EVID-002
+    version: 1
+    stale: false
   - id: SEQ-001
     kind: sequence
     label: SEQ-001
     path: sequences/sequences.md
     status: confirmed
     authority_id: AUTH-OWNER
-    confirmation_decision_id: DEC-001
+    confirmation_decision_id: DEC-006
     source_refs:
       - EVID-001
+      - EVID-002
+    version: 2
+    stale: false
+  - id: SEQ-002
+    kind: sequence
+    label: SEQ-002
+    path: sequences/sequences.md
+    status: confirmed
+    authority_id: AUTH-OWNER
+    confirmation_decision_id: DEC-006
+    source_refs:
+      - EVID-002
     version: 1
     stale: false
   - id: QC-001
@@ -250,6 +281,28 @@ artifacts:
     confirmation_decision_id: DEC-001
     source_refs:
       - EVID-001
+    version: 1
+    stale: false
+  - id: ACC-004
+    kind: acceptance_scenario
+    label: ACC-004
+    path: verification/acceptance.yaml#/scenarios/3
+    status: confirmed
+    authority_id: AUTH-OWNER
+    confirmation_decision_id: DEC-006
+    source_refs:
+      - EVID-002
+    version: 1
+    stale: false
+  - id: ACC-005
+    kind: acceptance_scenario
+    label: ACC-005
+    path: verification/acceptance.yaml#/scenarios/4
+    status: confirmed
+    authority_id: AUTH-OWNER
+    confirmation_decision_id: DEC-006
+    source_refs:
+      - EVID-002
     version: 1
     stale: false
   - id: DIS-001

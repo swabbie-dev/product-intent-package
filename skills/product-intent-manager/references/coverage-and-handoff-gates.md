@@ -80,6 +80,8 @@ A capability may waive a dimension only through a confirmed exception decision.
 Pass when:
 
 - every state and transition has a trigger, guard, result, and failure behavior;
+- every transition that crosses physical services identifies its initiator,
+  durable authority, executor, observers, and failure or recovery path;
 - every action has permission and account-state behavior;
 - every user-visible surface has applicable loading, empty, success, error, partial, unavailable, and recovery states;
 - time, ordering, duplicate, idempotency, retry, concurrency, cancellation, and compensation semantics are explicit where relevant;
@@ -92,7 +94,8 @@ Pass when:
 
 Pass when:
 
-- every component has a single responsibility boundary;
+- every physical runtime or service has one clear responsibility boundary,
+  owned state, confirmed provider or runtime, and labelled connections;
 - every cross-boundary exchange has a contract;
 - deployment environments, configuration, secrets, migrations, rollback, backups, and observability are defined;
 - security and privacy controls map to data and trust boundaries;
@@ -116,7 +119,8 @@ Pass when:
 - all stable IDs are unique and resolvable;
 - all traceability edges resolve;
 - no active artifact points to a superseded or stale artifact;
-- diagrams, registries, schemas, contracts, and acceptance scenarios agree;
+- the runtime stack, state-transition allocation, sequences, data and boundary
+  records, registries, and acceptance scenarios agree;
 - no unresolved contradiction remains;
 - every canonical structure and coverage lens is marked covered, confirmed not applicable, or confirmed out of scope;
 - no `TBD`, `TODO`, `UNSET`, `UNKNOWN`, placeholder, or implicit default remains in active intent;

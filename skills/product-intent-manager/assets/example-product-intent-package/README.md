@@ -18,3 +18,7 @@ This directory is the canonical product-intent graph. Replace placeholders with 
 12. Set the manifest and readiness state to build-ready only after that review.
 
 Lifecycle journey maps are editable Markdown with fenced Mermaid. Keep the YAML registry and qualified traceability edges in sync. Canonical product facts belong in diagrams, registries, schemas, contracts, or matrices. Use prose only for rationale and decision context.
+
+Use `architecture/runtime-stack.md` for physical services, environments, and
+their responsibilities. Put cross-service transition allocation directly below
+each applicable state machine in `behavior/state-machines.md`.

@@ -8,6 +8,7 @@ it, and how to keep it useful to people who review the product directly.
 - [Artifact order](#artifact-order)
 - [Intent status](#intent-status)
 - [Lifecycle journey maps](#lifecycle-journey-maps)
+- [Runtime architecture and state placement](#runtime-architecture-and-state-placement)
 - [Sequence diagrams](#sequence-diagrams)
 - [Design-board organization](#design-board-organization)
 - [Changes and handoff](#changes-and-handoff)
@@ -26,9 +27,9 @@ decision.
 | User flow | An actor must reach an outcome through paths, branches, cancellation, or recovery. | Flow diagram keyed by a stable ID |
 | Interface model | A user-visible surface has screens, states, inputs, outputs, or responsive behavior. | Screen map, state records, and board views |
 | Design system | Repeated visual or interaction patterns need shared rules. | YAML tokens and component records |
-| Behavior model | States, rules, permissions, timing, or side effects change the outcome. | State diagrams, rules, and decision tables |
+| Behavior model | States, rules, permissions, timing, or side effects change the outcome. | State diagrams, rules, decision tables, and cross-service transition allocation |
 | Data model | Product behavior depends on stored, derived, retained, exported, or deleted data. | ERD, schema, and lifecycle records |
-| Architecture model | Responsibilities, trust boundaries, deployment, or system ownership affect the product. | Context, container, component, and deployment diagrams |
+| Architecture model | Responsibilities, trust boundaries, deployment, or system ownership affect the product. | System context, physical runtime stack, and architecture decisions |
 | Contract model | An API, event, webhook, payment boundary, or external integration affects an outcome. | YAML contract records |
 | Sequence diagram | The product behavior depends on ordered interactions or time between actors and systems. | `SEQ-*` artifact metadata plus Markdown Mermaid source |
 | Quality model | Performance, reliability, security, privacy, accessibility, compatibility, or operations affect the outcome. | Measurable YAML constraints |
@@ -96,6 +97,69 @@ source in `experience/journeys/JOURNEY-*.md`. The source may contain a fenced
 `mermaid` diagram, a Markdown lifecycle table, or both. A file that contains
 only a Mermaid diagram is still a Markdown `.md` source. Use stable IDs rather
 than copying detailed behavior into the map.
+
+## Runtime architecture and state placement
+
+Keep the system-context diagram at the product boundary: actors, the product,
+and external systems. Put deployment services, managed platforms, data stores,
+workers, and their connections in the runtime-stack map.
+
+Create a physical runtime-stack map when the product uses more than one client,
+deployed service, managed platform, worker, data store, queue, file store, or
+external provider. Use one node for each physical runtime or service boundary.
+Name the actual provider, platform, or runtime when it is confirmed. If it is
+not confirmed, show its status and route the choice to an authority or bounded
+implementation-discretion record.
+
+For each runtime-stack node, show:
+
+- what is deployed there;
+- the responsibilities it owns;
+- the durable or ephemeral state it owns;
+- the consequential security and operational controls; and
+- the physical services or external systems it calls.
+
+Label each connection with its direction, protocol or transport, and the data
+or message meaning. Show synchronous, asynchronous, network, and trust
+boundaries when they affect the product. Put security controls on the service,
+connection, or trust zone where they apply. Do not draw a security policy as a
+peer service unless it is a separately deployed service.
+
+Do not mix logical API, event, data, and product-capability artifacts into the
+runtime stack as if they were physical services. Link those artifacts to the
+physical service that exposes, stores, or executes them. Model internal modules
+only when their boundary changes ownership, deployment, trust, failure,
+scaling, or an observable outcome.
+
+Preserve an existing `ARCH-*` ID when the same responsibility moves to the
+runtime-stack file. If one broad architecture item hides several independent
+physical boundaries, keep the ID for the responsibility that still matches or
+supersede it through a decision. Create new `ARCH-*` IDs only for the additional
+physical boundaries. Update paths, versions, decisions, staleness, and
+traceability together.
+
+Keep each canonical state machine focused on valid states and transitions. For
+each state machine that crosses physical services, add a transition-allocation
+table directly below it:
+
+| Transition | Initiator | Durable authority | Executor | Observers | Failure and recovery |
+| --- | --- | --- | --- | --- | --- |
+| `SM-*.transition-*` — state A to state B | actor or `ARCH-*` that requests the change | `ARCH-*` and `DATA-*` where the change becomes valid, or `none` for local state | `ARCH-*` that performs the work | actors and services that read or display it | rejected, timed-out, retry, compensation, or manual path |
+
+Distinguish the initiator from the durable authority. A worker can request a
+claim while a database transaction owns the valid state change. Link each row
+to applicable `ARCH-*`, `DATA-*`, `EVT-*`, `SEQ-*`, rule, quality, and
+acceptance records. In the failure and recovery cell, link the canonical rule,
+transition, sequence, or acceptance record instead of copying its detailed
+logic. Use a sequence diagram for the ordered messages in one outcome. Do not
+use a sequence diagram as the only definition of valid states and transitions.
+Give each allocated transition a stable local ID. Do not register local
+transition IDs as global artifacts. Use the local ID as `source_part_id` on an
+edge from the parent `SM-*` when transition-level traceability is needed.
+The state diagram and allocation table in `behavior/state-machines.md` are the
+canonical source; do not create a duplicate transition registry. Do not split a
+state machine only because it crosses services. Split it when it describes a
+different entity, lifecycle, authority, or product outcome.
 
 ## Sequence diagrams
 
@@ -208,6 +272,8 @@ Before handoff, confirm:
 - every journey has actor actions, product responses, terminal outcomes,
   exception and recovery coverage, and detailed links;
 - every sequence situation listed above has a focused sequence when applicable;
+- every physical runtime node states its responsibilities and every
+  cross-service state transition has a complete transition allocation;
 - every screen and component has the states and responsive behavior that affect
   the outcome;
 - every item has the correct status, owner, source, and authority decision; and

@@ -1,5 +1,7 @@
 changes:
   - package_version: 1.1.0
+    reason: Define and approve the Counter 1.0 Product Intent Package.
+    authority_id: AUTH-OWNER
     decision_ids:
       - DEC-001
       - DEC-002
@@ -30,3 +32,41 @@ changes:
       - ACC-002
       - ACC-003
       - DIS-001
+    affected_ids:
+      - CAP-001
+      - JOURNEY-001
+  - package_version: 1.2.0
+    reason: Replace parallel architecture views with one physical runtime stack
+      and allocate each cross-service state transition.
+    authority_id: AUTH-OWNER
+    decision_ids:
+      - DEC-005
+      - DEC-006
+    changed_ids:
+      - JOURNEY-001
+      - SCREEN-001
+      - RULE-001
+      - SM-001
+      - ARCH-001
+      - ARCH-002
+      - ARCH-003
+      - ARCH-004
+      - API-002
+      - SEQ-001
+      - SEQ-002
+      - ACC-004
+      - ACC-005
+    affected_ids:
+      - CAP-001
+      - JOURNEY-001
+      - SCREEN-001
+      - RULE-001
+      - SM-001
+      - API-001
+      - API-002
+      - SEQ-001
+      - SEQ-002
+      - ACC-001
+      - ACC-002
+      - ACC-004
+      - ACC-005

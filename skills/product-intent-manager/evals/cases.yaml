@@ -81,3 +81,20 @@ cases:
       - require detailed artifact links
       - state that a journey does not replace detailed artifacts
       - update traceability and readiness
+  - id: cross-service-state-placement
+    prompt: The package has a state machine and a diagram that mixes APIs, data groups,
+      workers, and security policy. Replace it with a useful physical stack and show
+      where each state transition occurs.
+    should_activate: true
+    must:
+      - create a physical runtime-stack map with named services and responsibilities
+      - keep system context limited to actors, the product boundary, and external systems
+      - keep the canonical state machine
+      - identify initiator, durable authority, executor, observers, and recovery for cross-service transitions
+      - assign stable local IDs to allocated transitions
+      - keep logical APIs, events, and data records linked but outside the physical stack
+      - place security controls on services, connections, or trust zones
+      - name a provider only when evidence, confirmation, or bounded discretion supports it
+      - preserve stable IDs and update moved paths and affected governance records
+      - remove canonical architecture components, containers, and deployment files
+      - point every moved architecture artifact path to architecture/runtime-stack.md

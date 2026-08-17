@@ -8,11 +8,14 @@ screens:
     inputs: []
     actions:
       - increment
+      - retry_load
     states:
       - loading
+      - load_error
       - ready
       - submitting
-      - network_error
+      - submit_error
+      - unknown_outcome
     responsive_rules:
       - Single centered column on supported widths
     accessibility_rules:

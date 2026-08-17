@@ -16,10 +16,11 @@ Anything else is an unresolved gap.
 
 ## Format version
 
-This standard defines Product Intent Package format `3.0.0`.
-`manifest.yaml` must set `schema_version: 3.0.0`. This breaking version adds
-first-class lifecycle journey records, actor coverage, qualified local links,
-and the `journey_closure` readiness gate.
+This standard defines Product Intent Package format `4.0.0`.
+`manifest.yaml` must set `schema_version: 4.0.0`. This breaking version replaces
+parallel container, component, and deployment diagrams with one physical
+runtime-stack map and adds runtime allocation for cross-service state
+transitions.
 
 ## Non-negotiable invariants
 
@@ -67,9 +68,9 @@ Use these rules for every Product Intent Package:
 | User-flow model | actor goals, entry points, paths, alternatives, recovery | `experience/user-flows.md` |
 | Interface model | surface topology, screens, states, responsive behavior, copy references, mockups | `experience/screen-map.md`, `experience/screens.yaml`, `experience/mockups/` |
 | Design system | tokens, components, variants, interaction and motion patterns | `experience/design-tokens.yaml`, `experience/components.yaml` |
-| Behavior model | state machines, rules, guards, priorities, decision tables | `behavior/state-machines.md`, `behavior/rules.yaml`, `behavior/decision-tables.csv` |
+| Behavior model | state machines, rules, guards, priorities, decision tables, cross-service transition allocation | `behavior/state-machines.md`, `behavior/rules.yaml`, `behavior/decision-tables.csv` |
 | Data model | physical entities, fields, constraints, lifecycle, retention, migration | `data/erd.dbml`, `data/schema.yaml`, `data/lifecycle.yaml` |
-| System architecture | context, containers, components, deployment and trust boundaries | `architecture/*.md` |
+| System architecture | context, physical runtime stack, deployment and trust boundaries | `architecture/system-context.md`, `architecture/runtime-stack.md`, `architecture/decisions.yaml` |
 | Interface contracts | APIs, events, webhooks, third-party boundaries, errors and versioning | `contracts/openapi.yaml`, `contracts/events.yaml`, `contracts/integrations.yaml` |
 | Runtime interactions | ordering, transactions, async work, failures, compensation, retries | `sequences/sequences.md` |
 | Quality constraints | measurable performance, reliability, security, privacy, accessibility, compatibility, operations | `quality/constraints.yaml` |
@@ -97,7 +98,7 @@ Recommended prefixes:
 | `SM` | state machine |
 | `DT` | decision table |
 | `DATA` | persisted entity, schema, or lifecycle model |
-| `ARCH` | architecture element or diagram |
+| `ARCH` | physical runtime, service, deployment boundary, or architecture diagram |
 | `API` | request/response contract |
 | `EVT` | event contract |
 | `INT` | external integration contract |
@@ -110,7 +111,11 @@ Recommended prefixes:
 | `EVID` | evidence item |
 | `DIS` | implementation-discretion grant |
 
-IDs are immutable. Renames change labels, not IDs. Superseded items retain their IDs in history.
+IDs are immutable. Renames and file moves change labels, paths, or versions, not
+IDs. Superseded items retain their IDs in history. When one broad architecture
+item is divided into separately deployed responsibilities, preserve the old ID
+for the responsibility that still matches or supersede it through a decision;
+create new IDs only for the additional physical boundaries.
 
 ## Artifact metadata
 
@@ -241,9 +246,21 @@ Define:
 - business rules and invariants;
 - decision precedence and conflict handling;
 - time, ordering, idempotency, duplicate, concurrency, retry, and cancellation semantics;
-- decision tables for combinatorial conditions.
+- decision tables for combinatorial conditions;
+- for each transition that crosses physical services, its initiator, durable
+  authority, executor, observers, and failure or recovery path.
+- a stable local ID for each allocated transition.
 
-Primary form: state machines + rules registry + decision tables.
+Primary form: state machines with cross-service transition allocation + rules
+registry + decision tables.
+
+In a transition allocation, `durable authority` means the physical runtime or
+data store that validates and commits the state change. It is not an `AUTH-*`
+product-decision authority.
+
+The state diagram and allocation table in `behavior/state-machines.md` are the
+canonical source. Do not create a duplicate transition registry or split a
+state machine only to match service boundaries.
 
 ### 8. Data model
 
@@ -262,16 +279,27 @@ Primary form: ERD/DBML + schema registry + lifecycle matrix.
 
 Define:
 
-- system context and external dependencies;
-- deployable containers/services;
-- internal components and responsibility boundaries;
+- system context with actors, the product boundary, and external systems;
+- physical clients, deployed services, managed platforms, workers, and data
+  stores;
+- the confirmed provider or runtime for each physical node;
+- the responsibility, owned state, security controls, and operational controls
+  for each physical node;
 - sync/async boundaries;
 - trust boundaries and security zones;
 - storage, queues, cache, search, jobs, and files;
-- deployment topology, environments, and configuration boundaries;
+- deployment topology, environments, and configuration boundaries in the
+  runtime-stack map;
 - build-vs-buy decisions that affect behavior or constraints.
 
-Primary form: context, container, component, and deployment diagrams.
+Label each physical connection with its direction, protocol or transport, and
+data or message meaning. Keep logical API, event, and data artifacts outside the
+physical stack and link them to the service that exposes, executes, or stores
+them. Model internal modules only when their boundary affects ownership,
+deployment, trust, failure, scaling, or an observable outcome.
+
+Primary form: system-context and physical runtime-stack diagrams plus
+architecture decisions.
 
 ### 10. Interface contracts
 
@@ -289,9 +317,9 @@ Primary form: OpenAPI-compatible contract, event registry, and integration contr
 
 ### 11. Runtime interaction model
 
-Create sequence diagrams wherever ordering or component coordination matters, including:
+Create sequence diagrams wherever ordering or runtime-service coordination matters, including:
 
-- multi-component operations;
+- multi-service operations;
 - transactions;
 - asynchronous processing;
 - external side effects;
@@ -300,6 +328,10 @@ Create sequence diagrams wherever ordering or component coordination matters, in
 - race conditions and concurrency control.
 
 Primary form: sequence diagrams keyed by `SEQ-*` IDs.
+
+Sequences define ordered messages for one outcome. They link to the state
+machine and runtime allocation; they do not redefine valid states or ownership
+of a transition.
 
 ### 12. Quality constraints
 
@@ -350,8 +382,8 @@ Each lens must be either represented, explicitly not applicable, or out of scope
 ## Traceability model
 
 `verification/traceability.yaml` is the package graph. Each edge is directional.
-An edge from a journey to one of its local phases or actions includes
-`source_part_id`; local IDs are not global artifact-index entries:
+An edge from a journey phase or action, or from an allocated state transition,
+includes `source_part_id`; local IDs are not global artifact-index entries:
 
 ```yaml
 from: CAP-001
@@ -386,6 +418,17 @@ Canonical relations:
 Use `performed_by` from an actor to a journey and `experienced_through` from a
 capability to a journey when the lifecycle frames that actor experience. Link
 journey phases and actions with `source_part_id` on the parent journey edge.
+Use the same pattern for a state transition when transition-level traceability
+is needed:
+
+```yaml
+from: SM-001
+source_part_id: SM-001.transition-01
+relation: verified_by
+to: ACC-001
+```
+
+Journey and state-transition local IDs are not global artifact-index entries.
 
 `governance/coverage-matrix.yaml` separately proves that all thirteen canonical
 structures and every cross-cutting coverage lens are either covered, confirmed
@@ -426,6 +469,9 @@ A package is build-ready only when:
   detailed artifact links;
 - every user-visible and operational path has defined states, errors, permissions, and recovery;
 - every behavior-affecting rule and lifecycle is explicit;
+- every physical runtime node has explicit responsibilities and every
+  cross-service state transition identifies its initiator, durable authority,
+  executor, observers, and failure or recovery path;
 - every data and system boundary has a contract;
 - every consequential runtime interaction has ordering and failure semantics;
 - every quality constraint is measurable;

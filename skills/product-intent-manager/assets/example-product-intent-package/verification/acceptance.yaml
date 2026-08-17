@@ -42,3 +42,34 @@ scenarios:
       - p95 latency is at most 500 ms
       - final value equals accepted request count
     test_data_refs: []
+  - id: ACC-004
+    type: failure_recovery
+    capability_ids:
+      - CAP-001
+    linked_rule_ids: []
+    given:
+      - persisted counter value is 4
+      - the first current-value read is unavailable
+      - a later current-value read is available
+    when: the user opens the Counter screen and retries the load
+    then:
+      - the failed read does not mutate the counter
+      - the screen offers a load retry
+      - the screen displays 4 after the successful read
+    test_data_refs: []
+  - id: ACC-005
+    type: failure_recovery
+    capability_ids:
+      - CAP-001
+    linked_rule_ids:
+      - RULE-001
+    given:
+      - persisted counter value is 4
+      - one accepted increment commits value 5
+      - the committed response does not reach the client
+    when: the client times out and reloads the current value
+    then:
+      - the client does not resend the increment automatically
+      - the screen displays 5 after reconciliation
+      - exactly one mutation occurs
+    test_data_refs: []

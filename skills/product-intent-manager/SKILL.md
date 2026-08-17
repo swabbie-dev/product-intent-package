@@ -40,9 +40,11 @@ separate from implementation detail.
    [Lifecycle Journey Maps](references/lifecycle-journey-maps.md) for the
    journey rules.
 4. Build the product map, domain model, flows, interface and design system,
-   behavior, data, architecture, contracts, sequences, quality constraints,
-   and verification. Use [Product Artifact Practices](references/product-artifact-practices.md)
-   for sequence and design-board requirements.
+   behavior, data, physical runtime stack, boundary definitions, sequences,
+   quality constraints, and verification. For each state machine that crosses
+   physical services, record who initiates, commits, executes, observes, and
+   recovers each transition. Use [Product Artifact Practices](references/product-artifact-practices.md)
+   for runtime-stack, transition-placement, sequence, and design-board rules.
 5. Ask the accountable authority the smallest question that closes each
    build-affecting gap. Record the answer, source, affected stable IDs, and any
    explicit exclusion or bounded discretion. Do not hide uncertainty in prose.
@@ -64,6 +66,10 @@ Track the Product Intent Package in Git so its history remains reviewable.
 - Use stable IDs and links. Keep one authoritative value for each fact; do not
   copy detailed rules between a journey, flow, screen, state, contract, or
   sequence.
+- Use a physical runtime-stack map, not a mixed component diagram. Name each
+  confirmed deployment service or runtime, state its responsibilities, and
+  label its connections. Show security controls on the service, connection, or
+  trust zone where they apply.
 - A journey frames detailed artifacts. It does not replace a flow, screen,
   rule, state machine, contract, sequence, quality constraint, or acceptance
   scenario.

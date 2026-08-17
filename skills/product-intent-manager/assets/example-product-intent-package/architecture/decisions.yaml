@@ -1,7 +1,10 @@
 architecture_decisions:
   - id: ARCH-004
     name: Single production environment topology
-    decision_id: DEC-001
+    decision_id: DEC-005
     constraints:
+      - ARCH-001 is a browser web client delivered by Vercel
+      - ARCH-002 is a Vercel serverless API deployment
+      - ARCH-003 is Supabase Postgres
       - Backups enabled
       - Rollback preserves counter data

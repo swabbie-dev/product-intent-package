@@ -66,6 +66,8 @@ Use this as a gap detector, not a questionnaire to dump on the user. Ask only qu
 
 - What state machines govern each lifecycle?
 - What triggers and guards every transition?
+- For each cross-service transition, who initiates it, where does it become
+  durable and valid, who executes it, and who observes it?
 - What side effects occur, and what happens if one fails?
 - Which rule wins when conditions conflict?
 - What are the exact limits, rounding, precision, timing, expiration, pause, and resume semantics?
@@ -81,7 +83,11 @@ Use this as a gap detector, not a questionnaire to dump on the user. Ask only qu
 
 ## Architecture
 
-- What components own each capability and data set?
+- Which physical clients, deployed services, managed platforms, workers, data
+  stores, queues, file stores, and external providers exist?
+- Which provider or runtime hosts each one, and what responsibility and state
+  does each one own?
+- What protocol, transport, data, or message crosses each connection?
 - Where are trust, network, tenancy, and failure boundaries?
 - What is synchronous versus asynchronous?
 - What queues, jobs, cache, search, file/object storage, and external services exist?
@@ -97,7 +103,7 @@ Use this as a gap detector, not a questionnaire to dump on the user. Ask only qu
 
 ## Sequences
 
-- Which actor/component acts first, and what order is required?
+- Which actor or runtime service acts first, and what order is required?
 - What is atomic, and where can partial success occur?
 - What retries, compensations, dead letters, reconciliation, and user feedback apply?
 - Which races can occur, and what resolves them?

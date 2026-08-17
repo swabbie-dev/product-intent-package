@@ -42,6 +42,10 @@ quality, and acceptance artifacts below remain the detailed sources of truth.
 
 ## Connected structures
 
+This illustrative slice assumes that the technical authority confirmed Vercel
+and Supabase in the runtime-stack and decision records. Do not copy these
+providers as a product default.
+
 ```mermaid
 flowchart LR
   ACTOR_001["ACTOR-001 Member"] -->|performed_by| CAP_001["CAP-001 Create project"]
@@ -55,7 +59,8 @@ flowchart LR
   CAP_001 -->|governed_by| RULE_001["RULE-001 Name validation"]
   CAP_001 -->|governed_by| SM_001["SM-001 Project lifecycle"]
   CAP_001 -->|persists_as| DATA_001["DATA-001 projects"]
-  CAP_001 -->|implemented_by| ARCH_003["ARCH-003 Projects service"]
+  CAP_001 -->|implemented_by| ARCH_003["ARCH-003 Vercel Projects API"]
+  DATA_001 -->|implemented_by| ARCH_004["ARCH-004 Supabase Postgres"]
   CAP_001 -->|exposed_by| API_001["API-001 POST /projects"]
   CAP_001 -->|executed_by| SEQ_001["SEQ-001 Create project"]
   CAP_001 -->|constrained_by| QC_001["QC-001 Create latency"]
@@ -83,6 +88,16 @@ stateDiagram-v2
   Active --> Archived: archive
   Archived --> Active: restore
 ```
+
+Runtime allocation for this cross-service state machine:
+
+| Transition | Initiator | Durable authority | Executor | Observers | Failure and recovery |
+| --- | --- | --- | --- | --- | --- |
+| Start to `Draft` | `ACTOR-001` through `ARCH-003` | `ARCH-004` commits `DATA-001` | `ARCH-003` | `ACTOR-001` | A rejected transaction creates no project and returns the linked validation or permission result |
+| `Draft` to `Active` | `ACTOR-001` through `ARCH-003` | `ARCH-004` commits `DATA-001` | `ARCH-003` | `ACTOR-001` and linked readers | A rejected transaction keeps `Draft` and permits the confirmed retry path |
+| `Draft` to `Archived` | `ACTOR-001` through `ARCH-003` | `ARCH-004` commits `DATA-001` | `ARCH-003` | `ACTOR-001` and linked readers | A rejected transaction keeps `Draft` |
+| `Active` to `Archived` | `ACTOR-001` through `ARCH-003` | `ARCH-004` commits `DATA-001` | `ARCH-003` | `ACTOR-001` and linked readers | A rejected transaction keeps `Active` |
+| `Archived` to `Active` | `ACTOR-001` through `ARCH-003` | `ARCH-004` commits `DATA-001` | `ARCH-003` | `ACTOR-001` and linked readers | A rejected transaction keeps `Archived` |
 
 ## Acceptance records
 

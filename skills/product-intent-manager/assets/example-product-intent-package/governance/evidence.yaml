@@ -34,3 +34,31 @@ evidence:
       - ACC-003
       - DIS-001
     sensitive_data: none
+  - id: EVID-002
+    type: authority_confirmation
+    location: fixture:runtime-stack-migration
+    version_ref: 1.2.0
+    captured_at: '2026-08-17T12:00:00Z'
+    claims:
+      - AUTH-OWNER confirmed the physical runtime providers and responsibilities.
+      - Package format 4.0.0 preserves the existing stable artifact IDs.
+      - Cross-service SM-001 transitions use the recorded runtime allocation.
+      - Initial load failure and unknown increment outcomes use the recorded
+        recovery behavior.
+    confidence: high
+    limitations: []
+    related_ids:
+      - JOURNEY-001
+      - SCREEN-001
+      - RULE-001
+      - SM-001
+      - ARCH-001
+      - ARCH-002
+      - ARCH-003
+      - ARCH-004
+      - API-002
+      - SEQ-001
+      - SEQ-002
+      - ACC-004
+      - ACC-005
+    sensitive_data: none

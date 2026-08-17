@@ -1,12 +1,12 @@
-schema_version: 3.0.0
+schema_version: 4.0.0
 package_id: PIP-COUNTER
 product:
   name: Counter
   target_version: 1.0.0
   target_baseline: greenfield
-package_version: 1.1.0
+package_version: 1.2.0
 status: build_ready
 build_ready: true
 canonical_timezone: UTC
 created_at: '2026-08-15T12:00:00Z'
-updated_at: '2026-08-15T12:00:00Z'
+updated_at: '2026-08-17T12:02:00Z'

@@ -96,3 +96,59 @@ decisions:
       - DIS-001
       - ARCH-002
     supersedes: []
+  - id: DEC-005
+    status: confirmed
+    domain: technical_architecture
+    statement: Counter 1.0 uses the physical runtime stack in ARCH-001 through
+      ARCH-004, with Vercel delivery and API execution plus Supabase Postgres.
+    authority_id: AUTH-OWNER
+    confirmed_at: '2026-08-17T12:01:00Z'
+    confirmation_ref: fixture:runtime-stack-migration
+    source_refs:
+      - EVID-002
+    affects:
+      - ARCH-001
+      - ARCH-002
+      - ARCH-003
+      - ARCH-004
+    supersedes: []
+  - id: DEC-006
+    status: confirmed
+    domain: release_and_acceptance
+    statement: Counter Product Intent Package 1.2.0 is approved in Product Intent
+      Package format 4.0.0 for clarification-free implementation.
+    authority_id: AUTH-OWNER
+    confirmed_at: '2026-08-17T12:02:00Z'
+    confirmation_ref: fixture:format-4-handoff-approval
+    source_refs:
+      - EVID-002
+    affects:
+      - ACTOR-001
+      - CAP-001
+      - JOURNEY-001
+      - DOM-001
+      - FLOW-001
+      - SCREEN-001
+      - MOCK-001
+      - TOKEN-001
+      - COMP-001
+      - RULE-001
+      - SM-001
+      - DT-001
+      - DATA-001
+      - ARCH-001
+      - ARCH-002
+      - ARCH-003
+      - ARCH-004
+      - API-001
+      - API-002
+      - SEQ-001
+      - SEQ-002
+      - QC-001
+      - ACC-001
+      - ACC-002
+      - ACC-003
+      - ACC-004
+      - ACC-005
+      - DIS-001
+    supersedes: []

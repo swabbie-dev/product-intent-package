@@ -2,37 +2,37 @@ gates:
   governance:
     passed: true
     evidence_refs:
-      - DEC-003
+      - DEC-006
   structural_coverage:
     passed: true
     evidence_refs:
-      - DEC-003
+      - DEC-006
   journey_closure:
     passed: true
     evidence_refs:
-      - DEC-003
+      - DEC-006
   capability_traceability:
     passed: true
     evidence_refs:
-      - DEC-003
+      - DEC-006
   behavioral_closure:
     passed: true
     evidence_refs:
-      - DEC-003
+      - DEC-006
   technical_closure:
     passed: true
     evidence_refs:
-      - DEC-003
+      - DEC-006
   verification_closure:
     passed: true
     evidence_refs:
-      - DEC-003
+      - DEC-006
   consistency:
     passed: true
     evidence_refs:
-      - DEC-003
+      - DEC-006
   handoff_approval:
     passed: true
     evidence_refs:
-      - DEC-003
-final_approval_decision_id: DEC-003
+      - DEC-006
+final_approval_decision_id: DEC-006

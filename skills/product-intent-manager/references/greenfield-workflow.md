@@ -83,6 +83,9 @@ For each domain object and capability:
 
 - build state machines;
 - define triggers, guards, side effects, and terminal states;
+- for each state machine that crosses physical services, record the initiator,
+  durable authority, executor, observers, and failure or recovery path for each
+  transition;
 - create decision tables for combined conditions;
 - define time, ordering, duplicates, idempotency, concurrency, retry, cancellation, and compensation behavior;
 - define permissions and account-state behavior;
@@ -94,7 +97,10 @@ With technical and data authorities:
 
 - map domain concepts to storage entities;
 - define data lifecycle, privacy, retention, export, deletion, audit, migrations, and seed data;
-- define system context, containers, components, trust boundaries, and deployment;
+- define system context and the physical runtime stack, including deployment,
+  environment, and trust zones;
+- name each confirmed provider or runtime, state each physical service's
+  responsibilities and owned state, and label every physical connection;
 - define every API/event/integration contract;
 - define consequential sequences and failure semantics;
 - define measurable quality and operational constraints.

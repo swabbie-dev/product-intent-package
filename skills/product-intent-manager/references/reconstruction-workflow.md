@@ -51,8 +51,11 @@ pattern.
 
 Build the same thirteen structures used for a new product. Start with actors,
 scope, capabilities, and lifecycle journeys. Then create detailed flows,
-screens, behavior, data, architecture, boundary records, sequence diagrams,
-quality constraints, and acceptance scenarios.
+screens, behavior, data, the observed physical runtime stack, boundary records,
+sequence diagrams, quality constraints, and acceptance scenarios. For each
+cross-service state transition, identify the observed initiator, durable
+authority, executor, observers, and recovery path. Keep an unverified placement
+as inferred or blocked.
 
 Keep four layers separate:
 
@@ -73,6 +76,8 @@ Compare runtime behavior, code, tests, documents, designs, and stakeholder
 statements. Record:
 
 - missing branches, states, permissions, and failure behavior;
+- state transitions with an unknown initiator, durable authority, executor, or
+  recovery location;
 - different behavior across environments or product surfaces;
 - apparent defects that can be accepted behavior or implementation drift;
 - dead, hidden, or feature-flagged capabilities;
@@ -95,8 +100,9 @@ Route decisions to the correct authority:
 - product: users, outcomes, scope, priorities, capabilities, and behavior;
 - design: information architecture, screens, states, components, content, and
   accessibility details;
-- technical and data: responsibility boundaries, data, interfaces, sequences,
-  security, operations, and measurable constraints;
+- technical and data: physical runtime responsibilities, state-transition
+  placement, data, interfaces, sequences, security, operations, and measurable
+  constraints;
 - specialist authorities: legal, privacy, compliance, operations, or domain
   rules.
 

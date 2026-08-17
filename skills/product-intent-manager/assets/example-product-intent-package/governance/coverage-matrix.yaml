@@ -51,11 +51,13 @@ structures:
     status: covered
     artifact_ids:
       - API-001
+      - API-002
     decision_id: null
   - name: runtime_interactions
     status: covered
     artifact_ids:
       - SEQ-001
+      - SEQ-002
     decision_id: null
   - name: quality_constraints
     status: covered
@@ -68,12 +70,14 @@ structures:
       - ACC-001
       - ACC-002
       - ACC-003
+      - ACC-004
+      - ACC-005
     decision_id: null
   - name: lifecycle_journey_model
     status: covered
     artifact_ids:
       - JOURNEY-001
-    decision_id: DEC-001
+    decision_id: DEC-006
 lenses:
   - name: roles_permissions_tenancy
     status: covered
@@ -122,6 +126,8 @@ lenses:
       - FLOW-001
       - RULE-001
       - ACC-002
+      - ACC-004
+      - ACC-005
     decision_id: null
   - name: concurrency_duplicates_ordering_idempotency
     status: covered
@@ -129,6 +135,7 @@ lenses:
       - RULE-001
       - DT-001
       - ACC-001
+      - ACC-005
     decision_id: null
   - name: privacy_retention_deletion_export
     status: covered

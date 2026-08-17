@@ -3,7 +3,7 @@ actor_coverage:
     status: covered
     journey_ids:
       - JOURNEY-001
-    decision_id: DEC-001
+    decision_id: DEC-006
 journeys:
   - id: JOURNEY-001
     title: Increment and observe the counter
@@ -37,23 +37,27 @@ journeys:
       - branching
     recurrence_model: The actor may repeat the increment and observe cycle until the task is complete.
     authority_id: AUTH-OWNER
-    confirmation_decision_id: DEC-001
+    confirmation_decision_id: DEC-006
     source_refs:
       - EVID-001
-    version: 1
+      - EVID-002
+    version: 2
     source_path: experience/journeys/JOURNEY-001.md
     capability_ids:
       - CAP-001
     exception_coverage:
       failure:
         status: covered
-        decision_id: DEC-001
+        decision_id: DEC-006
         phase_ids:
+          - JOURNEY-001.phase-01
           - JOURNEY-001.phase-02
           - JOURNEY-001.phase-03
         artifact_ids:
           - RULE-001
           - ACC-002
+          - ACC-004
+          - ACC-005
       pause_resume:
         status: covered
         decision_id: DEC-001
@@ -80,13 +84,18 @@ journeys:
           - ACC-001
       recovery:
         status: covered
-        decision_id: DEC-001
+        decision_id: DEC-006
         phase_ids:
+          - JOURNEY-001.phase-01
+          - JOURNEY-001.phase-02
           - JOURNEY-001.phase-03
         artifact_ids:
           - RULE-001
           - SM-001
           - ACC-002
+          - SEQ-002
+          - ACC-004
+          - ACC-005
     phases:
       - id: JOURNEY-001.phase-01
         name: Begin task
@@ -107,9 +116,13 @@ journeys:
             response_artifact_ids:
               - FLOW-001
               - SCREEN-001
+              - API-002
+              - SEQ-002
+              - ACC-004
         state_data_event_ids:
           - SM-001
           - DATA-001
+          - API-002
         exceptions_recovery:
           failure: Show the retry state when the initial load fails.
           exit: Leave the screen without changing the counter.
@@ -119,14 +132,23 @@ journeys:
             evidence_refs:
               - EVID-001
           - type: decision
-            statement: The product authority confirms this as the journey entry phase.
-            decision_id: DEC-001
+            statement: The product authority confirms the load and retry behavior.
+            decision_id: DEC-006
         linked_artifacts:
           - id: FLOW-001
             relation: experienced_through
             source_part_id: JOURNEY-001.action-01
           - id: SCREEN-001
             relation: experienced_through
+            source_part_id: JOURNEY-001.action-01
+          - id: API-002
+            relation: exposed_by
+            source_part_id: JOURNEY-001.action-01
+          - id: SEQ-002
+            relation: executed_by
+            source_part_id: JOURNEY-001.action-01
+          - id: ACC-004
+            relation: verified_by
             source_part_id: JOURNEY-001.action-01
           - id: FLOW-001
             relation: experienced_through
@@ -146,13 +168,16 @@ journeys:
           - id: DATA-001
             relation: persists_as
             source_part_id: JOURNEY-001.phase-01
-          - id: SEQ-001
+          - id: API-002
+            relation: exposed_by
+            source_part_id: JOURNEY-001.phase-01
+          - id: SEQ-002
             relation: executed_by
             source_part_id: JOURNEY-001.phase-01
           - id: QC-001
             relation: constrained_by
             source_part_id: JOURNEY-001.phase-01
-          - id: ACC-001
+          - id: ACC-004
             relation: verified_by
             source_part_id: JOURNEY-001.phase-01
       - id: JOURNEY-001.phase-02
@@ -172,28 +197,37 @@ journeys:
         actions:
           - id: JOURNEY-001.action-02
             actor_action: Press the increment control once.
-            product_response: The product sends one increment request and shows a submitting state.
+            product_response: The product sends one increment request, waits for
+              the result, and does not resend when the result is unknown.
             response_artifact_ids:
               - FLOW-001
               - RULE-001
               - SM-001
               - DT-001
+              - API-001
+              - SEQ-001
+              - ACC-005
         state_data_event_ids:
           - SM-001
           - DATA-001
           - API-001
         exceptions_recovery:
           failure: Do not mutate the value when the request fails.
-          pause_resume: Keep the submitting state until the request resolves or times out.
-          recovery: Offer retry from the error state.
+          pause_resume: Keep the submitting state until the request resolves or
+            times out.
+          recovery: Retry only after a confirmed pre-commit failure. If the
+            outcome is unknown, load the current value before another increment.
         intent_items:
           - type: evidence
-            statement: The fixture specifies one increment action and one API operation.
+            statement: The fixture specifies the increment and current-value API
+              operations.
             evidence_refs:
               - EVID-001
+              - EVID-002
           - type: decision
-            statement: One accepted request must produce one persisted increment.
-            decision_id: DEC-001
+            statement: One accepted request produces one persisted increment;
+              an unknown outcome requires reconciliation.
+            decision_id: DEC-006
         linked_artifacts:
           - id: FLOW-001
             relation: experienced_through
@@ -221,6 +255,12 @@ journeys:
             source_part_id: JOURNEY-001.phase-02
           - id: API-001
             relation: exposed_by
+            source_part_id: JOURNEY-001.action-02
+          - id: SEQ-001
+            relation: executed_by
+            source_part_id: JOURNEY-001.action-02
+          - id: ACC-005
+            relation: verified_by
             source_part_id: JOURNEY-001.action-02
           - id: API-001
             relation: exposed_by
@@ -252,26 +292,33 @@ journeys:
         actions:
           - id: JOURNEY-001.action-03
             actor_action: Read the displayed counter value.
-            product_response: The product displays the new value after a successful request.
+            product_response: The product displays the committed value after a
+              direct response or reconciliation.
             response_artifact_ids:
               - FLOW-001
               - RULE-001
               - SM-001
+              - API-002
+              - SEQ-002
+              - ACC-005
         state_data_event_ids:
           - DATA-001
           - SM-001
           - API-001
+          - API-002
         exceptions_recovery:
           failure: Show the error state when the request fails.
-          recovery: Let the actor retry or leave without a mutation.
+          recovery: Reconcile an unknown outcome, or let the actor retry after a
+            confirmed pre-commit failure.
         intent_items:
           - type: evidence
             statement: The fixture acceptance scenarios require the screen to display the new value.
             evidence_refs:
               - EVID-001
           - type: decision
-            statement: A failed request leaves the persisted value unchanged.
-            decision_id: DEC-001
+            statement: A confirmed pre-commit failure leaves the value unchanged;
+              an unknown result is reconciled.
+            decision_id: DEC-006
         linked_artifacts:
           - id: FLOW-001
             relation: experienced_through
@@ -290,6 +337,15 @@ journeys:
             source_part_id: JOURNEY-001.action-03
           - id: SM-001
             relation: governed_by
+            source_part_id: JOURNEY-001.action-03
+          - id: API-002
+            relation: exposed_by
+            source_part_id: JOURNEY-001.action-03
+          - id: SEQ-002
+            relation: executed_by
+            source_part_id: JOURNEY-001.action-03
+          - id: ACC-005
+            relation: verified_by
             source_part_id: JOURNEY-001.action-03
           - id: SM-001
             relation: governed_by
@@ -399,7 +455,8 @@ journeys:
         flow_ids: []
       - from_phase_id: JOURNEY-001.phase-02
         to_phase_id: JOURNEY-001.phase-03
-        condition: The request fails and the actor chooses recovery.
+        condition: The request fails or its outcome is unknown, and recovery
+          reaches a known persisted value.
         complex: false
         flow_ids: []
       - from_phase_id: JOURNEY-001.phase-03
