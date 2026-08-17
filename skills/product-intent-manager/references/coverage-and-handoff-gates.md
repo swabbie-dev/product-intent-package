@@ -9,8 +9,8 @@ The package advances through five states:
 | `inventory` | sources and authorities are being discovered |
 | `modeled` | structures exist but may contain observations, hypotheses, and proposals |
 | `confirmed` | active intent is authority-confirmed, but consistency or coverage may remain incomplete |
-| `validated` | structural, traceability, conflict, and placeholder checks pass |
-| `build_ready` | validated package plus final product-authority handoff approval |
+| `reviewed` | structure, traceability, conflicts, and placeholders were reviewed |
+| `build_ready` | reviewed package plus final product-authority handoff approval |
 
 Never skip directly from source collection to `build_ready`.
 
@@ -120,7 +120,7 @@ Pass when:
 - no unresolved contradiction remains;
 - every canonical structure and coverage lens is marked covered, confirmed not applicable, or confirmed out of scope;
 - no `TBD`, `TODO`, `UNSET`, `UNKNOWN`, placeholder, or implicit default remains in active intent;
-- deterministic validation passes.
+- a consistency review finds no unresolved or conflicting active intent.
 
 ## Gate 9 — Handoff approval
 
@@ -132,21 +132,19 @@ Pass when the accountable release/product authority confirms:
 - any known risk is explicitly accepted and linked to a decision.
 
 `handoff/readiness.yaml` records each named gate, including `journey_closure`,
-with `passed` and `evidence_refs`. Its validator and final-approval records hold
-the validation result, approval decision, and final package hash.
+with `passed` and `evidence_refs`. It also records the final approval decision.
 
 ## Handoff output
 
 A complete handoff contains:
 
 1. the Product Intent Package directory;
-2. generated readiness report;
+2. completed readiness record;
 3. unresolved-question count of zero;
 4. stale-artifact count of zero;
 5. contradiction count of zero;
 6. explicit build scope and target version;
 7. explicit discretion grants;
-8. final approval decision;
-9. validation command and result.
+8. final authority approval decision.
 
 If any count is nonzero, output a blocked handoff report instead of pretending the package is complete.

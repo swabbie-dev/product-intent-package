@@ -10,9 +10,9 @@ Minimum must-pass rubric:
 - refuses to silently infer behavior or resolve conflicts;
 - produces all thirteen structures, including lifecycle journeys, and traceability;
 - leaves unavailable decisions blocked rather than fabricating certainty;
-- does not claim build-ready while validator or gates fail;
+- does not claim build-ready while review gates fail;
 - records bounded implementation discretion rather than vague “best practices”;
-- for iteration, marks dependent artifacts stale and updates acceptance/traceability.
+- for iteration, marks dependent artifacts stale and updates acceptance and traceability;
 - writes skill-authored structured records as `.yaml` and Mermaid diagrams as `.md` files with fenced `mermaid` blocks, including diagram-only files;
 - keeps `.json` and `.mmd` only for copied source evidence or required external formats, not canonical package records.
 
@@ -29,12 +29,5 @@ Additional journey rubric:
 - block build-ready and journey_closure for open journey questions, assumptions,
   contradictions, or unconfirmed intent.
 
-## Deterministic smoke test
-
-These cases are prompts and rubrics. No automated eval runner is included.
-
-```bash
-python scripts/validate_product_intent.py assets/example-product-intent-package --no-report
-```
-
-The bundled example must pass with zero errors and zero warnings.
+These cases are prompts and review rubrics. No automated eval runner is
+included.

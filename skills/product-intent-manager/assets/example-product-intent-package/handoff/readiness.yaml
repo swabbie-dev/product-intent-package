@@ -35,10 +35,4 @@ gates:
     passed: true
     evidence_refs:
       - DEC-003
-validator:
-  command: python scripts/validate_product_intent.py assets/example-product-intent-package
-    --no-report
-  passed: true
-  report_path: ''
 final_approval_decision_id: DEC-003
-package_hash: 020f3a9e4d63590fd2dc587c266337ce7cb734b30d954263dbced2d8c615656f

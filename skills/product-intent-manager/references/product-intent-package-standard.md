@@ -2,11 +2,11 @@
 
 ## Purpose
 
-A **Product Intent Package (PIP)** is a versioned, authority-confirmed, closed-world specification of **what product to build and how it must behave**, plus the technical constraints and contracts required to implement it.
+A **Product Intent Package (PIP)** is an authority-confirmed source of **what product to build and how it must behave**, plus the constraints needed to implement it.
 
 The target consumer is a coding-agent orchestrator. A handoff-ready package must let that orchestrator build the product without asking what the product owner, product manager, designer, or technical authority intended.
 
-“Closed-world” means every build-affecting detail is one of:
+A handoff-ready package makes every build-affecting detail one of:
 
 1. explicitly specified and confirmed;
 2. explicitly excluded or not applicable;
@@ -435,7 +435,7 @@ A package is build-ready only when:
 - no open journey question, assumption, contradiction, or stale journey
   dependent remains;
 - every unspecified choice is covered by a bounded discretion grant;
-- deterministic validation passes;
+- a consistency review finds no unresolved or conflicting active intent;
 - the accountable product authority confirms the final handoff version.
 
 A package that fails any condition is still useful, but it must be labeled

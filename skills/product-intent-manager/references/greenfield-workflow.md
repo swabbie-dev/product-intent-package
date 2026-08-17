@@ -14,14 +14,8 @@ Confirm:
 - decision cadence and confirmation mechanism;
 - whether the agent has any bounded delegated authority.
 
-Initialize the package with:
-
-```bash
-python scripts/init_product_intent.py <destination> \
-  --name "<product>" \
-  --target-version "<version>" \
-  --baseline greenfield
-```
+Copy `assets/product-intent-template/` to the product workspace. Set the product
+name, target version, and `greenfield` baseline in `manifest.yaml`.
 
 ## Phase 1 — Product boundary
 
@@ -118,4 +112,8 @@ For every capability and constraint:
 
 ## Phase 8 — Closure and handoff
 
-Apply all handoff gates, run draft validation, resolve every issue, stamp the content hash, obtain and record final release/product approval for that hash, set the package to build-ready, and run final validation. Do not hand off a package with open decisions under the theory that the coding agent can “figure them out.”
+Apply all handoff gates and review the package with the accountable authorities.
+Resolve every material issue, record final release and product approval for the
+package version, and set the package to build-ready. Do not hand off a package
+with open decisions under the theory that the coding agent can “figure them
+out.”

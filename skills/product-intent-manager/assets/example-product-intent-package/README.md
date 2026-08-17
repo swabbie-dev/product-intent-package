@@ -13,8 +13,8 @@ This directory is the canonical product-intent graph. Replace placeholders with 
 7. Build the thirteen intent structures. Add lifecycle journeys under `experience/journeys/` before detailed flows.
 8. Link them through `verification/traceability.yaml`.
 9. Define bounded discretion in `handoff/implementation-discretion.yaml`.
-10. Run draft validation with `scripts/validate_product_intent.py <package-path>` and resolve every error.
-11. Stamp the reproducible content hash with `scripts/stamp_package_hash.py <package-path>`.
-12. Obtain and record final approval for that exact hash, set the manifest/readiness state to build-ready, then run final validation. Any product-content change requires a new hash and approval.
+10. Review every readiness gate and resolve each material gap or conflict.
+11. Obtain and record final approval for the package version and target scope.
+12. Set the manifest and readiness state to build-ready only after that review.
 
 Lifecycle journey maps are editable Markdown with fenced Mermaid. Keep the YAML registry and qualified traceability edges in sync. Canonical product facts belong in diagrams, registries, schemas, contracts, or matrices. Use prose only for rationale and decision context.

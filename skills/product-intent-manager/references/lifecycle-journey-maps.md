@@ -224,8 +224,8 @@ Links to a phase or action use `source_part_id` on the parent edge:
   to: RULE-001
 ```
 
-The validator checks that every qualified local ID belongs to its parent
-journey. Use existing trace relations. Use `performed_by` from an actor to the
+Every qualified local ID must belong to its parent journey. Use existing trace
+relations. Use `performed_by` from an actor to the
 journey and `experienced_through` from a capability to the journey. Link the
 journey to detailed artifacts with the relation that matches the fact.
 Every `lifecycle_journey` artifact-index record must have one matching journey
@@ -283,7 +283,7 @@ When a phase, action, transition, actor, outcome, or product response changes:
 3. mark the parent journey and linked dependents stale;
 4. update the journey, detailed artifacts, acceptance scenarios, traceability,
    readiness, and package version;
-5. validate and stamp the new hash before approval.
+5. review the changed package for coverage and consistency before approval.
 
 ## Examples
 

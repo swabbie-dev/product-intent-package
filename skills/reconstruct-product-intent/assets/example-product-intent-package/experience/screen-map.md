@@ -1,4 +1,0 @@
-```mermaid
-flowchart LR
-  SCREEN_001["SCREEN-001 Counter screen"] --> MOCK_001["MOCK-001 Approved counter mockup"]
-```
