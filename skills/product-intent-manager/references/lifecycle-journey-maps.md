@@ -3,6 +3,7 @@
 ## Contents
 
 - [Purpose](#purpose)
+- [Research-based current-state journeys](#research-based-current-state-journeys)
 - [Lifecycle, not a marketing funnel](#lifecycle-not-a-marketing-funnel)
 - [Choose a journey type](#choose-a-journey-type)
 - [Actor variants](#actor-variants)
@@ -32,6 +33,19 @@ artifacts. It gives them a stable context and exposes missing phases.
 The canonical registry is `experience/journeys/index.yaml`. Each journey has one
 editable source at `experience/journeys/JOURNEY-*.md`. Keep the source concise.
 Link to stable artifact IDs instead of copying full rules or interface details.
+
+## Research-based current-state journeys
+
+- Create a current-state research journey only when placing evidence across
+  time or touchpoints reveals context, transitions, or hand-off problems that a
+  focused flow cannot show.
+- Set `target_view: as_observed` and use `intent_status: observed` or
+  `intent_status: inferred`. Do not present the map as intended behavior.
+- Add thoughts, emotions, friction, and workarounds only when evidence supports
+  them. Link each claim to its source and distinguish a participant statement or
+  direct observation from a researcher inference.
+- Keep research findings and opportunities separate from candidate responses
+  and authority-confirmed product decisions.
 
 ## Lifecycle, not a marketing funnel
 
