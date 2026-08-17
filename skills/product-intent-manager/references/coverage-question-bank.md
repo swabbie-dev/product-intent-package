@@ -18,6 +18,25 @@ Use this as a gap detector, not a questionnaire to dump on the user. Ask only qu
 - What enters and leaves the system boundary?
 - What measurable result means the product/release succeeds?
 
+## Lifecycle journeys
+
+- Which lifecycle is in scope: customer relationship, job task, operational case,
+  entity/asset, developer integration, ecosystem/marketplace, service blueprint,
+  or a custom type with a confirmed rationale?
+- Does this require one actor, role-specific lanes, or coordinated actors? What
+  differs enough to require separate journeys?
+- What triggers the journey, what does each actor do in each phase, and what
+  product response follows each action?
+- Which time axis, topology, recurrence rule, desired outcome, and terminal
+  conditions apply?
+- What happens on failure, pause/resume, abandonment, explicit exit, and
+  recovery?
+- Which detailed artifacts own each response, and which complex branches need
+  FLOW records?
+- Is the map observed, inferred, proposed, or confirmed? Which evidence and
+  product-authority decision support it?
+- If a phase changes, which parent journey and linked details become stale?
+
 ## Domain
 
 - What are the canonical concepts and terms?
@@ -105,4 +124,4 @@ Use this as a gap detector, not a questionnaire to dump on the user. Ask only qu
 - Which choices may the coding orchestrator make without approval?
 - What observable outcomes are forbidden even within delegated discretion?
 - Are all exclusions, risks, and compatibility breaks accepted?
-- Has the final authority approved this exact package version and hash?
+- Has the final authority approved this package version and target scope?

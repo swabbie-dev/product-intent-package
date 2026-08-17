@@ -1,6 +1,0 @@
-interface:
-  display_name: "Reconstruct Product Intent"
-  short_description: "Turn an existing project into a confirmed build specification"
-  default_prompt: "Convert this existing software project into an authority-confirmed Product Intent Package. Treat source artifacts as evidence, do not infer unconfirmed intent, and do not claim build-ready until every gate passes."
-policy:
-  allow_implicit_invocation: true

@@ -2,7 +2,7 @@ evidence:
   - id: EVID-001
     type: originator_confirmation
     location: fixture:authoritative-session
-    version_ref: 1.0.0
+    version_ref: 1.1.0
     captured_at: '2026-08-15T12:00:00Z'
     claims:
       - All fixture intent is approved.
@@ -11,6 +11,7 @@ evidence:
     related_ids:
       - ACTOR-001
       - CAP-001
+      - JOURNEY-001
       - DOM-001
       - FLOW-001
       - SCREEN-001

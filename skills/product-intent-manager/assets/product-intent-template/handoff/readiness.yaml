@@ -5,6 +5,9 @@ gates:
   structural_coverage:
     passed: false
     evidence_refs: []
+  journey_closure:
+    passed: false
+    evidence_refs: []
   capability_traceability:
     passed: false
     evidence_refs: []
@@ -23,9 +26,4 @@ gates:
   handoff_approval:
     passed: false
     evidence_refs: []
-validator:
-  command: ''
-  passed: false
-  report_path: ''
 final_approval_decision_id: null
-package_hash: null

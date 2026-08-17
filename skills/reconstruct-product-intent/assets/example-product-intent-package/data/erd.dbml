@@ -1,5 +1,0 @@
-Table counter_record as DATA_001 {
-  id int [pk]
-  value int [not null]
-  updated_at timestamp [not null]
-}

@@ -1,9 +1,0 @@
-target_outcome: A user can increment and observe a shared counter.
-success_measures:
-  - Every accepted increment increases the persisted value by exactly one.
-release_boundary: One responsive web screen, one API operation, and persistent storage.
-in_scope_capability_ids:
-  - CAP-001
-out_of_scope: []
-confirmed_constraints:
-  - No authentication or multi-tenancy in version 1.0.0.

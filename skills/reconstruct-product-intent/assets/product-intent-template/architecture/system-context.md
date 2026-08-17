@@ -1,4 +1,0 @@
-```mermaid
-flowchart LR
-  %% ARCH-* system context and trust boundaries.
-```

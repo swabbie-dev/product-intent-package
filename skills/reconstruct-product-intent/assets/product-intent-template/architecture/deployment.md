@@ -1,4 +1,0 @@
-```mermaid
-flowchart TB
-  %% ARCH-* environments, deployment topology, network and trust zones.
-```

@@ -10,14 +10,15 @@ Use the greenfield workflow to build a package from an idea.
 
 For an existing package:
 
-1. validate structure;
+1. review the package structure;
 2. inventory all active, missing, stale, proposed, and blocked artifacts;
 3. verify authority assignments and target baseline;
-4. audit all twelve structures and coverage lenses;
+4. audit all thirteen structures, lifecycle journeys, and coverage lenses;
 5. generate an authority-routed decision queue;
-6. resolve, update, trace, run draft validation, stamp the content hash, approve that hash, and run final validation.
+6. resolve gaps, update linked records, review consistency, and obtain approval for the package version.
 
-Do not trust an existing `build_ready` label without rerunning validation and checking its approval/version.
+Do not trust an existing `build_ready` label without reviewing its content,
+approval, and version.
 
 ### Iterate
 
@@ -28,20 +29,26 @@ For every requested change:
 3. define the changed observable outcome and target version;
 4. obtain confirmation or valid delegation;
 5. record a new `DEC-*` and superseded decisions;
-6. run impact analysis;
+6. follow incoming and outgoing trace links to find affected records;
 7. mark all affected active artifacts stale;
 8. update each affected structure;
 9. update acceptance and traceability;
 10. reconfirm cross-domain consequences;
-11. run draft validation, stamp the content hash, obtain approval for that hash, run final validation, and issue the new package version.
+11. review coverage and consistency, obtain approval, and issue the new package version.
 
-Use:
+For a journey change, perform this additional review:
 
-```bash
-python scripts/impact_analysis.py <package-directory> <CHANGED-ID> [<CHANGED-ID> ...] --reverse
-```
+1. identify the parent JOURNEY-* and the changed phase, action, transition,
+   actor, outcome, or product response;
+2. follow reverse trace links from the parent journey;
+3. mark the parent journey and every linked dependent stale;
+4. update detailed flows, screens, rules, state machines, data, contracts,
+   sequences, quality constraints, acceptance scenarios, and readiness;
+5. obtain product-authority confirmation and all affected domain confirmations;
+6. restore `stale: false` only after review and authority confirmation.
 
-The script reports candidates; the agent must review semantic effects that graph links may not capture.
+Trace links identify direct candidates. Review semantic effects that the graph
+may not capture.
 
 ## Change classes
 
@@ -69,6 +76,12 @@ Capability or rule change
   -> quality constraints
   -> acceptance scenarios
   -> traceability and handoff readiness
+
+Journey phase/action/response change
+  -> parent JOURNEY-* and local links
+  -> detailed flow/screen/rule/state/data/contract/sequence
+  -> quality and acceptance
+  -> traceability, journey_closure, and handoff readiness
 ```
 
 A stale artifact cannot be part of a build-ready graph.
@@ -79,7 +92,7 @@ A stale artifact cannot be part of a build-ready graph.
 - Record target product version separately from package version.
 - Preserve superseded decisions and artifacts in history.
 - Record changed IDs, reason, authority, decision, and affected IDs in `governance/change-log.yaml`.
-- Recompute readiness and package hash.
+- Recompute readiness for the package version.
 
 ## Drift control
 
@@ -108,5 +121,5 @@ Every iteration produces:
 - impact set;
 - stale-to-confirmed review record;
 - updated acceptance and traceability;
-- validation report;
+- readiness review;
 - final approval for the new target version or a blocked-change report.

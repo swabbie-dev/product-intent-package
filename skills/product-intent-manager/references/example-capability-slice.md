@@ -24,13 +24,33 @@ coverage_requirements:
 coverage_exceptions: {}
 ```
 
+## Lifecycle context
+
+Before detailed flows, confirm the lifecycle that frames the capability:
+
+```yaml
+journey_ids:
+  - JOURNEY-001
+journey_type: job_task
+journey_phase: JOURNEY-001.phase-01
+product_response: Show the create-project state and validation result.
+```
+
+The journey supplies actor, phase, action, response, exception, and recurrence
+context. The flow, screen, rule, state machine, data, contract, sequence,
+quality, and acceptance artifacts below remain the detailed sources of truth.
+
 ## Connected structures
 
 ```mermaid
 flowchart LR
   ACTOR_001["ACTOR-001 Member"] -->|performed_by| CAP_001["CAP-001 Create project"]
+  ACTOR_001 -->|performed_by| JOURNEY_001["JOURNEY-001 Create project journey"]
   CAP_001 -->|uses_domain| DOM_001["DOM-001 Project"]
   CAP_001 -->|experienced_through| FLOW_001["FLOW-001 Project creation"]
+  CAP_001 -->|experienced_through| JOURNEY_001
+  JOURNEY_001 -->|"JOURNEY-001.action-01 governed_by"| RULE_001
+  JOURNEY_001 -->|"JOURNEY-001.phase-01 verified_by"| ACC_001
   CAP_001 -->|experienced_through| SCREEN_001["SCREEN-001 New project"]
   CAP_001 -->|governed_by| RULE_001["RULE-001 Name validation"]
   CAP_001 -->|governed_by| SM_001["SM-001 Project lifecycle"]
