@@ -2,6 +2,8 @@
 
 Keep the conceptual domain model and physical data model in one file. A
 conceptual `DOM-*` record may map to one or more physical `DATA-*` records.
+Show structure and relationships, not navigation, operation order, service
+messages, or valid state transitions.
 
 ## Conceptual domain model
 

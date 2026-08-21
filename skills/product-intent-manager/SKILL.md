@@ -1,6 +1,6 @@
 ---
 name: product-intent-manager
-description: Manage a Product Intent Package for greenfield product definition, reconstruction of an existing product, completion of an incomplete package, or iteration on confirmed product intent. Use when planning actors, journeys, capabilities, behavior, design boards, system interactions, or an implementation handoff. Keep observed, proposed, confirmed, blocked, and stale intent separate. Do not implement the product or silently decide unresolved behavior.
+description: Manage a Product Intent Package for greenfield product definition, reconstruction of an existing product, completion of an incomplete package, or iteration on confirmed product intent. Use when planning actors, journeys, capabilities, behavior, product diagrams, design boards, system interactions, or an implementation handoff. Keep observed, proposed, confirmed, blocked, and stale intent separate. Do not implement the product or silently decide unresolved behavior.
 ---
 
 # Manage Product Intent
@@ -46,9 +46,10 @@ separate from implementation detail.
    The consolidated diagram views are stack context, user flows, state
    machines, data model/ERD, sequences, and deployment only when deployment
    topology is complex. Lifecycle journeys remain semantic product records.
-   Use [Product Artifact Practices](references/product-artifact-practices.md)
-   for diagram selection, transition placement, sequence, and design-board
-   rules.
+   Use [Diagram Responsibilities](references/diagram-responsibilities.md) for
+   ownership and links between views. Use
+   [Product Artifact Practices](references/product-artifact-practices.md) for
+   artifact selection, transition placement, sequences, and design-board rules.
 5. Ask the accountable authority the smallest question that closes each
    build-affecting gap. Record the answer, source, affected stable IDs, and any
    explicit exclusion or bounded discretion. Do not hide uncertainty in prose.
@@ -70,6 +71,10 @@ Track the Product Intent Package in Git so its history remains reviewable.
 - Use stable IDs and links. Keep one authoritative value for each fact; do not
   copy detailed rules between a journey, flow, screen, state, contract, or
   sequence.
+- Keep each diagram focused on one question. Share stable state and outcome IDs
+  across views; do not copy the logic that selects or executes them. Read
+  [Diagram Responsibilities](references/diagram-responsibilities.md) before
+  creating or repairing overlapping diagrams.
 - Use one `architecture/stack-context.md` diagram for actors, the product
   boundary, external systems, physical services, responsibilities, connections,
   and normally deployment placement. Do not create separate component,
@@ -102,13 +107,15 @@ Track the Product Intent Package in Git so its history remains reviewable.
 
 1. Read [Product Artifact Practices](references/product-artifact-practices.md)
    for the outward-facing artifact rules.
-2. Read [Product Intent Package Standard](references/product-intent-package-standard.md)
+2. Read [Diagram Responsibilities](references/diagram-responsibilities.md)
+   when creating, reviewing, or separating diagram views.
+3. Read [Product Intent Package Standard](references/product-intent-package-standard.md)
    before creating or changing the package structure.
-3. For a new product, read [Greenfield Workflow](references/greenfield-workflow.md).
-4. For reconstruction, read [Reconstruction Workflow](references/reconstruction-workflow.md)
+4. For a new product, read [Greenfield Workflow](references/greenfield-workflow.md).
+5. For reconstruction, read [Reconstruction Workflow](references/reconstruction-workflow.md)
    and [Authority and Evidence Policy](references/authority-and-evidence-policy.md).
    For completion or iteration, read [Lifecycle and Change Management](references/lifecycle-and-change-management.md).
-5. Read [Questioning Protocol](references/questioning-protocol.md) when an
+6. Read [Questioning Protocol](references/questioning-protocol.md) when an
    authority decision is needed and [Coverage and Handoff Gates](references/coverage-and-handoff-gates.md)
    before handoff.
 

@@ -42,6 +42,9 @@ Minimum must-pass rubric:
   updates moved paths and affected governance records;
 - retires separate component, container, system-context, and screen-map
   diagrams after their unique content moves to the consolidated views;
+- separates observable user experience, valid state, ordered runtime work, data
+  structure, and physical topology; preserves context with shared IDs; and puts
+  multi-condition outcome selection in one rule or decision table;
 
 Additional journey rubric:
 

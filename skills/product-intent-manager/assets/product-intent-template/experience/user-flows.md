@@ -2,7 +2,10 @@
 
 Use one subgraph per `FLOW-*`. Include the `SCREEN-*` nodes that the flow
 enters, the mockups or components that matter, and alternate, failure,
-cancellation, and recovery paths.
+cancellation, and recovery paths. Treat system work as a black box between the
+actor action and visible product response. Link consequential work to `SEQ-*`,
+`SM-*`, or `RULE-*`; do not draw service calls, database reads, authorization
+checks, or query mechanics here.
 
 ```mermaid
 flowchart TD

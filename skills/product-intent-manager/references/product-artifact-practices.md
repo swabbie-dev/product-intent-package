@@ -114,6 +114,9 @@ source only when deployment needs a separate view.
 | Sequences | Ordered messages for one consequential outcome | `sequences/sequences.md` |
 | Deployment | Complex environment, region, network, failover, or rollout topology | `architecture/deployment.md` only when needed |
 
+Read [Diagram Responsibilities](diagram-responsibilities.md) for the exact
+ownership boundary and shared-ID links between these views.
+
 Use `governance/scope.yaml` and `product/capabilities.yaml` for product
 outcome, release boundary, exclusions, and capability records. Do not create a
 second product context diagram. Stack context is the sole context diagram.

@@ -1,3 +1,9 @@
+# State machines
+
+Define valid states, transitions, triggers, and guards. Link a transition to its
+`SEQ-*` when runtime ordering matters; do not copy service messages or screen
+navigation into the state diagram.
+
 ```mermaid
 stateDiagram-v2
   %% Define SM-* state machines. Include triggers, guards, side effects, failures, and terminal states.

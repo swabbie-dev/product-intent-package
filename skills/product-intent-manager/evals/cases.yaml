@@ -117,3 +117,19 @@ cases:
       - add a separate deployment view only when deployment topology is complex enough to make stack context hard to read
       - reuse the same ARCH nodes and show affected connections or state in a separate deployment view
       - preserve stable IDs and update all affected paths and traceability
+
+  - id: separate-diagram-responsibilities
+    prompt: A user-flow diagram repeats membership checks, database reads, sorting,
+      pagination, and service failures that also appear in its sequence diagram.
+      Simplify the Product Intent Package without losing context.
+    should_activate: true
+    must:
+      - keep actor actions, screen topology, visible outcomes, and recovery choices in the user flow
+      - move ordered runtime messages, authorization checks, data reads, retries, and timeouts to focused sequences
+      - keep valid states, transitions, triggers, and guards in the state machine
+      - keep entities, fields, keys, relationships, and cardinality in the data model and ERD
+      - use stack context as the source for physical participants, responsibilities, and owned state
+      - use one decision table or rule for condition combinations that select a visible outcome
+      - link FLOW actions to SEQ operations and link SEQ results to shared SCREEN or SM outcome IDs
+      - split an overloaded user flow by actor goal and an overloaded sequence by consequential operation
+      - avoid another diagram type unless it answers a distinct question

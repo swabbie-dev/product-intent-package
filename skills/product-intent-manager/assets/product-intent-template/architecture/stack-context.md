@@ -6,6 +6,10 @@ simple product, include deployment in this diagram. Add a separate
 `architecture/deployment.md` only when deployment topology is too complex to
 read in this context.
 
+Use this view as the source for sequence participants and their responsibilities.
+Do not show screen navigation, message order, entity fields, or detailed state
+transitions here.
+
 ```mermaid
 flowchart LR
   %% ACTOR_001["ACTOR-001 User"] --> PRODUCT["Product boundary"]

@@ -89,6 +89,10 @@ applies, or record a confirmed not-applicable result in coverage. Add the sixth
 deployment source only when deployment needs a separate view. Each view answers
 a different question and links to the supporting YAML records.
 
+Use [Diagram Responsibilities](diagram-responsibilities.md) to assign each fact
+to one view and preserve context through stable-ID links instead of repeated
+logic.
+
 | View | Question it answers | Canonical source |
 |---|---|---|
 | Stack context | Who uses the product, what physical services exist, what each owns, and how the system connects | `architecture/stack-context.md` |
