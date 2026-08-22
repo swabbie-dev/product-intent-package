@@ -39,6 +39,7 @@ cases:
     should_activate: true
     must:
       - keep actor actions, surfaces, visible outcomes, and recovery in the user flow
+      - make consequential surface boundaries clear enough to identify needed mockups and state variants
       - keep ordered runtime messages and failures in focused sequences
       - keep valid lifecycle states and transitions in state machines
       - keep entities and relationships in the data model or ERD

@@ -53,6 +53,9 @@ creating or migrating package structure.
 - Keep diagrams separate by responsibility: actor experience in user flows,
   runtime messages in sequences, lifecycle validity in state machines,
   entities and relationships in ERDs, and physical ownership in stack context.
+- In user flows, clearly name and bound each consequential user-visible
+  surface. These boundaries should make the needed mockups and important state
+  variants apparent without turning the flow into a wireframe.
 - Let engineering choose internal implementation details by default when those
   choices do not change confirmed behavior, security, privacy, data integrity,
   compatibility, reliability, operability, cost bounds, or other stated

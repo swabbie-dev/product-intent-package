@@ -7,10 +7,16 @@ paths. This view owns the user-visible path, not internal execution.
 Link system work to its `SEQ-*`, `SM-*`, or rule record. Do not draw service
 calls, database reads, authorization checks, or query mechanics here.
 
+Visually group actions and states by consequential user-visible surface. Label
+each boundary with `SURFACE · Name`, or `SCREEN-* · Name` when another artifact
+references it. These boundaries form the mockup inventory; individual flow
+nodes do not each require a mockup.
+
 ```mermaid
 flowchart TD
   %% Label the flow with its FLOW-* ID. Use ACTOR-* and SCREEN-* IDs where
   %% In reconstruction, label non-confirmed claims with status and source.
   %% applicable, and keep each node phrased as an actor action, decision, or
   %% visible product response.
+  %% Use labeled subgraphs to bound user-visible surfaces and their states.
 ```

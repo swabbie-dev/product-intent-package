@@ -92,6 +92,15 @@ Keep screen topology in the user-flow view; do not create a separate screen map.
 For a headless or operator product, show actor actions and observable responses
 without inventing screens.
 
+Make each consequential user-visible surface explicit with a labeled visual
+boundary such as `SURFACE · Match Feed` or, when referenced across files,
+`SCREEN-001 · Match Feed`. Put the actions and visible states owned by that
+surface inside its boundary, and label transitions between surfaces. This
+surface-and-state inventory tells designers which pages, views, modals, panels,
+or messages need mockups. Do not treat every flow node as a mockup: create a
+mockup only when a surface or materially different state needs visual design.
+The grouping communicates scope; it is not a wireframe.
+
 ## Sequences
 
 A sequence owns runtime coordination for one consequential outcome. Include its

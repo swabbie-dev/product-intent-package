@@ -8,20 +8,25 @@ The flow takes place on `SCREEN-001 Counter screen`. Increment actions use
 
 ```mermaid
 flowchart TD
-  START(["ACTOR-001 opens Counter"]) --> LOADING["Show loading"]
-  LOADING --> LOAD_RESULT{"Visible load result"}
-  LOAD_RESULT -->|current value| READY["Show current value and Increment"]
-  LOAD_RESULT -->|failed| LOAD_ERROR["Show load failure and Retry"]
-  LOAD_ERROR -->|Retry| LOADING
+  START(["ACTOR-001 opens Counter"])
 
-  READY -->|Press Increment| SUBMITTING["Show increment in progress"]
-  SUBMITTING --> RESULT{"Visible increment result"}
-  RESULT -->|new value| READY
-  RESULT -->|confirmed failure| RETRY["Show unchanged value and Retry"]
-  RETRY -->|Retry| SUBMITTING
-  RETRY -->|Dismiss| READY
-  RESULT -->|outcome unknown| RECONCILE["Show reconciling and prevent another increment"]
-  RECONCILE --> LOADING
+  subgraph SCREEN_001["SCREEN-001 · Counter screen"]
+    LOADING["Show loading"] --> LOAD_RESULT{"Visible load result"}
+    LOAD_RESULT -->|current value| READY["Show current value and Increment"]
+    LOAD_RESULT -->|failed| LOAD_ERROR["Show load failure and Retry"]
+    LOAD_ERROR -->|Retry| LOADING
+
+    READY -->|Press Increment| SUBMITTING["Show increment in progress"]
+    SUBMITTING --> RESULT{"Visible increment result"}
+    RESULT -->|new value| READY
+    RESULT -->|confirmed failure| RETRY["Show unchanged value and Retry"]
+    RETRY -->|Retry| SUBMITTING
+    RETRY -->|Dismiss| READY
+    RESULT -->|outcome unknown| RECONCILE["Show reconciling and prevent another increment"]
+    RECONCILE --> LOADING
+  end
+
+  START --> LOADING
 ```
 
 The screen is a responsive, single centered column. Increment is a native,
