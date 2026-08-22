@@ -2,546 +2,164 @@
 
 ## Purpose
 
-A **Product Intent Package (PIP)** is an authority-confirmed source of **what product to build and how it must behave**, plus the constraints needed to implement it.
+A Product Intent Package (PIP) is the smallest authority-confirmed description
+of what product to build, how people use it, and which outcomes and constraints
+matter. It is not a substitute for source code, a project-management system, or
+an exhaustive implementation specification.
 
-The target consumer is a coding-agent orchestrator. A handoff-ready package must let that orchestrator build the product without asking what the product owner, product manager, designer, or technical authority intended.
+## Format 6.0
 
-A handoff-ready package makes every build-affecting detail one of:
+This standard defines format `6.0.0`. Format 6 removes mandatory registries and
+completeness machinery that duplicate the product records. It uses direct links,
+conditional artifacts, ordinary Git history, and default engineering discretion.
 
-1. explicitly specified and confirmed;
-2. explicitly excluded or not applicable;
-3. explicitly delegated as bounded implementation discretion.
+The default package contains exactly five files:
 
-Anything else is an unresolved gap.
+| File | Responsibility |
+| --- | --- |
+| `product.yaml` | Package identity and status, target baseline and release, outcome, actors, capabilities, exclusions, and measures |
+| `governance.yaml` | Default authority, consequential decisions, and unresolved questions or conflicts |
+| `acceptance.yaml` | Observable scenarios that establish whether confirmed product outcomes were met |
+| `architecture/stack-context.md` | Physical clients, services, managed platforms, data stores, external systems, responsibilities, and connections |
+| `experience/user-flows.md` | Actor goals, actions, screen topology, choices, visible outcomes, failure, and recovery |
 
-## Format version
+Populate these five files when instantiating a real package. Do not pre-create
+empty optional directories or placeholder files. Add another artifact only when
+it communicates distinct information needed to understand, decide, build, or
+accept this product. See [Artifact Responsibilities](artifact-responsibilities.md).
 
-This standard defines Product Intent Package format `5.0.0`.
-`manifest.yaml` must set `schema_version: 5.0.0`. This breaking version
-consolidates the context, component, container, and normal deployment views in
-`architecture/stack-context.md`; combines screen maps and user flows; and
-combines conceptual domain relationships and ERDs in `data/data-model.md`.
-Projects with complex environment, region, network, failover, or rollout
-topology may add `architecture/deployment.md` as a linked view of the same
-stack nodes.
+Use these paths when the corresponding optional artifact is needed:
 
-## Non-negotiable invariants
+| Optional artifact | Canonical path |
+| --- | --- |
+| Journey | `experience/journeys/JOURNEY-*.md` |
+| Screen detail or local mockup | `experience/screens.yaml`, `experience/mockups/` |
+| Product-specific design patterns | `experience/design-system.md` or a link to the authoritative design system |
+| Rules, state machines, or decision tables | `behavior/rules.yaml`, `behavior/state-machines.md`, `behavior/decision-tables.md` |
+| Data model or product-significant schema | `data/data-model.md`, `data/schema.yaml` |
+| Shared, external, or product-significant contracts | `contracts/contracts.yaml` or `contracts/openapi.yaml` |
+| Runtime sequences | `sequences/sequences.md` |
+| Measurable quality constraints | `quality/constraints.yaml` |
+| Complex deployment topology | `architecture/deployment.md` |
 
-1. **Intent is never inferred into existence.** Evidence may support a proposal; only an authorized confirmation makes it canonical.
-2. **One fact, one source of truth.** Reuse stable IDs and links instead of restating the same rule in multiple artifacts.
-3. **Every canonical item is governed.** It has a stable ID, status, authority, confirmation decision, version, source references, and staleness state in `governance/artifact-index.yaml`.
-4. **Observed behavior is not automatically desired behavior.** Code, tests, screenshots, analytics, documents, and runtime behavior are evidence.
-5. **No silent conflict resolution.** Contradictions are routed to the accountable authority and recorded as decisions.
-6. **No silent defaults.** “Standard behavior” is a proposal unless an authority delegates that decision domain.
-7. **Every in-scope capability is traceable.** It connects to all applicable experience, behavior, data, architecture, contract, sequence, quality, and verification artifacts.
-8. **Every exclusion is deliberate.** `out_of_scope`, `not_applicable`, and waived coverage require an authority-confirmed decision.
-9. **Changes propagate.** A changed decision marks all dependent artifacts stale until reviewed and reconfirmed.
-10. **Build-ready is a gate, not a tone.** The package is not handoff-ready while any blocking question, contradiction, stale artifact, placeholder, missing authority, or uncovered capability remains.
+These paths are conventions, not a requirement to create every file.
 
-## Representation rule
+## Core principles
 
-Prefer, in order:
+1. **Start with product meaning.** Outcome, actors, capabilities, release
+   boundary, exclusions, measures, and acceptance come before implementation
+   detail.
+2. **One fact has one owner.** Other files link to that fact instead of copying
+   it.
+3. **Artifacts are conditional.** Absence is not a gap when no distinct product
+   question requires the artifact.
+4. **Evidence is not authority.** Existing behavior and source material can
+   establish what was observed, not what should be built.
+5. **Engineering owns ordinary implementation.** The PIP constrains internal
+   choices only when they can affect a confirmed outcome or material bound.
+6. **Handoff is an outcome review.** Do not prove readiness by counting files,
+   fields, IDs, links, or categories.
 
-1. executable schema or contract;
-2. diagram or model;
-3. decision table or matrix;
-4. concrete example;
-5. prose only when the intent cannot be represented precisely above.
+## Intent status
 
-Use stable IDs inside diagrams and registries. Prose explains rationale; it must not be the only location of a build-critical rule.
+Use these labels consistently for individual claims and artifacts; they are
+distinct from the package-level `product.yaml.status`:
 
-## Human-readable package file format
+| Status | Meaning |
+| --- | --- |
+| `observed` | Directly supported by a source or runtime observation; not necessarily desired |
+| `inferred` | Reasonably derived from evidence but not directly observed or confirmed |
+| `proposed` | Candidate target awaiting a decision |
+| `confirmed` | Accepted as target intent by the accountable authority |
+| `blocked` | A missing decision, conflict, or evidence gap prevents responsible progress |
+| `stale` | Previously usable intent may have changed because a dependency changed |
 
-Use these rules for every Product Intent Package:
+Do not merge these meanings. Preserve the prior confirmation or evidence link
+when marking an item stale. Historical or rejected material may remain in Git;
+it does not need to remain in the active package unless its rationale matters.
 
-- Store every skill-authored structured package record in YAML in a `.yaml` file.
-- Use unique string keys. Do not use YAML aliases or custom tags.
-- Store every Mermaid diagram in a Markdown `.md` file, including files that contain only a diagram. Wrap each diagram in a fenced `mermaid` block so common editors can render it.
-- Do not create canonical `.json` or `.mmd` package files.
-- Preserve the original format for copied source evidence and for media types or file formats required by an external system. Record these files through `governance/evidence.yaml`; do not list them as canonical paths in `governance/artifact-index.yaml`. Preserve media types such as `application/json` when an HTTP boundary requires them.
+For a `build_ready` package, the final confirmation decision establishes
+`confirmed` as the default for active target claims covered by that decision.
+Write a local status and source or decision reference only when a claim differs
+from that baseline, especially for `observed`, `inferred`, `proposed`, `blocked`,
+or `stale` reconstruction material. A package-level status must never make an
+unconfirmed claim appear confirmed.
 
-## Canonical directory map
+## Target baseline
 
-| Intent dimension | Canonical structures | Default files |
-|---|---|---|
-| Governance | authority, scope, structure/lens coverage, decisions, questions, contradictions, evidence, artifact registry, change history | `governance/*` |
-| Product map | outcome, release boundary, actors, product boundary, capabilities, external systems, exclusions | `product/capabilities.yaml`, `governance/scope.yaml`; the context diagram is in `architecture/stack-context.md` |
-| Lifecycle journey | actor lifecycle, phases, actions, product responses, exceptions, recurrence, and dependent detail | `experience/journeys/index.yaml`, `experience/journeys/JOURNEY-*.md` |
-| Domain model | conceptual entities, relationships, ownership, invariants, vocabulary | `data/data-model.md`, `governance/glossary.yaml` |
-| User-flow model | actor goals, screen topology, entry points, paths, alternatives, recovery | `experience/user-flows.md`, `experience/screens.yaml`, `experience/mockups/` |
-| Interface model | screen states, inputs, outputs, responsive behavior, copy references, mockups | `experience/screens.yaml`, `experience/mockups/`; the screen map is part of `experience/user-flows.md` |
-| Design system | tokens, components, variants, interaction and motion patterns | `experience/design-tokens.yaml`, `experience/components.yaml` |
-| Behavior model | state machines, rules, guards, priorities, decision tables, cross-service transition allocation | `behavior/state-machines.md`, `behavior/rules.yaml`, `behavior/decision-tables.csv` |
-| Data model | conceptual and physical entities, fields, relationships, constraints, lifecycle, retention, migration | `data/data-model.md`, `data/schema.yaml`, `data/lifecycle.yaml` |
-| Stack context and deployment | actors, product boundary, external systems, physical runtime, service responsibilities, deployment placement, and trust boundaries | `architecture/stack-context.md`, `architecture/decisions.yaml`; optional `architecture/deployment.md` for complex topology |
-| Interface contracts | APIs, events, webhooks, third-party boundaries, errors and versioning | `contracts/openapi.yaml`, `contracts/events.yaml`, `contracts/integrations.yaml` |
-| Runtime interactions | ordering, transactions, async work, failures, compensation, retries | `sequences/sequences.md` |
-| Quality constraints | measurable performance, reliability, security, privacy, accessibility, compatibility, operations | `quality/constraints.yaml` |
-| Verification model | acceptance scenarios and complete cross-artifact traceability | `verification/acceptance.yaml`, `verification/traceability.yaml` |
-| Handoff contract | allowed implementation discretion and readiness result | `handoff/implementation-discretion.yaml`, `handoff/readiness.yaml` |
+Declare one target baseline in `product.yaml`:
 
-Large products may split any file by stable ID. The semantics and registry remain unchanged.
+- `greenfield`: no implementation defines the starting product;
+- `as_implemented`: reproduce a specifically identified implementation;
+- `intended_current`: describe what authorities intend now; or
+- `target_next`: describe a planned future release.
 
-## Consolidated diagram views
+Do not mix baselines inside active intent. A reconstruction can retain observed
+facts about several environments while confirming only one target.
 
-Keep the five default source files listed below. Populate each diagram when it
-applies, or record a confirmed not-applicable result in coverage. Add the sixth
-deployment source only when deployment needs a separate view. Each view answers
-a different question and links to the supporting YAML records.
+## Stable IDs and direct links
 
-Use [Diagram Responsibilities](diagram-responsibilities.md) to assign each fact
-to one view and preserve context through stable-ID links instead of repeated
-logic.
+Assign a stable ID only when an item is referenced from another file or an
+external system. Headings, table rows, or nested records that remain local do
+not need formal IDs. Preserve a cross-file ID through renames and moves.
 
-| View | Question it answers | Canonical source |
-|---|---|---|
-| Stack context | Who uses the product, what physical services exist, what each owns, and how the system connects | `architecture/stack-context.md` |
-| User flows | How an actor reaches an outcome through screens, branches, failure, and recovery | `experience/user-flows.md` |
-| State machines | Which states and transitions are valid, and where each cross-service transition is placed | `behavior/state-machines.md` |
-| Data model / ERD | Which domain concepts and persisted records exist, and how they relate | `data/data-model.md` |
-| Sequences | Which ordered messages produce one consequential outcome | `sequences/sequences.md` |
-| Deployment | Which environment, region, network, failover, or rollout dependencies need a separate view | `architecture/deployment.md` when needed |
-
-`architecture/stack-context.md` is the sole context diagram. It normally also
-shows deployment placement when that makes deployment dependencies and product
-repercussions easier to understand. Create `architecture/deployment.md` only
-when environment, region, network, failover, or rollout complexity would make
-the combined view difficult to understand. A separate deployment view must use
-the same physical node IDs, link back to stack context, and show affected
-connections or state; do not repeat service responsibilities or create a
-second architecture model.
-
-`experience/user-flows.md` includes screen topology. Keep screen states,
-inputs, outputs, and mockup links in `experience/screens.yaml` and supporting
-design records. `data/data-model.md` combines the conceptual domain view and
-the ERD, but `DOM-*` IDs remain conceptual and `DATA-*` IDs remain persisted or
-derived data records. Supporting schema, lifecycle, and glossary records remain
-separate.
-
-Lifecycle journeys remain required semantic records. Their Markdown sources may
-contain a lifecycle table, rationale, or an optional Mermaid view, but a journey
-is not a seventh consolidated system diagram.
-
-## Stable ID vocabulary
-
-Recommended prefixes:
-
-| Prefix | Kind |
-|---|---|
-| `ACTOR` | user, operator, service, or external actor |
-| `CAP` | capability |
-| `JOURNEY` | lifecycle journey map |
-| `DOM` | domain concept |
-| `FLOW` | user or operational flow |
-| `SCREEN` | screen, page, view, or interaction surface |
-| `MOCK` | mockup or prototype |
-| `TOKEN` | design-token set |
-| `COMP` | interface component or pattern |
-| `RULE` | business or system rule |
-| `SM` | state machine |
-| `DT` | decision table |
-| `DATA` | persisted entity, schema, or lifecycle model |
-| `ARCH` | physical runtime, service, deployment boundary, or architecture diagram |
-| `API` | request/response contract |
-| `EVT` | event contract |
-| `INT` | external integration contract |
-| `SEQ` | sequence or runtime interaction |
-| `QC` | quality constraint |
-| `ACC` | acceptance scenario |
-| `DEC` | confirmed decision |
-| `Q` | unresolved question |
-| `CON` | conflicting claims awaiting authority resolution |
-| `EVID` | evidence item |
-| `DIS` | implementation-discretion grant |
-
-IDs are immutable. Renames and file moves change labels, paths, or versions, not
-IDs. Superseded items retain their IDs in history. When one broad architecture
-item is divided into separately deployed responsibilities, preserve the old ID
-for the responsibility that still matches or supersede it through a decision;
-create new IDs only for the additional physical boundaries.
-
-## Artifact metadata
-
-Every logical artifact is registered in `governance/artifact-index.yaml`:
+Use a meaningful direct link on either record, for example:
 
 ```yaml
-id: CAP-001
-kind: capability
-label: Create project
-path: product/capabilities.yaml#/capabilities/0
-status: confirmed
-authority_id: AUTH-PRODUCT
-confirmation_decision_id: DEC-014
-source_refs:
-  - EVID-003
-version: 3
-stale: false
-```
-
-Allowed working statuses:
-
-- `observed`: directly found in evidence; not yet confirmed as target intent;
-- `hypothesis`: plausible interpretation; never canonical at handoff;
-- `proposed`: presented for authority decision;
-- `confirmed`: canonical target intent;
-- `blocked`: cannot be resolved without authority or missing evidence;
-- `out_of_scope`: deliberately excluded by confirmed decision;
-- `not_applicable`: deliberately inapplicable by confirmed decision;
-- `superseded`: historical item replaced by another item.
-
-Only active `confirmed`, `out_of_scope`, and `not_applicable` items may remain at build-ready handoff. Historical superseded items may remain outside the active graph.
-
-## The thirteen required information structures
-
-### 1. Product map
-
-Must define:
-
-- target product outcome and release boundary;
-- actors and their goals;
-- product/system boundary;
-- major capabilities;
-- external systems and major inputs/outputs;
-- explicit exclusions.
-
-Primary form: capability and scope registries. Store the outcome, release
-boundary, exclusions, and measures there. Do not create a second product
-context diagram; `architecture/stack-context.md` is the sole context diagram.
-
-### 2. Lifecycle journey model
-
-For each in-scope actor, define the confirmed lifecycle context for applicable
-capabilities before detailed flows:
-
-- journey type and rationale;
-- actor variant, actor lanes, scope, target view, and intent status;
-- time axis, topology, recurrence, trigger, desired outcome, and terminal states;
-- phases with entry/exit conditions and local IDs;
-- actor actions, product responses, state/data/event effects, and detailed links;
-- failure, pause/resume, abandonment, exit, and recovery dispositions;
-- transitions and detailed flows for complex branches;
-- authority, confirmation decision, evidence, and source Markdown path.
-
-Primary form: `experience/journeys/index.yaml` plus editable Markdown sources
-with a fenced `mermaid` block, a Markdown lifecycle table, or both. A journey
-frames detailed artifacts; it does not replace a flow, screen, rule, state
-machine, contract, sequence, quality, or acceptance artifact.
-
-### 3. Domain model
-
-Must define conceptual entities independently of storage:
-
-- canonical vocabulary;
-- identity and ownership;
-- relationships and cardinality;
-- invariants;
-- lifecycle concepts;
-- tenancy and boundary rules where applicable.
-
-Primary form: the conceptual section of `data/data-model.md` plus the glossary.
-Keep conceptual `DOM-*` records distinct from persisted or derived `DATA-*`
-records even when one diagram shows both.
-
-### 4. User-flow model
-
-For every actor goal, define:
-
-- entry point and preconditions;
-- happy path;
-- alternate paths;
-- cancellation and undo;
-- failure and recovery;
-- permission and account-state branches;
-- terminal outcomes.
-
-Primary form: `experience/user-flows.md`, with flow and screen-topology views
-keyed by `FLOW-*` and `SCREEN-*` IDs.
-
-### 5. Interface model
-
-For every user-visible surface, define:
-
-- navigation/topology;
-- inputs, outputs, actions, and validation;
-- loading, empty, populated, partial, error, permission-denied, unavailable, and success states as applicable;
-- responsive and device behavior;
-- keyboard and accessibility behavior;
-- content/copy source;
-- mockup or prototype reference.
-
-Primary form: `experience/screens.yaml` plus the screen sections of
-`experience/user-flows.md` and mockups. Do not create a separate canonical
-screen-map diagram.
-
-### 6. Design system
-
-Define:
-
-- tokens: color roles, typography, spacing, sizing, radius, elevation, motion;
-- layout/grid and responsive rules;
-- components and variants;
-- interaction states;
-- content and icon conventions;
-- accessibility constraints;
-- theming/branding rules.
-
-Primary form: machine-readable tokens + component/interaction catalog. Mockups must reference these components rather than redefine them.
-
-### 7. Behavior model
-
-Define:
-
-- object and workflow states;
-- allowed transitions, triggers, guards, side effects, and terminal states;
-- business rules and invariants;
-- decision precedence and conflict handling;
-- time, ordering, idempotency, duplicate, concurrency, retry, and cancellation semantics;
-- decision tables for combinatorial conditions;
-- for each transition that crosses physical services, its initiator, durable
-  authority, executor, observers, and failure or recovery path.
-- a stable local ID for each allocated transition.
-
-Primary form: state machines with cross-service transition allocation + rules
-registry + decision tables.
-
-In a transition allocation, `durable authority` means the physical runtime or
-data store that validates and commits the state change. It is not an `AUTH-*`
-product-decision authority.
-
-The state diagram and allocation table in `behavior/state-machines.md` are the
-canonical source. Do not create a duplicate transition registry or split a
-state machine only to match service boundaries.
-
-### 8. Data model
-
-Define:
-
-- persisted and derived data;
-- fields, types, constraints, relationships, and indexes where consequential;
-- data ownership and tenancy;
-- creation, update, archival, deletion, retention, export, and audit behavior;
-- migration, bootstrap, and seed requirements;
-- privacy classification.
-
-Primary form: the ERD and conceptual data view in `data/data-model.md`, plus
-the schema registry and lifecycle matrix. Keep DBML only when an external tool
-requires it; a skill-authored diagram belongs in a fenced Mermaid Markdown
-file.
-
-### 9. Stack context and deployment
-
-Define:
-
-- actors, the product boundary, and external systems;
-- physical clients, deployed services, managed platforms, workers, and data
-  stores;
-- the confirmed provider or runtime for each physical node;
-- the responsibility, owned state, security controls, and operational controls
-  for each physical node;
-- sync/async boundaries;
-- trust boundaries and security zones;
-- storage, queues, cache, search, jobs, and files;
-- deployment topology, environments, and configuration boundaries in the
-  stack-context map when that makes deployment dependencies and product
-  repercussions easier to understand;
-- a separate deployment diagram only when environment, region, network,
-  failover, or rollout complexity would make the combined view hard to
-  understand; the separate view must reuse stack-node IDs, show affected
-  connections or state, and must not repeat their responsibilities;
-- build-vs-buy decisions that affect behavior or constraints.
-
-Label each physical connection with its direction, protocol or transport, and
-data or message meaning. Keep logical API, event, and data artifacts outside the
-physical stack and link them to the service that exposes, executes, or stores
-them. Model internal modules only when their boundary affects ownership,
-deployment, trust, failure, scaling, or an observable outcome.
-
-Primary form: `architecture/stack-context.md` plus architecture decisions and,
-when needed, `architecture/deployment.md`. Stack context is the sole context
-diagram and normally includes deployment placement.
-
-### 10. Interface contracts
-
-For every boundary, define:
-
-- request, response, event, webhook, or file shape;
-- authentication and authorization;
-- errors and failure semantics;
-- validation and limits;
-- idempotency, pagination, filtering, ordering, and concurrency behavior;
-- versioning and compatibility;
-- retry, timeout, and rate-limit expectations.
-
-Primary form: OpenAPI-compatible contract, event registry, and integration contract registry.
-
-### 11. Runtime interaction model
-
-Create sequence diagrams wherever ordering or runtime-service coordination matters, including:
-
-- multi-service operations;
-- transactions;
-- asynchronous processing;
-- external side effects;
-- retries, timeouts, compensation, and dead-letter behavior;
-- authentication/authorization boundaries;
-- race conditions and concurrency control.
-
-Primary form: sequence diagrams keyed by `SEQ-*` IDs.
-
-Sequences define ordered messages for one outcome. They link to the state
-machine and runtime allocation; they do not redefine valid states or ownership
-of a transition.
-
-### 12. Quality constraints
-
-Every constraint must be measurable or testable. Cover applicable dimensions:
-
-- latency, throughput, capacity, and scale;
-- availability, durability, backup, recovery point, and recovery time;
-- security, privacy, abuse resistance, and compliance;
-- accessibility;
-- supported devices, browsers, platforms, locales, and time zones;
-- observability, auditability, supportability, and operational ownership;
-- cost or resource ceilings where they constrain implementation.
-
-Primary form: constraint matrix keyed by `QC-*` IDs.
-
-### 13. Verification model
-
-Define:
-
-- acceptance scenarios for every capability, rule, failure branch, permission branch, and quality constraint;
-- test data and expected results where consequential;
-- tolerances for non-deterministic or numerical behavior;
-- cross-artifact traceability.
-
-Primary form: acceptance registry + traceability graph.
-
-## Coverage lenses
-
-The thirteen structures are canonical. Apply these lenses across them so common omissions do not hide between documents:
-
-- roles, permissions, tenancy, and delegated access;
-- onboarding, authentication, account recovery, suspension, and deletion;
-- administration, moderation, support, audit, and operator workflows;
-- billing, entitlements, quotas, and plan changes where applicable;
-- notifications, preferences, delivery failures, and unsubscribe behavior;
-- search, filtering, sorting, pagination, and empty results;
-- files, import/export, migration, and interoperability;
-- analytics, event instrumentation, attribution, and experiment behavior;
-- localization, time zones, currencies, units, and numeric precision;
-- offline behavior, poor connectivity, partial failure, and resumption;
-- concurrency, duplicates, ordering, idempotency, and race conditions;
-- data privacy, retention, deletion, legal holds, and user export;
-- accessibility, keyboard, screen-reader, contrast, and reduced-motion behavior;
-- environments, configuration, secrets, deployment, rollback, and disaster recovery.
-
-Each lens must be either represented, explicitly not applicable, or out of scope by confirmed decision.
-
-## Traceability model
-
-`verification/traceability.yaml` is the package graph. Each edge is directional.
-An edge from a journey phase or action, or from an allocated state transition,
-includes `source_part_id`; local IDs are not global artifact-index entries:
-
-```yaml
-from: CAP-001
-relation: verified_by
-to: ACC-001
+- id: CAP-001
+  name: Review a match
+  related_ids: [FLOW-001]
 ```
 
 ```yaml
-from: JOURNEY-001
-source_part_id: JOURNEY-001.action-01
-relation: governed_by
-to: RULE-001
+- id: ACC-001
+  verifies: [CAP-001]
+  given: [A seller has an eligible match.]
+  when: [The seller opens the match.]
+  then: [The confirmed match detail is visible.]
 ```
 
-Canonical relations:
+Add only links a reviewer needs to follow. Do not create an artifact index,
+traceability graph, coverage matrix, or duplicate reverse edge merely to prove
+that a relationship exists. Prefer a purpose-specific field as the relationship
+owner: for example, `acceptance.yaml` owns `verifies`, so the capability does
+not also list the acceptance scenario. Use `related_ids` only when no more
+specific field expresses the relationship.
 
-| Relation | Meaning |
-|---|---|
-| `performed_by` | actor performs or participates in the target item |
-| `uses_domain` | item depends on a domain concept |
-| `experienced_through` | capability is realized by a flow, screen, mockup, or component |
-| `governed_by` | item is constrained by a rule, state machine, or decision table |
-| `uses_data` / `persists_as` | item reads, writes, or maps to a data model |
-| `implemented_by` | item is assigned to an architecture element |
-| `exposed_by` | item crosses an API, event, or integration contract |
-| `executed_by` | item has a runtime sequence |
-| `constrained_by` | item is subject to a quality constraint |
-| `verified_by` | item is proven by an acceptance scenario |
-| `depends_on` | item cannot operate without another item |
-| `supersedes` | item replaces a prior item |
+Common prefixes include `ACTOR`, `CAP`, `JOURNEY`, `FLOW`, `SCREEN`, `RULE`,
+`SM`, `DATA`, `ARCH`, `API`, `EVT`, `INT`, `SEQ`, `QC`, `ACC`, `DEC`, `OPEN`,
+and `EVID`. A prefix does not make its artifact type mandatory. When migrating,
+preserve existing `Q-*` and `CON-*` IDs that still have cross-file references.
 
-Use `performed_by` from an actor to a journey and `experienced_through` from a
-capability to a journey when the lifecycle frames that actor experience. Link
-journey phases and actions with `source_part_id` on the parent journey edge.
-Use the same pattern for a state transition when transition-level traceability
-is needed:
+## File formats
 
-```yaml
-from: SM-001
-source_part_id: SM-001.transition-01
-relation: verified_by
-to: ACC-001
-```
+- Store structured skill-authored records as YAML in `.yaml` files.
+- Use unique string keys. Avoid YAML aliases and custom tags.
+- Store Mermaid source in Markdown `.md` with a fenced `mermaid` block, even
+  when the file contains only a diagram.
+- Do not create canonical skill-authored `.json` or `.mmd` files.
+- Preserve evidence and external contracts in a required source format when
+  necessary; link them as evidence or external artifacts rather than converting
+  them only for consistency.
+- Track the package in Git. Let Git record ordinary edits and deleted material.
+  Record a decision only when its authority, rationale, or consequence matters.
 
-Journey and state-transition local IDs are not global artifact-index entries.
+## Engineering discretion
 
-`governance/coverage-matrix.yaml` separately proves that all thirteen canonical
-structures and every cross-cutting coverage lens are either covered, confirmed
-not applicable, confirmed out of scope, or blocked.
+Engineering may choose frameworks, internal modules, algorithms, naming,
+repository layout, deployment mechanics, and similar implementation details by
+default when the choice does not change confirmed behavior, security, privacy,
+data integrity, compatibility, reliability, operability, cost bounds, or other
+stated constraints.
 
-Every in-scope capability declares which coverage dimensions apply. A false dimension requires a confirmed exception decision. Every true dimension requires at least one matching traceability edge.
+Specify or seek authority for a choice only when it crosses that boundary. An
+explicit product or technical constraint narrows discretion; a separate
+`implementation-discretion.yaml` file is not required.
 
-## Implementation discretion
+## Package status
 
-The coding orchestrator may make a choice only when:
-
-1. the choice is not externally observable **or** its observable bounds are fully specified;
-2. the choice falls within a confirmed `DIS-*` grant;
-3. the choice satisfies all linked quality, security, data, and compatibility constraints.
-
-A grant must name its scope, allowed choices or principles, forbidden outcomes, constraints, authority, and confirmation decision. “Use best practices” alone is not a usable grant.
-
-## Package target baseline
-
-A package represents one declared target:
-
-- `greenfield`: no existing implementation defines the baseline;
-- `as_implemented`: faithfully reproduce current runtime behavior, including known quirks explicitly accepted as target behavior;
-- `intended_current`: represent the product that authorities currently intend, correcting accidental implementation behavior;
-- `target_next`: represent a future product version.
-
-Never mix baselines silently. Existing-state evidence remains linked, but the canonical target is singular.
-
-## Build-ready definition
-
-A package is build-ready only when:
-
-- all required authority domains have accountable owners or explicit delegations;
-- scope and target baseline are confirmed;
-- every in-scope capability is confirmed and fully traced across all applicable dimensions;
-- every in-scope actor has journey coverage, and every active journey has
-  confirmed metadata, product-response lanes, exception dispositions, and
-  detailed artifact links;
-- every user-visible and operational path has defined states, errors, permissions, and recovery;
-- every behavior-affecting rule and lifecycle is explicit;
-- every physical runtime node has explicit responsibilities and every
-  cross-service state transition identifies its initiator, durable authority,
-  executor, observers, and failure or recovery path;
-- every data and system boundary has a contract;
-- every consequential runtime interaction has ordering and failure semantics;
-- every quality constraint is measurable;
-- every capability and constraint has acceptance coverage;
-- all contradictions are resolved;
-- no blocking questions, unresolved contradictions, placeholders, stale artifacts, or unconfirmed active items remain;
-- no open journey question, assumption, contradiction, or stale journey
-  dependent remains;
-- every unspecified choice is covered by a bounded discretion grant;
-- a consistency review finds no unresolved or conflicting active intent;
-- the accountable product authority confirms the final handoff version.
-
-A package that fails any condition is still useful, but it must be labeled
-`modeled` or `blocked`, never `build_ready`.
+Keep package status and final approval in `product.yaml`. Use `draft` or
+`blocked` until the four handoff checks pass. Then use `status: build_ready` and
+set `confirmation_decision_id` to the approving decision in `governance.yaml`.
+Do not create a separate readiness ledger. See
+[Change and Handoff](change-and-handoff.md).

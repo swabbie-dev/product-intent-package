@@ -1,0 +1,31 @@
+schema_version: 6.0.0
+package_id: PIP-UNSET
+status: draft
+confirmation_decision_id: null
+name: ''
+
+target:
+  baseline: greenfield
+  release: ''
+
+outcome: ''
+
+actors: []
+# - id: ACTOR-001
+#   name: ''
+#   goal: ''
+
+capabilities: []
+# - id: CAP-001
+#   name: ''
+#   actor_ids: []
+#   outcome: ''
+#   status: proposed
+#   related_ids: []
+
+release:
+  included_capability_ids: []
+  boundary: ''
+  exclusions: []
+  success_measures: []
+  # - Observable measure with a confirmed target.

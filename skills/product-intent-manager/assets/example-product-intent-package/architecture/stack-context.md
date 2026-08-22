@@ -1,26 +1,21 @@
 # Stack context
 
-The Counter product is delivered as one simple production topology, so
-deployment is shown in this context. A separate deployment diagram is not
-needed.
+`ARCH-001` through `ARCH-004` provide `CAP-001`. `DEC-005` confirms these
+physical deployment choices.
 
 ```mermaid
 flowchart LR
-  ACTOR_001["ACTOR-001 User"] --> PIP_COUNTER["PIP-COUNTER Counter product"]
-
+  ACTOR_001["ACTOR-001 User"] -->|reads and increments| ARCH_001
   subgraph ARCH_004["ARCH-004 Production environment"]
-    ARCH_001["ARCH-001 Browser web client<br/>Delivered by Vercel<br/>Load, render, and submit counter changes<br/>Own ephemeral interaction state"]
-    ARCH_002["ARCH-002 Vercel serverless API<br/>Execute API-001 and API-002<br/>Own request processing"]
-    ARCH_003[("ARCH-003 Supabase Postgres<br/>Own DATA-001<br/>Commit atomic counter transitions")]
+    ARCH_001["ARCH-001 Browser application<br/>Delivered by Vercel<br/>Shows value and recovery states"]
+    ARCH_002["ARCH-002 Serverless API<br/>Runs on Vercel<br/>Coordinates reads and atomic increments"]
+    ARCH_003[("ARCH-003 Supabase Postgres<br/>Owns DATA-001")]
+    ARCH_001 -->|API-001 increment / API-002 current value| ARCH_002
+    ARCH_002 -->|reads and commits| ARCH_003
   end
-
-  PIP_COUNTER -->|provides CAP-001| ARCH_001
-  ARCH_001 -->|synchronous HTTPS application/json API-001 and API-002| ARCH_002
-  ARCH_002 -->|synchronous transactional SQL| ARCH_003
 ```
 
-`ARCH-004` contains the confirmed production deployment boundary. Vercel
-delivers the web client and runs the serverless API. Supabase Postgres owns the
-durable counter record and commits atomic transitions. Security and operational
-controls apply to the relevant node or connection; they are not separate peer
-services.
+The browser owns only interaction state. The API owns request processing.
+Supabase Postgres is authoritative for the counter value. Production backups
+are enabled, and application rollback must preserve `DATA-001`. `SEQ-001` and
+`SEQ-002` show the consequential communication among these nodes.

@@ -1,0 +1,75 @@
+scenarios:
+  - id: ACC-001
+    name: Apply an accepted increment exactly once
+    verifies:
+      - CAP-001
+      - RULE-001
+      - SEQ-001
+    given:
+      - the persisted counter value is 4
+    when:
+      - one increment is accepted
+    then:
+      - the persisted counter value is 5
+      - the screen displays 5
+      - exactly one mutation occurs
+
+  - id: ACC-002
+    name: Recover from a confirmed precommit failure
+    verifies:
+      - CAP-001
+      - RULE-001
+      - SEQ-001
+    given:
+      - the persisted counter value is 4
+      - an increment fails before commit
+    when:
+      - the failure is confirmed
+    then:
+      - the persisted counter value remains 4
+      - the screen displays the unchanged value and offers Retry
+      - the user may attempt another increment
+
+  - id: ACC-003
+    name: Meet the increment latency and reliability target
+    verifies:
+      - CAP-001
+      - QC-001
+    given:
+      - increment traffic is sustained at 10 requests per second
+    when:
+      - accepted increments are measured under concurrent load
+    then:
+      - p95 accepted-increment latency is no more than 500 milliseconds
+      - the final persisted value accounts for every accepted increment
+
+  - id: ACC-004
+    name: Recover from an initial read failure
+    verifies:
+      - CAP-001
+      - SEQ-002
+    given:
+      - the persisted counter value is 4
+      - the initial read fails
+    when:
+      - the user chooses Retry and the next read succeeds
+    then:
+      - the screen displays 4
+      - no mutation occurs
+
+  - id: ACC-005
+    name: Reconcile an increment whose response is lost after commit
+    verifies:
+      - CAP-001
+      - RULE-001
+      - SEQ-001
+      - SEQ-002
+    given:
+      - the persisted counter value is 4
+      - one increment commits but its response is lost
+    when:
+      - the client detects an unknown outcome and reloads the counter
+    then:
+      - the client does not submit another increment
+      - the screen displays the current persisted value of 5
+      - exactly one mutation has occurred

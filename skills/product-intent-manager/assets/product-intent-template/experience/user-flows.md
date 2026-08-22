@@ -1,15 +1,16 @@
 # User flows
 
-Use one subgraph per `FLOW-*`. Include the `SCREEN-*` nodes that the flow
-enters, the mockups or components that matter, and alternate, failure,
-cancellation, and recovery paths. Treat system work as a black box between the
-actor action and visible product response. Link consequential work to `SEQ-*`,
-`SM-*`, or `RULE-*`; do not draw service calls, database reads, authorization
-checks, or query mechanics here.
+Show actor actions, choices, navigation, and visible product outcomes. Use one
+focused flow per actor goal, including consequential failure and recovery
+paths. This view owns the user-visible path, not internal execution.
+
+Link system work to its `SEQ-*`, `SM-*`, or rule record. Do not draw service
+calls, database reads, authorization checks, or query mechanics here.
 
 ```mermaid
 flowchart TD
-  %% FLOW_001["FLOW-001 Example flow"] --> SCREEN_001["SCREEN-001 Example screen"]
-  %% SCREEN_001 -.->|design reference| MOCK_001["MOCK-001 Approved mockup"]
-  %% SCREEN_001 --> CAP_001["CAP-001 Product capability"]
+  %% Label the flow with its FLOW-* ID. Use ACTOR-* and SCREEN-* IDs where
+  %% In reconstruction, label non-confirmed claims with status and source.
+  %% applicable, and keep each node phrased as an actor action, decision, or
+  %% visible product response.
 ```

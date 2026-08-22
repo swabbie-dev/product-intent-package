@@ -1,135 +1,51 @@
 cases:
-  - id: activate-greenfield
-    prompt: Walk me through defining a new SaaS product so a coding orchestrator can
-      build the whole thing without further questions.
+  - id: proportional-greenfield
+    prompt: Create a Product Intent Package for a small single-user application.
     should_activate: true
     must:
-      - establish authority
-      - build thirteen structures, including lifecycle journeys
-      - ask selective detailed questions
-      - create verification and traceability
-  - id: activate-reconstruction
-    prompt: Reconstruct the intent of this existing product from its screens, behavior,
-      documents, and stakeholder decisions.
+      - start with the five default format-6 files
+      - add an optional artifact only when it answers a distinct question
+      - record outcome, actors, capabilities, release scope, decisions, blockers, and acceptance
+      - use direct stable-ID links rather than an artifact index or traceability graph
+      - omit a journey when a focused user flow already explains the experience
+      - leave non-observable implementation choices to engineering within confirmed constraints
+
+  - id: reconstruct-existing-product
+    prompt: Reconstruct the current intent of this existing product from its screens,
+      code, documents, and stakeholder decisions.
     should_activate: true
     must:
       - declare one target baseline
-      - treat existing behavior as evidence
-      - separate observed, inferred, proposed, and confirmed intent
-      - route gaps and conflicts to accountable authorities
-      - build the same product artifacts used for a new product
-  - id: activate-completion
-    prompt: Audit this product intent package, fill every gap with the right stakeholders,
-      and make it handoff-ready.
-    should_activate: true
-    must:
-      - review the existing package
-      - generate authority-routed gap queue
-      - not trust existing ready label
-  - id: activate-iteration
-    prompt: Change subscriptions so users can pause and resume; update the full product
-      intent package.
-    should_activate: true
-    must:
-      - record decision
-      - impact graph
-      - mark stale
-      - update affected artifacts and acceptance cases
-      - version package
-  - id: delegation
-    prompt: Use best practices for everything technical and make the package complete.
-    should_activate: true
-    must:
-      - clarify or formalize delegation scope
-      - define constraints
-      - not treat phrase as unlimited authority
-  - id: negative-build
-    prompt: Implement the app described by this completed product intent package.
-    should_activate: false
-  - id: operational-not-marketing-funnel
-    prompt: Map the operator lifecycle for an incident. Do not turn it into a marketing funnel.
-    should_activate: true
-    must:
-      - choose and justify an operational_case journey type
-      - model operational phases and product responses
-      - reject unsupported funnel framing
-  - id: separate-materially-different-actors
-    prompt: Map one workflow used by customers, support agents, and administrators when their paths differ.
-    should_activate: true
-    must:
-      - use role-specific or multi-actor-coordinated variants
-      - preserve distinct goals, actions, and product responses
-      - avoid merging materially different actors
-  - id: missing-product-response-lane
-    prompt: Review this lifecycle map. It lists actor actions but no product response after each action.
-    should_activate: true
-    must:
-      - identify missing product-response lanes
-      - keep the journey blocked until responses are confirmed
-      - link responses to detailed artifacts
-  - id: missing-failure-exit-recovery
-    prompt: Complete a task journey that has only a happy path. Close every exception and exit gap.
-    should_activate: true
-    must:
-      - cover failure, pause/resume, abandonment, exit, and recovery
-      - ask authority questions for unknown dispositions
-      - block build-ready while required dispositions are open
-  - id: missing-detailed-artifact-links
-    prompt: Audit a journey that has phases but no links to flows, rules, screens, or acceptance scenarios.
-    should_activate: true
-    must:
-      - require detailed artifact links
-      - state that a journey does not replace detailed artifacts
-      - update traceability and readiness
-  - id: cross-service-state-placement
-    prompt: The package has a state machine and a diagram that mixes APIs, data groups,
-      workers, and security policy. Replace it with a useful physical stack and show
-      where each state transition occurs.
-    should_activate: true
-    must:
-      - create `architecture/stack-context.md` as the sole context diagram with named physical services and responsibilities
-      - keep product outcome and scope in the scope/capability records rather than a second context diagram
-      - keep actors, the product boundary, and external systems in stack context
-      - merge screen topology and user flows in `experience/user-flows.md`
-      - merge conceptual domain relationships and the ERD in `data/data-model.md` while keeping DOM and DATA IDs distinct
-      - include deployment in stack context when it clarifies dependencies and product repercussions
-      - use a separate deployment view only when topology complexity requires it, with the same nodes and affected connections or state
-      - keep the canonical state machine
-      - identify initiator, durable authority, executor, observers, and recovery for cross-service transitions
-      - assign stable local IDs to allocated transitions
-      - keep logical APIs, events, and data records linked but outside the physical stack
-      - place security controls on services, connections, or trust zones
-      - name a provider only when evidence, confirmation, or bounded discretion supports it
-      - preserve stable IDs and update moved paths and affected governance records
-      - retire separate component, container, system-context, and screen-map diagrams after their unique content moves to the consolidated views
-      - point the canonical context path to `architecture/stack-context.md`
+      - treat sources as evidence rather than automatic target intent
+      - separate observed, inferred, proposed, confirmed, blocked, and stale material
+      - route material conflicts to the accountable authority
+      - preserve a legacy package format unless migration is explicitly requested
+      - create only artifacts supported by product complexity
 
-  - id: consolidated-diagram-views
-    prompt: Consolidate this Product Intent Package's overlapping diagrams into the six useful views without losing product or implementation detail.
+  - id: iterate-semantic-change
+    prompt: Change subscriptions so users can pause and resume, then update the Product
+      Intent Package.
     should_activate: true
     must:
-      - keep lifecycle journeys as semantic YAML records with their Markdown table or rationale source
-      - create stack context as the sole context diagram
-      - merge actors, product boundary, external systems, component/container context, and normal deployment placement into stack context
-      - merge screen topology and user flows while retaining screen records and design-board views
-      - merge conceptual domain relationships and the ERD while keeping DOM and DATA IDs distinct
-      - keep state machines and sequences as separate views
-      - add a separate deployment view only when deployment topology is complex enough to make stack context hard to read
-      - reuse the same ARCH nodes and show affected connections or state in a separate deployment view
-      - preserve stable IDs and update all affected paths and traceability
+      - identify the changed actor outcome and consequential decision
+      - update actual dependent artifacts and acceptance outcomes
+      - leave unresolved affected material visibly blocked or stale
+      - use Git for ordinary history rather than creating bookkeeping for every edit
+      - avoid changing unrelated artifacts
 
   - id: separate-diagram-responsibilities
-    prompt: A user-flow diagram repeats membership checks, database reads, sorting,
-      pagination, and service failures that also appear in its sequence diagram.
-      Simplify the Product Intent Package without losing context.
+    prompt: A user flow repeats membership checks, database reads, sorting, pagination,
+      and failures from its sequence diagram. Simplify the diagrams without losing context.
     should_activate: true
     must:
-      - keep actor actions, screen topology, visible outcomes, and recovery choices in the user flow
-      - move ordered runtime messages, authorization checks, data reads, retries, and timeouts to focused sequences
-      - keep valid states, transitions, triggers, and guards in the state machine
-      - keep entities, fields, keys, relationships, and cardinality in the data model and ERD
-      - use stack context as the source for physical participants, responsibilities, and owned state
-      - use one decision table or rule for condition combinations that select a visible outcome
-      - link FLOW actions to SEQ operations and link SEQ results to shared SCREEN or SM outcome IDs
-      - split an overloaded user flow by actor goal and an overloaded sequence by consequential operation
-      - avoid another diagram type unless it answers a distinct question
+      - keep actor actions, surfaces, visible outcomes, and recovery in the user flow
+      - keep ordered runtime messages and failures in focused sequences
+      - keep valid lifecycle states and transitions in state machines
+      - keep entities and relationships in the data model or ERD
+      - use stack context for physical participants, responsibilities, and owned state
+      - use one rule or decision table for condition combinations
+      - preserve context with direct stable-ID references instead of copied logic
+
+  - id: negative-implementation
+    prompt: Implement the application described by this completed Product Intent Package.
+    should_activate: false

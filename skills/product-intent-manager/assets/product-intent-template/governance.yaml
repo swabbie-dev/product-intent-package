@@ -1,0 +1,24 @@
+authorities:
+  - id: AUTH-001
+    name: ''
+    role: accountable_product_authority
+
+default_authority_id: AUTH-001
+
+decisions: []
+# - id: DEC-001
+#   status: confirmed
+#   statement: ''
+#   authority_id: AUTH-001
+#   decision_ref: ''
+#   affects: []
+
+open_items: []
+# - id: OPEN-001
+#   type: question
+#   status: blocked
+#   summary: ''
+#   why_it_matters: ''
+#   affected_ids: []
+#   authority_id: AUTH-001
+#   resolution_decision_id: null

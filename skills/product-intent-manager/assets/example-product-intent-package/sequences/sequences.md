@@ -1,47 +1,58 @@
-```mermaid
-sequenceDiagram
-  participant U as ACTOR-001 User
-  participant W as ARCH-001 Web client
-  participant A as ARCH-002 Counter API
-  participant D as ARCH-003 Database
-  Note over U,D: SEQ-001 Increment counter
-  U->>W: press increment
-  Note over U,W: SM-001 Ready to Submitting; no durable change
-  W->>A: API-001 POST /counter/increment
-  A->>D: atomic DATA-001 increment
-  alt commit succeeds and response arrives
-    D-->>A: committed new value
-    A-->>W: new value
-    W-->>U: SM-001 Submitting to Ready; render value
-  else failure before commit
-    D-->>A: no mutation
-    A-->>W: 503 retry allowed
-    W-->>U: SM-001 Submitting to SubmitError; show retry state
-  else commit result does not arrive
-    D-->>A: committed new value
-    A--xW: response is lost or times out
-    W-->>U: SM-001 Submitting to UnknownOutcome; block increment
-    Note over U,D: Reconcile through SEQ-002; do not resend API-001
-  end
-```
+# Sequences
+
+## SEQ-001 Increment once
+
+This sequence applies `RULE-001` to `DATA-001` during `FLOW-001`.
 
 ```mermaid
 sequenceDiagram
   participant U as ACTOR-001 User
-  participant W as ARCH-001 Web client
-  participant A as ARCH-002 Counter API
-  participant D as ARCH-003 Database
-  Note over U,D: SEQ-002 Load or reconcile counter
-  U->>W: open screen or retry load
-  W->>A: API-002 GET /counter
-  A->>D: read DATA-001 current value
-  alt read succeeds
-    D-->>A: current value
-    A-->>W: current value
-    W-->>U: SM-001 Loading to Ready; render value
-  else read fails
-    D-->>A: read unavailable
-    A-->>W: 503 retry allowed
-    W-->>U: SM-001 Loading to LoadError; show retry state
+  participant B as ARCH-001 Browser application
+  participant S as ARCH-002 Serverless API
+  participant D as ARCH-003 Supabase Postgres
+
+  U->>B: Press Increment
+  B->>S: API-001 Request one increment
+  S->>D: Attempt atomic DATA-001 increment
+  alt Increment is accepted and result arrives
+    D-->>S: Committed new value
+    S-->>B: New value
+    B-->>U: Display new value
+  else Failure is confirmed before commit
+    D-->>S: No mutation
+    S-->>B: Confirmed failure
+    B-->>U: Show unchanged value and Retry
+  else Client cannot determine the outcome
+    Note over S,D: The increment may or may not have committed
+    S--xB: No conclusive result
+    B-->>U: Show reconciling and prevent another increment
+    Note over B,D: Continue with SEQ-002 before accepting another increment
+  end
+```
+
+## SEQ-002 Load or reconcile the current value
+
+This sequence reads `DATA-001` for initial load, read retry, or reconciliation
+during `FLOW-001`.
+
+```mermaid
+sequenceDiagram
+  participant U as ACTOR-001 User
+  participant B as ARCH-001 Browser application
+  participant S as ARCH-002 Serverless API
+  participant D as ARCH-003 Supabase Postgres
+
+  U->>B: Open Counter or choose Retry
+  Note over B,D: Also used automatically after an unknown increment outcome
+  B->>S: API-002 Request current value
+  S->>D: Read DATA-001
+  alt Read succeeds
+    D-->>S: Current persisted value
+    S-->>B: Current persisted value
+    B-->>U: Display value and allow Increment
+  else Read fails
+    D-->>S: Read failure
+    S-->>B: Confirmed failure
+    B-->>U: Show Retry and keep Increment unavailable
   end
 ```

@@ -1,17 +1,13 @@
 rules:
   - id: RULE-001
-    scope_ids:
+    name: Persist and present the counter safely
+    applies_to:
       - CAP-001
-    priority: 100
     when:
-      - one valid increment request is accepted
+      - the counter is loaded
+      - an increment is attempted
     then:
-      - increase persisted counter value by exactly one
-      - return the new value
-    exceptions:
-      - requests that fail before commit do not change the value
-      - if the response outcome is unknown, do not resend the increment; load the
-        current value before the product accepts another increment
-    examples:
-      - before: 4
-        result: 5
+      - loading returns the current persisted value without mutation
+      - each accepted increment increases the persisted value by exactly one and returns the new value
+      - a confirmed failure before commit leaves the value unchanged and offers Retry
+      - an unknown increment outcome blocks another increment until the current persisted value is read successfully

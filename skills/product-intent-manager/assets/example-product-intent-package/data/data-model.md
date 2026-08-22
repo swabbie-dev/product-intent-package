@@ -1,32 +1,22 @@
 # Data model
 
-The conceptual counter maps to one physical singleton record.
-
-## Conceptual domain model
-
-```mermaid
-classDiagram
-  class DOM_001["DOM-001 Counter"] {
-    +integer value
-  }
-  class DATA_001["DATA-001 CounterRecord"]
-  DOM_001 --> DATA_001 : persists as
-```
-
-## Physical ERD
+`DOM-001 Counter` is represented by one `DATA-001 Counter record` owned by
+`ARCH-003`.
 
 ```mermaid
 erDiagram
-  DATA_001 {
-    integer id PK
-    integer value
-    timestamp updated_at
+  DATA_001_COUNTER_RECORD {
+    integer id PK "constant singleton identifier"
+    integer value "not null; minimum 0"
+    datetime updated_at "not null"
   }
 ```
 
-`DATA-001` is stored as `counter_record` in Supabase Postgres. The singleton
-key and field constraints remain authoritative in `data/schema.yaml`.
+There is exactly one counter record, seeded at deployment with `value: 0`.
+Reads do not mutate it. An accepted increment changes `value` atomically by one;
+a failure confirmed before commit does not change it. `RULE-001` owns those
+behavioral requirements.
 
-| Domain concept | Physical record(s) | Mapping note |
-| --- | --- | --- |
-| `DOM-001 Counter` | `DATA-001 CounterRecord` | One conceptual counter maps to one singleton physical record. |
+`DATA-001` is non-personal product data retained for the product lifetime.
+Production backups or exports must make it recoverable, and application rollback
+must not delete or reset it.
