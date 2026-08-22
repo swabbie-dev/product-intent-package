@@ -1,0 +1,6 @@
+interface:
+  display_name: "Product Management"
+  short_description: "Clarify product plans, gaps, scope, and evidence"
+  default_prompt: "Use $product-management to strengthen this product plan and identify the questions that materially affect it."
+policy:
+  allow_implicit_invocation: true
