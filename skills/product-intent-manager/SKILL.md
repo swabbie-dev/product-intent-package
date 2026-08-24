@@ -31,8 +31,11 @@ or a proof that every possible document exists.
 4. Label intent as `observed`, `inferred`, `proposed`, `confirmed`, `blocked`,
    or `stale`. Read [Authority and Evidence](references/authority-and-evidence.md)
    when reconstructing, resolving conflict, or seeking confirmation.
-5. Keep one authoritative home for each fact. Link related records directly;
-   do not maintain a duplicate artifact index, trace graph, or coverage ledger.
+5. Keep one authoritative home for each fact. When adjacent sources own market
+   context, detailed design, implemented behavior, operations, or release
+   tracking, name those boundaries and link to them instead of copying them
+   into the package. Link related records directly; do not maintain a duplicate
+   artifact index, trace graph, or coverage ledger.
 6. Define observable acceptance for confirmed, in-scope outcomes. Then apply
    the four checks in [Change and Handoff](references/change-and-handoff.md).
 
@@ -62,6 +65,9 @@ creating or migrating package structure.
   constraints. Do not require a discretion record for ordinary implementation.
 - Treat Git as the history of ordinary edits. Record a decision only when its
   rationale or authority matters beyond the diff.
+- Check changed YAML, direct links, status claims, and Mermaid output in
+  proportion to the change. Do not add a validator or full-package test suite
+  merely to perform ordinary documentation checks.
 - Never treat implementation, diagrams, or agent analysis as authority. Never
   silently convert an inference or proposal into confirmed intent.
 - Do not implement the product as part of this skill.

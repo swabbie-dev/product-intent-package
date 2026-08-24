@@ -42,6 +42,12 @@ of stack context and becomes separate only under the trigger above. Do not add
 component, container, system-context, screen-map, domain-model, or similar
 diagrams that repeat one of these views.
 
+Keep diagrams with the same responsibility consolidated by default. When a
+consolidated file becomes difficult to read or review, split it into one
+ID-named Markdown file per diagram and provide a simple table of contents with
+direct links. The table of contents is navigation, not an artifact registry or
+trace graph. Do not split files or create diagrams merely to fill ID gaps.
+
 ## One fact, one owner
 
 | Information | Owner |
@@ -86,6 +92,13 @@ condition, but it must not show membership lookups, API or database calls,
 query mechanics, cursor handling, retries, idempotency, or internal state that
 has no visible effect.
 
+Prefer labeled edges for navigation choices, permissions, availability,
+validation, and other conditional paths. Use a diamond only when the interface
+visibly asks a question and the answer is an observable user action. A user
+action may label the outgoing edge. When several conditions route to different
+surfaces, use one compact rectangular condition node. Keep runtime selection
+logic in a rule, decision table, or sequence.
+
 Keep one actor goal or closely related outcome in one flow. Use a short overview
 and linked subflows when branches and crossing lines obscure the actor path.
 Keep screen topology in the user-flow view; do not create a separate screen map.
@@ -99,7 +112,16 @@ surface inside its boundary, and label transitions between surfaces. This
 surface-and-state inventory tells designers which pages, views, modals, panels,
 or messages need mockups. Do not treat every flow node as a mockup: create a
 mockup only when a surface or materially different state needs visual design.
-The grouping communicates scope; it is not a wireframe.
+The grouping communicates scope; it is not a wireframe. A project may use a
+small, consistent vocabulary such as `VIEW`, `COMPONENT`, `DIALOG`, and
+`EXTERNAL` to distinguish surface types, but these labels are not a required
+taxonomy.
+
+When a design file or system is authoritative for layout, styling, components,
+responsive behavior, or interaction detail, link to it instead of copying its
+rules into the PIP. Flow surface groups still identify what needs design or a
+mockup. Mermaid layout and styling improve documentation legibility; they do
+not define or approve the product interface.
 
 ## Sequences
 

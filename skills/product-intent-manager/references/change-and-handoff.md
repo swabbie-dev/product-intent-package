@@ -35,6 +35,27 @@ rewritten. After review:
 Keep stale items visible only while they affect current work. Git preserves
 superseded ordinary content.
 
+When a stale or superseded artifact remains in the active package because its
+history still matters, link it directly to its active successor. Otherwise
+remove it from the active package and rely on Git history.
+
+## Proportional package checks
+
+After a change:
+
+- safely parse changed YAML and preserve unique keys without aliases, anchors,
+  or custom tags;
+- resolve direct IDs and local links touched by the change;
+- render each changed Mermaid diagram, and render the full diagram inventory
+  only when shared styling or another renderer-sensitive convention changes;
+- verify changed source and intent-status statements; and
+- when the package is tracked in Git, run `git diff --check`.
+
+Use existing project tools when available. If a renderer is unavailable, report
+that visual verification was skipped. These are documentation checks, not a
+reason to add Python, package hashes, snapshot tests, a new dependency, or a
+full-package validator.
+
 ## Four handoff checks
 
 ### 1. Scope and authority

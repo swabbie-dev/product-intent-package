@@ -11,18 +11,16 @@ flowchart TD
   START(["ACTOR-001 opens Counter"])
 
   subgraph SCREEN_001["SCREEN-001 · Counter screen"]
-    LOADING["Show loading"] --> LOAD_RESULT{"Visible load result"}
-    LOAD_RESULT -->|current value| READY["Show current value and Increment"]
-    LOAD_RESULT -->|failed| LOAD_ERROR["Show load failure and Retry"]
+    LOADING["Show loading"] -->|current value loads| READY["Show current value and Increment"]
+    LOADING -->|load fails| LOAD_ERROR["Show load failure and Retry"]
     LOAD_ERROR -->|Retry| LOADING
 
     READY -->|Press Increment| SUBMITTING["Show increment in progress"]
-    SUBMITTING --> RESULT{"Visible increment result"}
-    RESULT -->|new value| READY
-    RESULT -->|confirmed failure| RETRY["Show unchanged value and Retry"]
+    SUBMITTING -->|new value confirmed| READY
+    SUBMITTING -->|failure confirmed| RETRY["Show unchanged value and Retry"]
     RETRY -->|Retry| SUBMITTING
     RETRY -->|Dismiss| READY
-    RESULT -->|outcome unknown| RECONCILE["Show reconciling and prevent another increment"]
+    SUBMITTING -->|outcome unknown| RECONCILE["Show reconciling and prevent another increment"]
     RECONCILE --> LOADING
   end
 

@@ -60,6 +60,23 @@ These paths are conventions, not a requirement to create every file.
 6. **Handoff is an outcome review.** Do not prove readiness by counting files,
    fields, IDs, links, or categories.
 
+## Adjacent sources of truth
+
+The PIP owns target product intent, not every project fact. When ownership could
+be ambiguous, identify the authoritative location for adjacent material such as
+market context, detailed visual and interaction design, implemented behavior,
+schemas or contracts, operations, and issue or release tracking. Link to those
+sources instead of copying them into competing locations. State conflict
+precedence only where sources can plausibly disagree, and route unresolved
+target decisions to the accountable authority.
+
+A companion MRD, market analysis, design system, or operations guide may live
+beside or outside the package without becoming another core PIP file. Record
+these ownership boundaries in existing repository guidance or governance when
+needed; do not create a source-of-truth registry merely to list them. Never
+leave target behavior or a build-affecting product decision only in an adjacent
+tool.
+
 ## Intent status
 
 Use these labels consistently for individual claims and artifacts; they are

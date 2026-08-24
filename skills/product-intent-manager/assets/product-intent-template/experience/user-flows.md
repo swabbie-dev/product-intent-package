@@ -10,13 +10,20 @@ calls, database reads, authorization checks, or query mechanics here.
 Visually group actions and states by consequential user-visible surface. Label
 each boundary with `SURFACE · Name`, or `SCREEN-* · Name` when another artifact
 references it. These boundaries form the mockup inventory; individual flow
-nodes do not each require a mockup.
+nodes do not each require a mockup. A project may consistently distinguish
+surface types with labels such as `VIEW`, `COMPONENT`, `DIALOG`, and `EXTERNAL`.
+
+Use labeled edges for navigation choices and visible permission, availability,
+or validation outcomes. Use a diamond only for a question visibly presented to
+the actor. When several conditions route to different surfaces, use one compact
+rectangular condition node. Keep runtime selection logic in a rule, decision
+table, or sequence.
 
 ```mermaid
 flowchart TD
   %% Label the flow with its FLOW-* ID. Use ACTOR-* and SCREEN-* IDs where
   %% In reconstruction, label non-confirmed claims with status and source.
-  %% applicable, and keep each node phrased as an actor action, decision, or
-  %% visible product response.
+  %% applicable, and phrase each node as an actor action or visible product
+  %% response. Reserve diamonds for questions visibly presented to the actor.
   %% Use labeled subgraphs to bound user-visible surfaces and their states.
 ```
