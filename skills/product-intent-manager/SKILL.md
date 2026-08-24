@@ -53,9 +53,12 @@ creating or migrating package structure.
   relationship is meaningful. Do not duplicate all possible relationships.
 - Make artifacts conditional. A missing optional artifact is not a coverage
   failure when the product does not need it.
-- Keep diagrams separate by responsibility: actor experience in user flows,
-  runtime messages in sequences, lifecycle validity in state machines,
-  entities and relationships in ERDs, and physical ownership in stack context.
+- Keep diagrams separate by responsibility: actor experience in user flows;
+  detailed process execution, retries, fallbacks, and recovery in sequences;
+  high-level lifecycle states and process-triggered transitions in state
+  machines; entities and relationships in ERDs; and physical ownership in stack
+  context. A state machine may link to the sequence that performs a transition,
+  but it must not repeat that process's internal logic.
 - In user flows, clearly name and bound each consequential user-visible
   surface. These boundaries should make the needed mockups and important state
   variants apparent without turning the flow into a wireframe.

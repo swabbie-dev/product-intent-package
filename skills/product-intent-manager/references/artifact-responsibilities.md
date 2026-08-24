@@ -32,9 +32,9 @@ exclusion in `product.yaml` or `governance.yaml`; otherwise omit the artifact.
 | --- | --- |
 | Stack context | What physical systems exist, what does each own, and how do they connect? |
 | User flow | What does the actor do, see, choose, and experience next? |
-| State machine | Which lifecycle states and transitions are valid? |
+| State machine | Which lifecycle states and process-triggered transitions are valid? |
 | Data model / ERD | What concepts or persisted entities exist, and how do they relate? |
-| Sequence | Which physical systems communicate, in what order, for one consequential outcome? |
+| Sequence | How does one consequential process execute across physical systems, including material retries and fallbacks? |
 
 These views are enough for ordinary application work. A decision table is a
 supporting logic format, not another diagram type. Deployment is usually part
@@ -58,8 +58,8 @@ trace graph. Do not split files or create diagrams merely to fill ID gaps.
 | Actor action, navigation, visible outcome, and visible recovery choice | User flow |
 | Detailed content and actions for a surface | Screen record, when needed |
 | Condition combinations that select an outcome | Rule or decision table |
-| Valid states, transitions, triggers, and guards | State machine |
-| Ordered calls, events, retries, and runtime failure | Sequence |
+| Valid states, process-triggered transitions, triggers, and guards | State machine |
+| Ordered calls, events, retries, fallbacks, and runtime failure | Sequence |
 | Physical responsibility, owned state, provider, and trust boundary | Stack context |
 | Entity identity, relationship, and cardinality | Data model / ERD |
 | Request, response, event, and error shape | Contract |
@@ -125,11 +125,12 @@ not define or approve the product interface.
 
 ## Sequences
 
-A sequence owns runtime coordination for one consequential outcome. Include its
-actor action or system trigger, physical `ARCH-*` participants, ordered sync or
-async messages, authority and data boundaries, point of durable change, and
-material timeout, retry, duplication, partial-failure, compensation, or human
-recovery behavior.
+A sequence owns the detailed runtime coordination for one consequential
+process. Include its actor action or system trigger, physical `ARCH-*`
+participants, ordered sync or async messages, authority and data boundaries,
+point of durable change, and material timeout, retry, fallback, duplication,
+partial-failure, compensation, or human recovery behavior. This is the view
+that explains how a process succeeds, degrades, retries, or recovers.
 
 Use the physical client as a participant. A `SCREEN-*` identifies the starting
 or resulting surface; it is not a runtime lifeline. Return relevant facts once
@@ -137,8 +138,9 @@ and link to the rule or decision table that selects among visible outcomes
 instead of repeating the same messages in many UI branches.
 
 Split sequences only when message order, ownership, or recovery materially
-differs. Do not create one for a local interface change or restate navigation,
-entity relationships, or valid lifecycle states inside it.
+differs. A sequence may name the durable state transition it causes, but it
+must not restate the lifecycle model. Do not create one for a local interface
+change or restate navigation or entity relationships inside it.
 
 ## State machines
 
@@ -147,10 +149,17 @@ forbidden transitions, and material failure or recovery states. Do not model
 every loading or display variant as durable state when it is derived from other
 facts.
 
+Use the state machine as the high-level map of how consequential processes move
+an object through its lifecycle. Name the triggering action or process and,
+when useful, link the transition to the `SEQ-*` that performs it. Show a failure
+or recovery state only when it is durable or product-significant. Do not expand
+a process's retries, fallback attempts, timeouts, ordered calls, or other
+internal branches in the state machine; those belong in its sequence.
+
 When a transition crosses physical services, name where it is initiated, where
-it becomes valid or durable, and which system executes or observes it. Link a
-sequence when message order matters. Do not put screen navigation, database
-fields, or ordered service messages in the state diagram.
+it becomes valid or durable, and which system executes or observes it. Do not
+put screen navigation, database fields, or ordered service messages in the
+state diagram.
 
 ## Data models and ERDs
 
