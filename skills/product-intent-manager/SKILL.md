@@ -10,6 +10,32 @@ matters, how people use it, and which observable outcomes constrain
 implementation. Do not turn the package into an implementation specification
 or a proof that every possible document exists.
 
+## Diagram detail boundary
+
+Sequence diagrams own detailed process logic. State machines and user flows
+intentionally omit that detail because they answer different questions:
+
+- **Sequence diagram — detailed process logic.** Show how one consequential
+  process executes: participating systems, ordered calls or events, material
+  decision branches, retries, fallbacks, timeouts, partial failures,
+  compensation or recovery, and durable state changes.
+- **State machine — high-level process interaction.** Show stable lifecycle
+  states and how the processes represented by sequences move the subject
+  between those states. Label or link each consequential transition to its
+  `SEQ-*` when available. Do not copy process steps, message order, retry or
+  fallback branches, or other sequence internals into the state machine.
+- **User flow — visible experience and mockup inventory.** Show actor actions,
+  user-visible surfaces and states, navigation, visible failure and recovery,
+  and terminal outcomes. Bound each consequential surface so designers can see
+  which pages, views, dialogs, panels, or messages need mockups. Do not show
+  API, database, service, or other internal process logic.
+
+Missing internal process logic in a state machine or user flow is correct, not
+a documentation gap. A state machine shows how processes connect through
+lifecycle transitions; it is not another process-flow diagram. Never add
+sequence-level detail merely to make a state machine or user flow appear
+complete. Link to the owning sequence instead.
+
 ## Choose the work mode
 
 - **Create:** define a new product or release from an idea.
@@ -53,15 +79,8 @@ creating or migrating package structure.
   relationship is meaningful. Do not duplicate all possible relationships.
 - Make artifacts conditional. A missing optional artifact is not a coverage
   failure when the product does not need it.
-- Keep diagrams separate by responsibility: actor experience in user flows;
-  detailed process execution, retries, fallbacks, and recovery in sequences;
-  high-level lifecycle states and process-triggered transitions in state
-  machines; entities and relationships in ERDs; and physical ownership in stack
-  context. A state machine may link to the sequence that performs a transition,
-  but it must not repeat that process's internal logic.
-- In user flows, clearly name and bound each consequential user-visible
-  surface. These boundaries should make the needed mockups and important state
-  variants apparent without turning the flow into a wireframe.
+- Follow the diagram detail boundary above. Keep each fact in the view that owns
+  it and link across views instead of copying detail.
 - Let engineering choose internal implementation details by default when those
   choices do not change confirmed behavior, security, privacy, data integrity,
   compatibility, reliability, operability, cost bounds, or other stated
