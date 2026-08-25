@@ -173,6 +173,13 @@ Specify or seek authority for a choice only when it crosses that boundary. An
 explicit product or technical constraint narrows discretion; a separate
 `implementation-discretion.yaml` file is not required.
 
+A confirmed `reuse unchanged` or `modify existing` code anchor and an exact,
+authority-confirmed mockup reference are explicit constraints. They are not
+unspecified implementation choices. All unmentioned internals remain with
+engineering. Companion example or generated design code is reference material
+unless separately designated canonical; prefer reuse or adaptation when it is
+compatible with the repository and confirmed target.
+
 ## Package status
 
 Keep package status and final approval in `product.yaml`. Use `draft` or

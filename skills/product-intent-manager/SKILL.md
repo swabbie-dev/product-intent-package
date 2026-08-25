@@ -36,6 +36,31 @@ lifecycle transitions; it is not another process-flow diagram. Never add
 sequence-level detail merely to make a state machine or user flow appear
 complete. Link to the owning sequence instead.
 
+## Implementation anchors and confirmed design
+
+Do not leave the following matters to implementation guesswork when they apply:
+
+- **Reuse before adding.** Inspect the relevant code. In each sequence, name
+  only the existing functions, handlers, or modules needed to prevent duplicate
+  work. Give the verified path and symbol in the message or an adjacent note and
+  label it `reuse unchanged` or `modify existing`. Do not call for a parallel or
+  replacement function unless no suitable owner exists or a confirmed technical
+  decision requires one.
+- **Name input provenance.** For every consequential sequence input, state its
+  source inline or in a note: user input and surface, parameter or return from a
+  named function, persisted field, external payload or event, or named constant,
+  configuration, or setting. Include inputs that affect a branch, durable
+  change, visible outcome, or acceptance; omit incidental local variables.
+- **Implement confirmed mockups.** Link the exact frame or node, version, intent
+  status, and any companion example or export code. An authority-confirmed,
+  in-scope mockup is the required visible and interaction target, not inspiration
+  or documentation-only. Prefer reuse or adaptation of its companion code when
+  compatible with the repository. Do not add, remove, merge, split, or materially
+  alter its views, components, or states without accountable product or design
+  approval. Raise feasibility, accessibility, security, or compatibility
+  conflicts instead of silently deviating. Generated or exported code is a
+  reference unless it is separately designated canonical.
+
 ## Choose the work mode
 
 - **Create:** define a new product or release from an idea.
@@ -81,6 +106,9 @@ creating or migrating package structure.
   failure when the product does not need it.
 - Follow the diagram detail boundary above. Keep each fact in the view that owns
   it and link across views instead of copying detail.
+- Treat confirmed reuse or modification anchors and exact confirmed design
+  references as constraints. Engineering discretion applies to unspecified
+  internal choices, not to silent replacement or design deviation.
 - Let engineering choose internal implementation details by default when those
   choices do not change confirmed behavior, security, privacy, data integrity,
   compatibility, reliability, operability, cost bounds, or other stated

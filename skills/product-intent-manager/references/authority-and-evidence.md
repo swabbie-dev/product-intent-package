@@ -38,8 +38,20 @@ Typical sources support different claims:
 | Code, schema, contracts, or tests | Implemented structure and expected technical behavior | Current product approval |
 | Product documents or tickets | Previously stated requirements and decisions | Current validity or conflict precedence |
 | Research, support, or customer evidence | Needs, context, pain, and actual scenarios | Final solution choice |
-| Mockup, prototype, or design board | Proposed or previously designed experience | Complete behavior or final approval |
+| Mockup, prototype, design board, or generated design code | Proposed or previously designed experience and implementation reference | Complete behavior, final approval, or production-ready code |
 | Accountable authority statement | Target intent within that authority's scope | Decisions outside that scope |
+
+A mockup becomes a binding implementation target only when the exact frame or
+node and version are accepted for the release by the accountable product or
+design authority. A polished Figma file does not confirm itself. Generated or
+exported code remains reference evidence unless it is separately designated
+canonical; prefer it when compatible, but do not let it override the confirmed
+design, security, accessibility, or repository constraints.
+
+Code can establish that a function or module exists. An instruction that it be
+marked `reuse unchanged` or `modify existing` is a target implementation
+constraint and must be confirmed by the accountable technical authority or
+explicit project guidance, or remain labeled `proposed`.
 
 Put a source reference directly on the claim or decision it supports. Use the
 optional `sources` section of `governance.yaml` only when several records reuse

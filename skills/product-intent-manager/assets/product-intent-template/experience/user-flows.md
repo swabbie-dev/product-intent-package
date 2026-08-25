@@ -13,6 +13,13 @@ references it. These boundaries form the mockup inventory; individual flow
 nodes do not each require a mockup. A project may consistently distinguish
 surface types with labels such as `VIEW`, `COMPONENT`, `DIALOG`, and `EXTERNAL`.
 
+For each surface governed by an authority-confirmed mockup, add the exact frame
+or node, version or branch when available, intent status, and any companion
+example or export-code reference. The confirmed mockup is the implementation
+target, not a visual attachment. Do not add, remove, merge, split, or materially
+alter its views, components, or states without accountable product or design
+approval. Keep unconfirmed mockups labeled as evidence or proposals.
+
 Use labeled edges for navigation choices and visible permission, availability,
 or validation outcomes. Use a diamond only for a question visibly presented to
 the actor. When several conditions route to different surfaces, use one compact

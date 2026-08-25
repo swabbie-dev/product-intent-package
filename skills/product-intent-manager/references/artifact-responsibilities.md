@@ -117,11 +117,22 @@ small, consistent vocabulary such as `VIEW`, `COMPONENT`, `DIALOG`, and
 `EXTERNAL` to distinguish surface types, but these labels are not a required
 taxonomy.
 
-When a design file or system is authoritative for layout, styling, components,
-responsive behavior, or interaction detail, link to it instead of copying its
-rules into the PIP. Flow surface groups still identify what needs design or a
-mockup. Mermaid layout and styling improve documentation legibility; they do
-not define or approve the product interface.
+When a design file or system owns layout, styling, components, responsive
+behavior, or interaction detail, put the exact mockup reference next to the
+affected surface. Include the frame or node, version or branch when available,
+and intent status. An authority-confirmed, in-scope mockup must be implemented,
+not merely attached as a visual. Preserve its surface and component inventory,
+content hierarchy, visible states, and interactions. Do not add, remove, merge,
+split, or materially change them without accountable product or design approval.
+
+When companion example, component, or export code exists, link it and prefer
+reuse or adaptation when it is compatible with the repository. Generated or
+exported code is implementation reference material, not design authority or
+automatically production-ready code. Adapt it for repository conventions,
+accessibility, security, and confirmed behavior without changing the approved
+visible or interaction target. Raise a conflict instead of silently redesigning
+the product. Flow surface groups still identify what needs design or a mockup;
+Mermaid styling does not define or approve the product interface.
 
 ## Sequences
 
@@ -131,6 +142,23 @@ participants, ordered sync or async messages, authority and data boundaries,
 point of durable change, and material timeout, retry, fallback, duplication,
 partial-failure, compensation, or human recovery behavior. This is the view
 that explains how a process succeeds, degrades, retries, or recovers.
+
+For an existing codebase, inspect the implementation before writing the
+sequence. Keep physical systems as lifelines; use a message or adjacent note to
+name the verified path and function, handler, job, or module that owns each
+material step. Label the selected anchor `reuse unchanged` or `modify existing`.
+Call for `new` code only after confirming that no suitable owner exists or that
+an approved technical constraint requires separation. Do not map incidental
+helpers or create a complete call graph. A note such as `modify existing:
+path/to/file::function_name` is enough.
+
+For each consequential input, state its origin in the message or a short note:
+user input and surface, parameter or return from a named function, persisted
+field, external response or event, or named constant, configuration, or setting.
+Include values that affect a branch, durable change, visible outcome, or
+acceptance. Labels such as `store_id <- user selection`, `limit <- MATCH_LIMIT
+setting`, or `rows <- load_rows() return` are sufficient. Do not list every
+local variable or reproduce complete signatures.
 
 Use the physical client as a participant. A `SCREEN-*` identifies the starting
 or resulting surface; it is not a runtime lifeline. Return relevant facts once

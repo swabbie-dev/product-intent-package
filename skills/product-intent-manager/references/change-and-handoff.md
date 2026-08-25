@@ -81,15 +81,34 @@ operational constraints.
 Use optional artifacts where they genuinely clarify these matters. Do not fail
 the check because an unnecessary artifact type is absent.
 
+For an existing-product or design-led handoff, also confirm that:
+
+- each consequential sequence step names any verified existing code anchor and
+  says whether to `reuse unchanged` or `modify existing`, while any `new` code
+  has a stated reason;
+- each consequential sequence input states where its value originates; and
+- each user-flow surface or state governed by a confirmed mockup links to that
+  exact target and companion example or export code when available, while any
+  intended deviation has accountable approval.
+
 ### 3. Acceptance and engineering discretion
 
 Confirm that `acceptance.yaml` contains observable scenarios for the in-scope
 capabilities and material constraints. Scenarios should be specific enough to
 recognize success or failure without dictating internal construction.
 
+For an authority-confirmed mockup, acceptance names the required visible states
+and interactions and references the exact mockup for fidelity. Do not duplicate
+every visual detail into YAML merely to make it testable.
+
 Any unspecified implementation choice remains with engineering by default when
 it stays within confirmed behavior and material constraints. Seek another
 decision only when a plausible choice could change those outcomes or bounds.
+
+Engineering discretion does not permit a silent parallel replacement for a
+confirmed reuse or modification anchor, or an unapproved change to a confirmed
+mockup's views, components, states, or interactions. Route a material conflict
+to the accountable technical, product, or design authority.
 
 ### 4. Consistency and approval
 
