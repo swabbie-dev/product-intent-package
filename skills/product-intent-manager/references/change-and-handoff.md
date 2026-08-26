@@ -56,6 +56,72 @@ that visual verification was skipped. These are documentation checks, not a
 reason to add Python, package hashes, snapshot tests, a new dependency, or a
 full-package validator.
 
+## Minimal implementation tasks
+
+The confirmed PIP describes the intended product, while the project's existing
+task tracker or implementation notes describe the shortest practical route from
+the current codebase to that product. Keep task state, assignment, sequencing,
+and working notes outside the PIP. Link tasks to the target release and relevant
+PIP IDs rather than copying diagrams, acceptance scenarios, or product rules.
+
+Create or change tasks in an external system only when authorized. Otherwise,
+return a draft task set. Do not introduce a new tracker, PIP task file, task
+registry, or parallel implementation plan when the project already has a place
+for this work.
+
+### Write the smallest coherent task set
+
+A task should contain no more than the implementer needs to act without product
+guesswork:
+
+- the confirmed outcome and relevant PIP links;
+- the verified code or design owner to reuse or modify when that anchor matters;
+- only essential ordering or dependency information;
+- an observable done condition; and
+- the smallest relevant verification.
+
+Keep one product outcome together even when it touches several files or layers.
+Split only for independent ownership, dependency order, material risk, release
+scope, or work that can genuinely ship or be reviewed separately. Do not split
+by artifact, component, file, acceptance scenario, or checklist item merely to
+make progress easier to count. Do not turn proposed or blocked intent into a
+build commitment.
+
+When writing or reviewing each task, ask:
+
+1. Does every instruction directly move the codebase toward confirmed PIP
+   intent?
+2. Is the task more detailed than necessary, or can instructions or tasks be
+   removed or merged?
+3. Does it modify or reuse existing code, tests, tools, and project process
+   wherever practical?
+4. Is every requested test, gate, proof, report, or review necessary to protect
+   a core outcome or dangerous edge case?
+
+Delete ceremony that does not survive those questions. A task can link to the
+owning sequence, mockup, state machine, user flow, or acceptance scenario; it
+does not need to restate their content. If implementation planning exposes a
+product decision or changes the desired end-state, route that change back to
+the PIP and accountable authority instead of settling it only in the task.
+
+### Verify in proportion to consequence
+
+Implementation verification should cover:
+
+- the core intended path and observable done condition;
+- material failure or recovery behavior explicitly required by the PIP; and
+- dangerous edge cases relevant to the changed area.
+
+Treat an edge case as dangerous when a plausible failure could cause an
+authorization, security, or privacy breach; incorrect money movement or
+billing; data loss or corruption; an unsafe schema or migration result; a
+destructive or irreversible side effect; or another comparably high-impact
+product or operational harm. Use existing focused checks where practical. Add
+or update a test when it efficiently protects one of these outcomes, but do not
+enumerate every hypothetical case, chase blanket coverage, or require new test
+harnesses, approval gates, proof documents, screenshots, or reports unless a
+specific risk or project requirement makes one necessary.
+
 ## Four handoff checks
 
 ### 1. Scope and authority

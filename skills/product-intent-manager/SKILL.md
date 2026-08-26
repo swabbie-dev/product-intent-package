@@ -61,6 +61,42 @@ Do not leave the following matters to implementation guesswork when they apply:
   conflicts instead of silently deviating. Generated or exported code is a
   reference unless it is separately designated canonical.
 
+## Minimal implementation tasks
+
+The PIP owns the desired end-state. The project's existing task tracker or
+implementation notes own only the smallest steps needed to move the current
+product to that end-state. Keep those tasks outside the PIP and link them to the
+target release and relevant PIP IDs instead of restating the package. PIP work
+does not itself authorize creating or changing tickets in an external system;
+draft them unless that write is already authorized.
+
+When implementation planning is requested, derive the smallest coherent task
+set from confirmed PIP intent. A task needs only the intended outcome, relevant
+PIP links, a verified code or design anchor when it prevents guesswork, an
+observable done condition, and the smallest useful verification. Split work
+only when independent ownership, dependency order, material risk, or release
+scope makes the split useful. Do not create a ticket per file, layer, diagram,
+acceptance scenario, or implementation step.
+
+Before retaining a task or instruction, ask:
+
+- Does it directly help align the codebase with the confirmed PIP end-state?
+- Is it more detailed than the implementer needs, or can it be removed or
+  merged?
+- Does it reuse the existing code, tests, tools, and project process where
+  practical?
+- Does every requested test, gate, proof, report, or review protect a core
+  product outcome or a dangerous edge case?
+
+Remove ceremony that fails those questions. Verification should cover the core
+path, material failure or recovery behavior named by the PIP, and dangerous
+edge cases relevant to the change. Dangerous means a plausible failure could
+cause an authorization, security, or privacy breach; a money error; data loss
+or corruption; an unsafe schema or migration result; a destructive or
+irreversible side effect; or another comparably high-impact product or
+operational harm. Do not demand exhaustive permutations, blanket coverage
+targets, new test machinery, proof documents, or readiness gates.
+
 ## Choose the work mode
 
 - **Create:** define a new product or release from an idea.
@@ -89,6 +125,9 @@ Do not leave the following matters to implementation guesswork when they apply:
    artifact index, trace graph, or coverage ledger.
 6. Define observable acceptance for confirmed, in-scope outcomes. Then apply
    the four checks in [Change and Handoff](references/change-and-handoff.md).
+7. When implementation planning is part of the request, create or update only
+   the minimal external tasks or notes described above. Do not add a task
+   registry, implementation plan, or ticket mirror to the PIP.
 
 For mode-specific steps, read [Workflows](references/workflows.md). Read the
 [Package Standard](references/product-intent-package-standard.md) before
@@ -118,6 +157,9 @@ creating or migrating package structure.
 - Check changed YAML, direct links, status claims, and Mermaid output in
   proportion to the change. Do not add a validator or full-package test suite
   merely to perform ordinary documentation checks.
+- Keep task state and implementation notes in the project's existing task
+  system or working notes. Link to confirmed PIP intent; do not duplicate it or
+  treat a task as product authority.
 - Never treat implementation, diagrams, or agent analysis as authority. Never
   silently convert an inference or proposal into confirmed intent.
 - Do not implement the product as part of this skill.
@@ -126,4 +168,6 @@ creating or migrating package structure.
 
 Return the updated package plus a short note stating the mode, target and
 release boundary, material decisions, unresolved or stale items, optional
-artifacts added or removed, and whether handoff is confirmed or blocked.
+artifacts added or removed, and whether handoff is confirmed or blocked. When
+implementation planning was requested, also return or link the minimal task set
+and its proportionate verification scope without placing it inside the PIP.

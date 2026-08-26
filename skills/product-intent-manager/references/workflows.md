@@ -1,7 +1,10 @@
 # Workflows
 
 Use the workflow that matches the request. In every mode, maintain only the
-artifacts needed for this product and release.
+artifacts needed for this product and release. When the request also includes
+implementation planning, apply [Minimal implementation tasks](change-and-handoff.md#minimal-implementation-tasks)
+after defining the confirmed delta. Keep tasks outside the PIP and do not infer
+permission to mutate an external tracker.
 
 ## Create
 

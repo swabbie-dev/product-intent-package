@@ -65,17 +65,20 @@ These paths are conventions, not a requirement to create every file.
 The PIP owns target product intent, not every project fact. When ownership could
 be ambiguous, identify the authoritative location for adjacent material such as
 market context, detailed visual and interaction design, implemented behavior,
-schemas or contracts, operations, and issue or release tracking. Link to those
-sources instead of copying them into competing locations. State conflict
-precedence only where sources can plausibly disagree, and route unresolved
-target decisions to the accountable authority.
+schemas or contracts, operations, issue or release tracking, and implementation
+notes. The task system owns the minimal steps, assignments, and working state
+needed to reach the confirmed PIP end-state; it does not become product
+authority. Link to those sources instead of copying them into competing
+locations. State conflict precedence only where sources can plausibly disagree,
+and route unresolved target decisions to the accountable authority.
 
 A companion MRD, market analysis, design system, or operations guide may live
 beside or outside the package without becoming another core PIP file. Record
 these ownership boundaries in existing repository guidance or governance when
 needed; do not create a source-of-truth registry merely to list them. Never
 leave target behavior or a build-affecting product decision only in an adjacent
-tool.
+tool. Do not add a task file, ticket mirror, or implementation-plan registry to
+the package; use the project's existing task system or concise working notes.
 
 ## Intent status
 
