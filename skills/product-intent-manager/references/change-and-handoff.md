@@ -157,6 +157,18 @@ For an existing-product or design-led handoff, also confirm that:
   exact target and companion example or export code when available, while any
   intended deviation has accountable approval.
 
+When the PIP explicitly constrains an index or concurrency mechanism, confirm
+that the index uses matching attribute badges and an index compartment to show
+its affected columns, status, confirmed intent, and product purpose. Confirm
+that a concurrency restriction traces to its named invariant or capacity bound
+and is no broader or longer than that constraint requires. Leave unconfirmed
+physical choices to engineering.
+
+Do not require a concurrency mechanism merely because multiple processes might
+touch the same database. Preserve parallel work on modest infrastructure unless
+a confirmed correctness invariant or material capacity bound establishes the
+need to coordinate it.
+
 ### 3. Acceptance and engineering discretion
 
 Confirm that `acceptance.yaml` contains observable scenarios for the in-scope

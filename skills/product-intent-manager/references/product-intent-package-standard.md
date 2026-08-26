@@ -183,6 +183,18 @@ engineering. Companion example or generated design code is reference material
 unless separately designated canonical; prefer reuse or adaptation when it is
 compatible with the repository and confirmed target.
 
+Routine physical indexes and database coordination mechanics remain with
+engineering unless they affect a confirmed outcome, correctness invariant,
+quality or cost bound, or operational capacity. For a product-significant
+index, use the linked attribute-badge and `INDEXES`-compartment convention in
+[Artifact Responsibilities](artifact-responsibilities.md) and preserve its
+intent status. For an explicit application-imposed lock or similar concurrency
+restriction, document why the invariant requires it and why a narrower design
+cannot preserve the same correctness or capacity outcome while allowing
+independent processes to proceed. Do not present avoidable serialization, or
+oversized infrastructure proposed to compensate for its contention, as an
+ordinary product requirement.
+
 ## Package status
 
 Keep package status and final approval in `product.yaml`. Use `draft` or

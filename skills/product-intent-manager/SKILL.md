@@ -61,6 +61,30 @@ Do not leave the following matters to implementation guesswork when they apply:
   conflicts instead of silently deviating. Generated or exported code is a
   reference unless it is separately designated canonical.
 
+## Data access and concurrency
+
+When database access or coordination can affect a confirmed product outcome,
+cost bound, or operational constraint, read
+[Artifact Responsibilities](references/artifact-responsibilities.md):
+
+- **Show consequential indexes in context.** In a table-style ERD, place a
+  textual, color-matched index badge on every affected attribute row and repeat
+  that badge in an `INDEXES` compartment below the entity. The compartment owns
+  the confirmed definition or proposed index intent, status, and product or
+  process purpose. Color supplements the badge text; it never replaces it. Omit
+  routine indexes that do not constrain product intent.
+- **Preserve useful concurrency.** Treat explicit application-imposed database
+  locks, stronger-than-default isolation that materially restricts concurrency,
+  singleton requirements that block otherwise independent work, and similar
+  serialization as exceptional. Use one only when a named correctness invariant
+  or material capacity bound cannot be protected by a simpler, narrower
+  mechanism that still permits independent work. Record the invariant and only
+  the scope, duration, affected processes, timeout, recovery, capacity cost, and
+  rejected alternatives material to that outcome or bound. Do not require
+  oversized database infrastructure merely to compensate for avoidable
+  contention. This rule does not prohibit the database's ordinary short-lived
+  internal locks while executing atomic statements or enforcing constraints.
+
 ## Minimal implementation tasks
 
 The PIP owns the desired end-state. The project's existing task tracker or

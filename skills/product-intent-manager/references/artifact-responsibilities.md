@@ -170,6 +170,36 @@ differs. A sequence may name the durable state transition it causes, but it
 must not restate the lifecycle model. Do not create one for a local interface
 change or restate navigation or entity relationships inside it.
 
+When a process proposes an explicit application-controlled database lock,
+advisory lock, application-required isolation stronger than the project or
+database default, singleton requirement, global queue constrained to one active
+job or consumer, or another limit that serializes otherwise independent work,
+treat that restriction as exceptional.
+Show it in the owning sequence only when it materially affects correctness,
+capacity, latency, recovery, or which processes can proceed. Name the minimum
+needed to justify it:
+
+- the invariant and concrete race or failure it prevents, linked to the owning
+  rule or data constraint when one exists;
+- the narrowest row, key, tenant, or other scope and the affected processes;
+- why a uniqueness or exclusion constraint, atomic conditional statement,
+  optimistic version check, idempotency, short transaction, or partitioned work
+  does not protect the same invariant more simply.
+
+Add acquisition and release, maximum hold or wait, timeout, recovery,
+contention, and product or infrastructure cost only when they materially affect
+the confirmed outcome or capacity bound.
+
+Prefer the simplest correct mechanism that lets unrelated work proceed in
+parallel. Do not make holding an explicit lock across external network or other
+slow I/O a confirmed requirement without a specific invariant and explicit
+latency and failure tradeoff. Do not serialize unrelated rows, tenants, jobs, or
+processes to defend against a hypothetical race, and do not make larger database
+infrastructure the default remedy for contention created by the design.
+Ordinary short-lived locks that the database uses internally for atomic
+statements and constraints are not an application-level restriction and do not
+need PIP detail unless their contention becomes product-significant.
+
 ## State machines
 
 A state machine owns stable lifecycle states, triggers, guards, permitted and
@@ -199,6 +229,74 @@ when both are needed, even if one diagram shows their mapping.
 Do not use the ERD to describe navigation, message order, transition validity,
 or a full database definition. Add schema detail only when fields, constraints,
 retention, migration, or compatibility are product-significant.
+
+### Product-significant index notation
+
+When an index is product-significant, use one combined convention: mark its
+columns in the standard entity attribute table and define it in an `INDEXES`
+compartment directly below that entity. The badges and compartment are a pair;
+do not use a detached index list that leaves affected columns implicit.
+
+On each participating attribute row:
+
+- show `[I1·1]`, `[I1·2]`, and similar badges for an ordinary performance index;
+- use `U` for a unique index or constraint and `P` for a partial, expression,
+  or otherwise specialized index;
+- use the number after `·` for the column's order in the index;
+- mark a predicate-only column with `·where`, an included column with `·inc`,
+  and a source column used only by an index expression with `·expr`;
+- show every badge when a column participates in more than one index; and
+- use the same color for a badge on the attribute and in the compartment, while
+  preserving the textual identifier so the diagram never relies on color alone.
+
+In the corresponding compartment, repeat the badge and show only known details
+that matter: observed, proposed, confirmed, or stale status; physical index name
+when known; uniqueness and method; ordered keys and direction; predicate or
+expression; included columns; verified owning query or process when relevant;
+and the product purpose through a direct `SEQ-*`, `RULE-*`, `QC-*`, or other
+useful link. State a read/write, cost, or capacity tradeoff only when it
+materially constrains the decision. A proposed record may state access and index
+intent without inventing a physical definition. Use an outlined badge labeled
+`PROPOSED` for an unconfirmed candidate and visibly mute a stale index. Include
+a small legend once per diagram or board. Treat `P` as a visual category, not a
+claim that the index cannot also be unique; the compartment owns the full
+physical definition when it has been decided.
+
+For example:
+
+```text
+ATTRIBUTE               TYPE   KEY / CONSTRAINT   INDEX BADGE
+match_id                 UUID   FK                 [P1·1]
+publication_request_id   TEXT   UK                 [U2·1]
+token                    TEXT   UK                 [U1·1]
+disabled_at              TIME                      [P1·where]
+
+INDEXES
+[U1] CONFIRMED  pitch_card_token_key
+     UNIQUE BTREE (token ASC)
+     Supports SEQ-008: stable public-token lookup
+
+[U2] CONFIRMED  pitch_card_publication_request_key
+     UNIQUE BTREE (publication_request_id ASC)
+     Supports SEQ-002: replay-safe publication
+
+[P1] CONFIRMED  pitch_card_one_active_per_pitch_idx
+     UNIQUE BTREE (match_id ASC) WHERE disabled_at IS NULL
+     Supports SEQ-001: at most one active page per Match
+```
+
+Inspect the current schema, migrations, and owning queries before showing a
+physical index. Do not invent a scale target or turn a candidate into confirmed
+intent. Omit indexes that are routine implementation details, including an
+ordinary primary-key backing index already communicated by `PK`, unless its
+physical behavior is independently product-significant. If the authoring tool
+cannot color individual cells, keep the textual badges. If it cannot create an
+entity compartment, put the matching Markdown `INDEXES` table immediately below
+the diagram in the same `.md` file. Do not change diagram type or add an artifact
+solely to add color. Badge IDs are local visual labels unless another artifact
+genuinely needs to reference them. A `PK`, `FK`, or `UK` label states schema
+meaning and does not by itself prove that a separate physical index exists on
+that column.
 
 ## Stack context and deployment
 
