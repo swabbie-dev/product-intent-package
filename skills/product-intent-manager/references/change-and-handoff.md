@@ -164,6 +164,11 @@ that a concurrency restriction traces to its named invariant or capacity bound
 and is no broader or longer than that constraint requires. Leave unconfirmed
 physical choices to engineering.
 
+When the PIP explicitly constrains database connection use, confirm that it
+considers aggregate fan-out across replicas and workers, permits necessary
+parallel and session-bound work, and does not assert an unsupported numeric
+limit.
+
 Do not require a concurrency mechanism merely because multiple processes might
 touch the same database. Preserve parallel work on modest infrastructure unless
 a confirmed correctness invariant or material capacity bound establishes the

@@ -306,6 +306,20 @@ managed platforms, stores, queues, and their labeled connections. State each
 node's responsibility and owned state. Name a provider or runtime only when it
 is confirmed.
 
+When database connection use is product-significant, show or note which
+deployed services, workers, and jobs connect and consider aggregate fan-out from
+each bounded pool across replicas, autoscaled instances, and overlapping work,
+plus dedicated or long-lived sessions. Before confirming multiple database
+clients or pools inside one process, check whether they can reuse one bounded
+process-level pool or consolidate without serializing useful work, causing
+head-of-line blocking, or breaking session semantics. Preserve separate bounded
+connections or pools when concurrent transactions, listeners or subscriptions,
+long queries or streams, or workload isolation require them. Keep ordinary pool
+checkout mechanics out of sequences unless exhaustion, waiting, or a dedicated
+session changes process behavior or recovery. Record only confirmed provider
+limits or material bounds; otherwise state bounded-reuse intent without
+inventing pool sizes or requiring load-test ceremony.
+
 Place security and operational controls on the node, connection, or trust zone
 where they apply. Do not draw logical APIs, events, data records, policies, or
 capabilities as peer services. Show ordinary deployment placement in this view.

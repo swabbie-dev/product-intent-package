@@ -73,6 +73,16 @@ cost bound, or operational constraint, read
   the confirmed definition or proposed index intent, status, and product or
   process purpose. Color supplements the badge text; it never replaces it. Omit
   routine indexes that do not constrain product intent.
+- **Bound connection fan-out.** When connection use can affect confirmed
+  performance, reliability, capacity, or cost, first check whether work within
+  each process can reuse a bounded shared pool or consolidate database clients
+  without serializing independent transactions, causing head-of-line blocking,
+  or reducing effective product performance. Assess aggregate fan-out across
+  process pools, replicas, workers, overlapping jobs, and dedicated sessions.
+  Preserve distinct connections or pools for genuinely concurrent transactions,
+  session-bound listeners, streams or long-running work, and workload isolation
+  when needed. Do not invent a numeric cap or benchmark requirement without a
+  confirmed provider limit or product constraint.
 - **Preserve useful concurrency.** Treat explicit application-imposed database
   locks, stronger-than-default isolation that materially restricts concurrency,
   singleton requirements that block otherwise independent work, and similar

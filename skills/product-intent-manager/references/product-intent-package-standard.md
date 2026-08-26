@@ -183,17 +183,21 @@ engineering. Companion example or generated design code is reference material
 unless separately designated canonical; prefer reuse or adaptation when it is
 compatible with the repository and confirmed target.
 
-Routine physical indexes and database coordination mechanics remain with
-engineering unless they affect a confirmed outcome, correctness invariant,
-quality or cost bound, or operational capacity. For a product-significant
-index, use the linked attribute-badge and `INDEXES`-compartment convention in
+Routine physical indexes, database-client and pool design, and database
+coordination mechanics remain with engineering unless they affect a confirmed
+outcome, correctness invariant, performance, quality or cost bound, or
+operational capacity. For a product-significant index, use the linked
+attribute-badge and `INDEXES`-compartment convention in
 [Artifact Responsibilities](artifact-responsibilities.md) and preserve its
 intent status. For an explicit application-imposed lock or similar concurrency
 restriction, document why the invariant requires it and why a narrower design
 cannot preserve the same correctness or capacity outcome while allowing
-independent processes to proceed. Do not present avoidable serialization, or
-oversized infrastructure proposed to compensate for its contention, as an
-ordinary product requirement.
+independent processes to proceed. When aggregate connection fan-out is
+product-significant, constrain the relevant deployed process behavior without
+inventing a per-process limit or collapsing parallel transactions or
+session-bound work that the product needs. Do not present avoidable
+serialization, connection amplification, or oversized infrastructure proposed
+to compensate for either as an ordinary product requirement.
 
 ## Package status
 
