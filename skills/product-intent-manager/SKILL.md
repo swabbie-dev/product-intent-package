@@ -1,6 +1,6 @@
 ---
 name: product-intent-manager
-description: Create, reconstruct, simplify, or update an explicitly requested Product Intent Package (PIP) and prepare it for product-to-implementation handoff. Use only when the user asks to work on a PIP or product-intent package; do not activate for ordinary product planning, diagramming, coding, or project documentation.
+description: Create, reconstruct, simplify, or update an explicitly requested Product Intent Package (PIP), or preserve its authority while planning, implementing, or auditing work governed by it. Use when the user asks to work on a PIP or explicitly implement or audit against one; do not activate for ordinary product planning, diagramming, coding, or project documentation with no PIP.
 ---
 
 # Product Intent Manager
@@ -9,6 +9,82 @@ Maintain the smallest package that communicates what product to build, why it
 matters, how people use it, and which observable outcomes constrain
 implementation. Do not turn the package into an implementation specification
 or a proof that every possible document exists.
+
+## Product authority and implementation evidence
+
+Treat authority as a property of the meaning and its source, not of who typed
+the file. Use these meanings consistently:
+
+- `confirmed`: target doctrine accepted by the accountable authority;
+- `observed`: current implementation evidence, never product authority;
+- `proposed`: a candidate doctrine change awaiting authority; and
+- `blocked` or `stale`: target intent that must not govern implementation yet.
+
+Do not add an `authorization_level` field. Status, the confirming decision and
+authority, and the reviewed revision express the authorization boundary.
+Git records ordinary edits. For a semantic change, use a `proposed_change` open
+item while it awaits authority; once accepted, update the owning target facts,
+add a confirmed decision, and record the new reviewed revision. Record a
+material as-built difference separately as an implementation observation.
+
+When creating, changing, implementing, or auditing work governed by a PIP:
+
+- **Preserve the authority baseline.** Identify the task-start PIP revision,
+  `confirmation_decision_id`, `confirmation_revision`, and any later direct
+  authority decisions in the existing task or working context. Do not create a
+  ledger. Product confirmation covers the target meaning reviewed at that
+  revision. Meaning-preserving editorial or representation changes retain its
+  authority; new or changed semantic claims do not inherit it.
+- **Prevent circular confirmation.** New or changed semantic claims introduced
+  in PIP edits, tickets, tests, audit findings, diagrams, or implementation
+  receipts during the same work remain `observed` or `proposed` unless they
+  directly encode an independently attributable authority decision. These
+  artifacts cannot confirm one another. Meaning-preserving edits need no new
+  status or confirmation, but cannot serve as confirmation evidence. Permission
+  to implement, migrate, commit, or push does not authorize new product
+  semantics.
+- **Separate doctrine from implementation evidence.** Keep confirmed target
+  facts in their owning artifacts and use the proposal pattern below. Put only
+  material current implementation evidence needed to interpret, audit, or
+  reconcile the target in the optional
+  `governance.yaml.implementation_observations` list, or in a visibly separate
+  Markdown callout labeled `Implementation observation — observed, not product
+  authority`. Every observation stays `observed`, cites a `source_ref`, links
+  affected IDs when useful, and says whether it `aligns`, `deviates`, or is
+  `unclear` relative to confirmed intent. Routine and superseded implementation
+  history stays in Git or the task system.
+- **Do not normalize divergence into doctrine.** When implementation differs
+  from the confirmed target, preserve the target and record the implementation
+  as observed. When a product decision is needed, record an implementer-
+  recommended doctrine change in `governance.yaml.open_items` with
+  `type: proposed_change` and `status: proposed`, unless the owning artifact
+  already supports a visibly parallel proposed record. If the authority adopts
+  the change, update the owning target facts and acceptance, add a confirmed
+  decision, resolve the open item, and reconfirm the package; never change the
+  observation itself to `confirmed`.
+
+## Semantic expansion boundary
+
+A constraint at one processing boundary does not authorize moving it to
+another. For example, `safe to expose` does not mean `eligible to retrieve`
+unless the accountable authority confirms that relationship. Qualify ambiguous
+terms such as `eligible`, `safe`, `valid`, and `shared` with the domain, stage,
+population, data, algorithm, lifecycle, or output they actually constrain.
+
+Pause for one concise authority question before an implementation mechanism
+absent from confirmed intent would:
+
+- create a durable eligibility, admission, exclusion, or classification;
+- split a population, corpus, audience, or product surface;
+- move a rule between authorization, retrieval, ranking, projection,
+  publication, or persistence;
+- add maintained derived state or a broad existing-data backfill;
+- encode product policy in a constraint or partial-index predicate; or
+- materially change privacy, membership, operating cost, or system load.
+
+State the product effect, persistence or migration effect, and smallest viable
+alternative. Do not add an approval ceremony for ordinary engineering choices
+that remain inside confirmed outcomes and constraints.
 
 ## Diagram detail boundary
 
@@ -72,7 +148,8 @@ cost bound, or operational constraint, read
   that badge in an `INDEXES` compartment below the entity. The compartment owns
   the confirmed definition or proposed index intent, status, and product or
   process purpose. Color supplements the badge text; it never replaces it. Omit
-  routine indexes that do not constrain product intent.
+  routine indexes that do not constrain product intent. An index may support a
+  confirmed product rule; its predicate cannot establish that rule.
 - **Bound connection fan-out.** When connection use can affect confirmed
   performance, reliability, capacity, or cost, first check whether work within
   each process can reuse a bounded shared pool or consolidate database clients
@@ -138,13 +215,16 @@ targets, new test machinery, proof documents, or readiness gates.
 - **Complete:** close material gaps in an existing package.
 - **Update:** change confirmed intent and its affected dependents.
 - **Simplify:** remove duplicate machinery without losing product meaning.
+- **Implement or audit:** preserve the confirmed target while comparing planned
+  or observed implementation against its authority baseline.
 
 ## Workflow
 
 1. Read the existing package and repository guidance. For a new package, start
    from the five-file template in `assets/product-intent-template/`.
 2. Establish the target baseline and release boundary, desired outcome, actors,
-   capabilities, exclusions, measures, and accountable product authority.
+   capabilities, exclusions, measures, accountable product authority, and the
+   reviewed confirmation revision when one exists.
 3. Add an artifact only when it resolves a real product, experience, behavior,
    data, system, quality, or acceptance question. Read
    [Artifact Responsibilities](references/artifact-responsibilities.md) before
@@ -196,12 +276,18 @@ creating or migrating package structure.
   treat a task as product authority.
 - Never treat implementation, diagrams, or agent analysis as authority. Never
   silently convert an inference or proposal into confirmed intent.
-- Do not implement the product as part of this skill.
+- This skill does not itself authorize product implementation or external
+  writes. When implementation is separately requested, use it to preserve
+  product intent and authority while the applicable engineering guidance owns
+  the code work.
 
 ## Deliver
 
-Return the updated package plus a short note stating the mode, target and
-release boundary, material decisions, unresolved or stale items, optional
-artifacts added or removed, and whether handoff is confirmed or blocked. When
-implementation planning was requested, also return or link the minimal task set
-and its proportionate verification scope without placing it inside the PIP.
+Return the requested package update or implementation-alignment result plus a
+short note stating the mode, target and release boundary, confirmation decision
+and revision, material decisions, material implementation observations and
+their alignment, unresolved or stale items, optional artifacts added or
+removed, the PIP target's readiness, and implementation alignment as separate
+results. When implementation planning was requested, also return or link the
+minimal task set and its proportionate verification scope without placing it
+inside the PIP.

@@ -12,11 +12,22 @@ decisions: []
 #   authority_id: AUTH-001
 #   decision_ref: ''
 #   affects: []
+# `decision_ref` identifies the direct authority statement or approval source;
+# same-task PIP, ticket, test, audit, and implementation edits cannot confirm one another.
+
+implementation_observations: []
+# Keep this sparse and material; it is not a change log or product authority.
+# - status: observed
+#   summary: ''
+#   source_ref: git:<full-revision>
+#   affected_ids: []
+#   relationship_to_confirmed_intent: aligns
+# Use aligns, deviates, or unclear. Add an ID only when referenced elsewhere.
 
 open_items: []
 # - id: OPEN-001
-#   type: question
-#   status: blocked
+#   type: proposed_change # or question or conflict
+#   status: proposed # question or conflict normally uses blocked
 #   summary: ''
 #   why_it_matters: ''
 #   affected_ids: []

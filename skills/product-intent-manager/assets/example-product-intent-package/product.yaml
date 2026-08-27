@@ -1,7 +1,8 @@
-schema_version: 6.0.0
+schema_version: 6.1.0
 package_id: PIP-COUNTER
 status: build_ready
 confirmation_decision_id: DEC-008
+confirmation_revision: ff16e1b34df1947306aa5c800c269218d5b4f77d
 name: Counter
 target:
   baseline: greenfield

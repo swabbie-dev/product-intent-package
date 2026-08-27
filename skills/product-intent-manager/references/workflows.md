@@ -9,7 +9,7 @@ permission to mutate an external tracker.
 ## Create
 
 1. Copy the five-file template from `assets/product-intent-template/`.
-2. In `product.yaml`, set format `6.0.0`, package identity, target baseline and
+2. In `product.yaml`, set format `6.1.0`, package identity, target baseline and
    release, desired outcome, actors, capabilities, exclusions, and measures.
 3. In `governance.yaml`, name the default product authority. Add another
    authority only when a material decision has a genuinely different owner.
@@ -20,8 +20,9 @@ permission to mutate an external tracker.
 6. Use [Artifact Responsibilities](artifact-responsibilities.md) to add only
    the state, data, sequence, contract, journey, screen, quality, or deployment
    detail that resolves a real ambiguity.
-7. Obtain authority confirmation for target intent and apply the four handoff
-   checks in [Change and Handoff](change-and-handoff.md).
+7. Obtain authority confirmation for target intent, record the confirming
+   decision and immutable reviewed revision, and apply the four handoff checks
+   in [Change and Handoff](change-and-handoff.md).
 
 Develop the product model in that order, but move backward whenever evidence or
 a decision changes an earlier premise.
@@ -103,10 +104,47 @@ request is unambiguous.
    only when meaning is added, split, replaced, or removed.
 5. Record a decision when authority, rationale, tradeoff, or supersession must
    survive beyond the Git diff.
-6. Reconfirm the changed target and repeat the four handoff checks.
+6. Reconfirm the changed target, record its new reviewed revision, and repeat
+   the four handoff checks.
 
 Do not rewrite every file or increment per-artifact versions for an ordinary
 change. Git retains routine edit history.
+
+## Implement or audit against a PIP
+
+Use this workflow when code or implementation planning is explicitly governed
+by a PIP:
+
+1. Record the task-start PIP revision, target release, confirmation decision,
+   confirmation revision, and any later direct authority decisions in the
+   existing task or working notes.
+2. Treat code, migrations, tests, tickets, logs, and runtime behavior as
+   implementation evidence. They do not change confirmed target intent.
+3. Compare the planned or observed implementation with the task-start confirmed
+   baseline. Apply the semantic-expansion check in
+   [Change and Handoff](change-and-handoff.md#implementation-alignment-discipline)
+   before a new classification, population split, boundary-stage change,
+   maintained fact, broad backfill, or product-policy predicate.
+4. Proceed with ordinary internal choices that stay within confirmed outcomes,
+   constraints, and delegated engineering authority.
+5. Record only a material current as-built fact needed for interpretation,
+   audit, or reconciliation in `governance.yaml.implementation_observations`.
+   Keep it `observed`, cite its source, link affected IDs, and state whether it
+   aligns, deviates, or is unclear. Keep routine history outside the PIP.
+6. If implementation diverges, preserve the confirmed target and add an open
+   conflict only when a product decision is required. Put an implementer
+   recommendation in `governance.yaml.open_items` as `type: proposed_change`
+   with `status: proposed`; use a parallel proposed record in the owning target
+   artifact only when its existing structure supports one. Do not rewrite the
+   confirmed target or mark the observation confirmed.
+7. If the accountable authority accepts the proposal, update the owning target
+   facts and acceptance, add a confirmed decision, resolve the open item, and
+   establish a new reviewed revision. Otherwise implement toward the existing
+   doctrine or leave the affected work blocked.
+
+An agent-authored PIP edit, implementation ticket, test, and audit conclusion
+cannot confirm one another. Compare implementation handoff against the
+task-start authority baseline, not only the PIP as edited during the task.
 
 ## Simplify or migrate an older package
 

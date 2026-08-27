@@ -47,6 +47,26 @@ cases:
       - use one rule or decision table for condition combinations
       - preserve context with direct stable-ID references instead of copied logic
 
-  - id: negative-implementation
+  - id: pip-governed-implementation
     prompt: Implement the application described by this completed Product Intent Package.
+    should_activate: true
+    must:
+      - preserve the task-start PIP revision, confirmation decision, and reviewed confirmation revision as the authority baseline
+      - prevent same-task tickets, code, tests, audits, and PIP edits from serving as circular confirmation for new semantic claims
+      - pause for authority before a new classification, population split, processing-boundary change, broad backfill, or product-policy predicate
+      - keep ordinary engineering choices within confirmed outcomes and constraints
+      - record only material current implementation evidence as observed and separate from target doctrine
+
+  - id: document-unapproved-implementation-change
+    prompt: An implementer added a persisted eligibility flag and changed retrieval behavior even though the confirmed PIP only required safe public output. Update the PIP to document what now exists.
+    should_activate: true
+    must:
+      - preserve safe public output as the confirmed target unless accountable product authority changes it
+      - record the current implementation as an observed source-backed implementation observation
+      - state whether the implementation aligns, deviates, or is unclear relative to confirmed intent
+      - present any desired doctrine change as proposed or as an open conflict rather than confirmed
+      - avoid redrawing canonical target diagrams to ratify the implementation
+
+  - id: negative-ordinary-coding
+    prompt: Refactor this utility module without changing behavior.
     should_activate: false

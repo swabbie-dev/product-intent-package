@@ -53,7 +53,8 @@ trace graph. Do not split files or create diagrams merely to fill ID gaps.
 | Information | Owner |
 | --- | --- |
 | Outcome, actors, capabilities, release boundary, exclusions, measures | `product.yaml` |
-| Authority, consequential decisions, unresolved questions or conflicts | `governance.yaml` |
+| Authority, consequential decisions, unresolved questions, conflicts, or proposed changes | `governance.yaml` |
+| Material current implementation evidence needed to reconcile the target | `governance.yaml.implementation_observations` |
 | Observable proof of product outcomes | `acceptance.yaml` |
 | Actor action, navigation, visible outcome, and visible recovery choice | User flow |
 | Detailed content and actions for a surface | Screen record, when needed |
@@ -79,6 +80,23 @@ trace graph. Do not split files or create diagrams merely to fill ID gaps.
 
 Share an ID and a short label. Do not copy the selecting rule, transition
 definition, or runtime messages into every view.
+
+## Target views and implementation observations
+
+Canonical target diagrams and records describe target intent. Reconstruction
+may retain a separately labeled observed view, but do not redraw a target view
+to match an unapproved implementation. When a material as-built fact needs
+local context, add a visibly separate callout labeled `Implementation
+observation — observed, not product authority` with its evidence source,
+affected IDs, and whether it aligns, deviates, or is unclear relative to the
+confirmed target. Keep routine or superseded history in Git or tasks.
+
+The optional `governance.yaml.implementation_observations` list is the default
+owner for a cross-artifact implementation fact. It is a sparse evidence lane,
+not an implementation registry or change log. By default, keep a proposed
+doctrine change in a `governance.yaml.open_items` record while leaving the
+confirmed target unchanged. Use a visibly parallel proposed record in the
+owning artifact only when its existing structure supports one.
 
 ## User flows
 
@@ -152,6 +170,11 @@ an approved technical constraint requires separation. Do not map incidental
 helpers or create a complete call graph. A note such as `modify existing:
 path/to/file::function_name` is enough.
 
+The existence of a path or symbol is an `observed` implementation fact. A
+requirement to `reuse unchanged`, `modify existing`, or add a separate owner is
+a target constraint and must remain `proposed` unless confirmed by accountable
+technical authority or explicit project guidance.
+
 For each consequential input, state its origin in the message or a short note:
 user input and surface, parameter or return from a named function, persisted
 field, external response or event, or named constant, configuration, or setting.
@@ -159,6 +182,14 @@ Include values that affect a branch, durable change, visible outcome, or
 acceptance. Labels such as `store_id <- user selection`, `limit <- MATCH_LIMIT
 setting`, or `rows <- load_rows() return` are sufficient. Do not list every
 local variable or reproduce complete signatures.
+
+When terms such as `eligible`, `safe`, `valid`, or `shared` affect a branch or
+population, name the exact domain and processing stage. Distinguish, for
+example, matching eligibility, model compatibility, actor authorization, and
+public presentability; distinguish shared data or configuration from a shared
+algorithm, population, lifecycle, or output. A rule at projection or
+publication does not change retrieval or ranking membership unless confirmed
+target intent explicitly says so.
 
 Use the physical client as a participant. A `SCREEN-*` identifies the starting
 or resulting surface; it is not a runtime lifeline. Return relevant facts once
@@ -230,6 +261,12 @@ Do not use the ERD to describe navigation, message order, transition validity,
 or a full database definition. Add schema detail only when fields, constraints,
 retention, migration, or compatibility are product-significant.
 
+Before showing a persisted product classification as confirmed, ensure the
+owning target fact defines its meaning, affected population, owner and update
+lifecycle, and consumers. An observed field may be shown as implementation
+evidence, but its presence in the schema does not make its semantics product
+doctrine.
+
 ### Product-significant index notation
 
 When an index is product-significant, use one combined convention: mark its
@@ -261,6 +298,12 @@ intent without inventing a physical definition. Use an outlined badge labeled
 a small legend once per diagram or board. Treat `P` as a visual category, not a
 claim that the index cannot also be unique; the compartment owns the full
 physical definition when it has been decided.
+
+An index supports an owning product rule; it cannot establish the rule. A
+partial-index or constraint predicate that changes admission, eligibility, or
+population membership requires an independently confirmed target fact. Do not
+use an agent-authored index proposal, migration, ticket, or test as authority
+for the product classification encoded by its predicate.
 
 For example:
 

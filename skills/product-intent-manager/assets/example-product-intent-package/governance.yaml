@@ -32,7 +32,7 @@ decisions:
 
   - id: DEC-008
     status: confirmed
-    statement: The format-6 package is the final approved representation and preserves the active behavior, constraints, and stable ID meanings while retiring duplicate documents.
+    statement: The target intent at the product.yaml confirmation revision is the final approved format-6 representation and preserves the active behavior, constraints, and stable ID meanings while retiring duplicate documents.
     authority_id: AUTH-OWNER
     decision_ref: fixture:format-6-simplification
     affects:

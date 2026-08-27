@@ -7,18 +7,21 @@ of what product to build, how people use it, and which outcomes and constraints
 matter. It is not a substitute for source code, a project-management system, or
 an exhaustive implementation specification.
 
-## Format 6.0
+## Format 6.1
 
-This standard defines format `6.0.0`. Format 6 removes mandatory registries and
-completeness machinery that duplicate the product records. It uses direct links,
-conditional artifacts, ordinary Git history, and default engineering discretion.
+This standard defines format `6.1.0`. Format 6 removes mandatory registries and
+completeness machinery that duplicate the product records. Format 6.1 adds a
+reviewed confirmation revision and a sparse implementation-observation lane so
+later as-built evidence cannot silently inherit product authority. It still uses
+direct links, conditional artifacts, ordinary Git history, and default
+engineering discretion.
 
 The default package contains exactly five files:
 
 | File | Responsibility |
 | --- | --- |
-| `product.yaml` | Package identity and status, target baseline and release, outcome, actors, capabilities, exclusions, and measures |
-| `governance.yaml` | Default authority, consequential decisions, and unresolved questions or conflicts |
+| `product.yaml` | Package identity and status, reviewed confirmation revision, target baseline and release, outcome, actors, capabilities, exclusions, and measures |
+| `governance.yaml` | Default authority, consequential decisions, unresolved questions, conflicts or proposed changes, and sparse material implementation observations |
 | `acceptance.yaml` | Observable scenarios that establish whether confirmed product outcomes were met |
 | `architecture/stack-context.md` | Physical clients, services, managed platforms, data stores, external systems, responsibilities, and connections |
 | `experience/user-flows.md` | Actor goals, actions, screen topology, choices, visible outcomes, failure, and recovery |
@@ -72,6 +75,11 @@ authority. Link to those sources instead of copying them into competing
 locations. State conflict precedence only where sources can plausibly disagree,
 and route unresolved target decisions to the accountable authority.
 
+The optional implementation-observation lane is a narrow exception for a
+material current fact needed to compare implementation with target intent. It
+summarizes and links to the owning implementation evidence; it does not copy
+implementation detail into the PIP or make the package the as-built authority.
+
 A companion MRD, market analysis, design system, or operations guide may live
 beside or outside the package without becoming another core PIP file. Record
 these ownership boundaries in existing repository guidance or governance when
@@ -99,11 +107,105 @@ when marking an item stale. Historical or rejected material may remain in Git;
 it does not need to remain in the active package unless its rationale matters.
 
 For a `build_ready` package, the final confirmation decision establishes
-`confirmed` as the default for active target claims covered by that decision.
-Write a local status and source or decision reference only when a claim differs
-from that baseline, especially for `observed`, `inferred`, `proposed`, `blocked`,
-or `stale` reconstruction material. A package-level status must never make an
-unconfirmed claim appear confirmed.
+`confirmed` as the default only for active target claims covered by that
+decision at `product.yaml.confirmation_revision`. Meaning-preserving editorial,
+formatting, artifact relocation that preserves stable IDs and meaning, or
+representation changes retain that authority; new or changed semantic claims
+do not inherit confirmation. Write a local status and source or decision
+reference when a claim differs from that baseline, especially for `observed`,
+`inferred`, `proposed`, `blocked`, or `stale` material. A package-level status
+must never make an unconfirmed claim appear confirmed.
+
+## Product confirmation
+
+For a newly confirmed or materially reconfirmed `build_ready` package, pair:
+
+- `confirmation_decision_id`: the confirmed `DEC-*` owned by the accountable
+  product authority, normally the product leader, or an explicitly delegated
+  product authority; and
+- `confirmation_revision`: the immutable full Git revision of the target-intent
+  content that authority reviewed.
+
+The reviewed revision normally precedes the commit that records the signoff
+metadata, so it does not need to refer to a commit containing itself. This is a
+normal Git reference, not a separately calculated package hash or a value to
+update for every implementation observation. When Git is genuinely unavailable,
+use another immutable reviewed-content reference and say what it identifies.
+
+The decision's `decision_ref` must identify the direct approval source. The
+person or agent who writes the YAML is not automatically the authority. A
+direct, unambiguous product-authority instruction may itself be the approval;
+do not require a ceremonial second signoff.
+
+Existing format-6.0 packages may retain a legacy `build_ready` confirmation with
+no `confirmation_revision` until the next material reconfirmation. Do not force
+a package migration solely to add the field.
+
+## Product doctrine and implementation observations
+
+Keep target intent and implementation evidence visibly distinct:
+
+- Confirmed target intent is product doctrine. Proposed target intent is a
+  candidate change awaiting authority.
+- Implementation evidence is always `observed`. It can show alignment or
+  divergence but cannot change the target, confirm a proposal, or satisfy
+  product authority merely because it was added to the PIP.
+
+| Content | Status | Authority effect |
+| --- | --- | --- |
+| Target claim accepted by the accountable authority within its scope | `confirmed` | Governs that claim; package-level product doctrine still requires product authority or explicit delegation |
+| Current as-built implementation fact | `observed` | Evidence only; may align or diverge |
+| Implementer-recommended doctrine change | `proposed` | Awaits accountable authority |
+| Consequential unresolved target choice | `blocked` | Must not be treated as build intent |
+| Previously confirmed target requiring review | `stale` | Retains history but is not currently reliable |
+
+Do not add a separate `authorization_level` field. Status, the confirming
+decision, its accountable authority, and the reviewed revision already express
+the necessary authorization boundary.
+
+Use the optional `governance.yaml.implementation_observations` list only for a
+material current fact needed to interpret, audit, or reconcile the target:
+
+```yaml
+implementation_observations:
+  - status: observed
+    summary: A separate persisted eligibility filter currently limits retrieval.
+    source_ref: git:0123456789abcdef0123456789abcdef01234567
+    affected_ids: [DATA-004, SEQ-028]
+    relationship_to_confirmed_intent: deviates
+```
+
+Use `aligns`, `deviates`, or `unclear` for
+`relationship_to_confirmed_intent`. Add an observation ID only when another
+artifact or external system must reference it. Do not add `authority_id` or an
+authorization level: an observation is evidence and cannot be confirmed.
+Routine implementation changes and superseded observations stay in Git or the
+task system; this list is not a change log or implementation registry.
+
+By default, record an implementer-recommended doctrine change without altering
+the confirmed owner:
+
+```yaml
+open_items:
+  - type: proposed_change
+    status: proposed
+    summary: Persist a separate eligibility class for retrieval.
+    affected_ids: [DATA-004, SEQ-028]
+    authority_id: AUTH-001
+```
+
+Use a parallel proposed record in the owning artifact only when that artifact's
+existing shape clearly supports one. If the accountable authority accepts the
+change, update the owning target fact and acceptance, add a confirmed `DEC-*`,
+resolve the open item, and establish a new reviewed revision.
+
+If an implementation fact needs local diagram context, add a separate Markdown
+callout labeled `Implementation observation — observed, not product authority`
+with its source, relationship to confirmed intent, and affected IDs. Do not
+redraw the canonical target diagram to match an unapproved implementation. If
+the product authority adopts an implementer recommendation, leave the
+observation as evidence, update the owning target fact and acceptance, and add
+a confirmed `DEC-*` instead of changing the observation to `confirmed`.
 
 ## Target baseline
 
@@ -203,6 +305,11 @@ to compensate for either as an ordinary product requirement.
 
 Keep package status and final approval in `product.yaml`. Use `draft` or
 `blocked` until the four handoff checks pass. Then use `status: build_ready` and
-set `confirmation_decision_id` to the approving decision in `governance.yaml`.
-Do not create a separate readiness ledger. See
+set `confirmation_decision_id` to the approving decision in `governance.yaml`
+and `confirmation_revision` to the immutable target-intent revision the
+authority reviewed. Later observed implementation notes do not invalidate a
+clear confirmed target. A material semantic target change requires a new
+decision and reviewed revision before it inherits `confirmed`;
+meaning-preserving mechanical changes do not. Do not create a separate readiness
+ledger. See
 [Change and Handoff](change-and-handoff.md).

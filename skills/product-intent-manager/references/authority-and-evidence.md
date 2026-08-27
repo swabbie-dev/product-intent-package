@@ -28,6 +28,33 @@ delegation for each internal choice. Product behavior, user-visible tradeoffs,
 security/privacy, data integrity, compatibility, reliability, operability, and
 stated cost or quality bounds still require the appropriate authority.
 
+## Scoped product confirmation
+
+Authorship is not authority. An implementer or agent may accurately record an
+accountable product authority's decision, while text written by a product leader
+is not automatically a release decision unless its meaning and scope are clear.
+
+For a newly confirmed or materially reconfirmed package,
+`product.yaml.confirmation_decision_id` identifies the accountable product
+authority's approval and `confirmation_revision` identifies the immutable target
+content that authority reviewed. The reviewed Git revision normally precedes
+the metadata-only commit that records the signoff. Product confirmation covers
+the meaning of that target baseline. Meaning-preserving editorial, formatting,
+artifact relocation that preserves stable IDs and meaning, or representation
+changes retain its authority; semantic changes do not.
+
+Specialized design, technical, security, legal, operations, or release
+authorities may confirm decisions inside their actual or delegated scope. A
+specialized decision cannot change product behavior, population membership,
+privacy meaning, or another product doctrine outside that scope.
+
+PIP edits, tickets, tests, audits, diagrams, code, and implementation receipts
+created from the same agent inference are not independent confirmation evidence
+and cannot confirm one another. Broad authority to implement, migrate, commit,
+or push also does not authorize a newly discovered product decision. A direct,
+unambiguous statement from the accountable authority remains sufficient; cite
+it instead of creating a second signoff ceremony.
+
 ## Evidence discipline
 
 Typical sources support different claims:
@@ -52,6 +79,11 @@ Code can establish that a function or module exists. An instruction that it be
 marked `reuse unchanged` or `modify existing` is a target implementation
 constraint and must be confirmed by the accountable technical authority or
 explicit project guidance, or remain labeled `proposed`.
+
+Record a material implementation fact only when it helps interpret, audit, or
+reconcile the target, using the sparse observation pattern in
+[Product Intent Package Standard](product-intent-package-standard.md#product-doctrine-and-implementation-observations).
+Implementation evidence remains `observed` and cannot acquire product authority.
 
 Put a source reference directly on the claim or decision it supports. Use the
 optional `sources` section of `governance.yaml` only when several records reuse
@@ -81,6 +113,26 @@ authorized that action.
 Do not ask an authority to confirm facts that are already adequately evidenced.
 Ask for the target decision that evidence cannot provide.
 
+When an ambiguous phrase would support a consequential implementation choice,
+quote the source and distinguish:
+
+- what it states literally;
+- what it establishes only at an abstract outcome or constraint level;
+- what the implementer is inferring as a possible mechanism; and
+- what is absent from confirmed intent.
+
+These are working-analysis distinctions, not additional PIP statuses. Qualify
+words such as `eligible`, `safe`, `valid`, or `shared` with the processing stage,
+population, data, algorithm, lifecycle, or output they actually constrain.
+
+Ask one concise authority question before an unconfirmed interpretation would
+create a durable product classification, split a population, move a rule to a
+different processing boundary, add maintained derived state or a broad
+backfill, encode product policy in an index or constraint predicate, or
+materially change privacy, cost, or load. State the product effect, persistence
+or migration effect, and smallest viable alternative. Do not ask for ordinary
+engineering choices that remain within confirmed outcomes and constraints.
+
 ## Conflict and decision protocol
 
 For a material gap or contradiction:
@@ -99,9 +151,12 @@ ceremonial second confirmation. Do not resolve conflict by selecting the newest
 document, the running code, the most polished design, a majority view, or a
 person outside the decision domain.
 
-Keep a material unresolved question or contradiction in
-`governance.yaml.open_items` with `type: question` or `type: conflict`. Give it
-a stable `OPEN-*` ID only when another file or external system refers to it.
+Keep a material unresolved question, contradiction, or implementer-recommended
+doctrine change in `governance.yaml.open_items` with `type: question`,
+`type: conflict`, or `type: proposed_change`. A proposed change uses
+`status: proposed`; leave the confirmed owning fact unchanged while it awaits a
+decision. Give it a stable `OPEN-*` ID only when another file or external
+system refers to it.
 When migrating, preserve a referenced `Q-*` or `CON-*` ID. A blocked package
 with a concise, authority-routed question is a valid deliverable.
 

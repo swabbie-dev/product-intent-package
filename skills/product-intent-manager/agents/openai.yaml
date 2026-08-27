@@ -1,6 +1,6 @@
 interface:
   display_name: "Product Intent Manager"
-  short_description: "Create and maintain proportional Product Intent Packages"
-  default_prompt: "Use $product-intent-manager to create or update a proportional Product Intent Package without unnecessary artifacts."
+  short_description: "Create and govern proportional Product Intent Packages"
+  default_prompt: "Use $product-intent-manager to create or update a proportional Product Intent Package, or preserve its confirmed authority while implementing or auditing against it."
 policy:
   allow_implicit_invocation: true

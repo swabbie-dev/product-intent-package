@@ -22,6 +22,34 @@ Use Git for ordinary history. Add a `DEC-*` record only when authority,
 rationale, a consequential tradeoff, or supersession must remain visible in the
 active package. Do not duplicate every diff in a change log.
 
+## Implementation alignment discipline
+
+At the start of PIP-governed implementation or audit, note in the existing task
+or working context:
+
+- the task-start PIP Git revision and target release;
+- `confirmation_decision_id` and `confirmation_revision`, when present; and
+- any later direct authority statements that change the confirmed baseline.
+
+Do not create another ledger. Same-task PIP, ticket, audit, test, diagram, or
+code changes do not become independent authority merely because they agree.
+
+Before implementation handoff or push, compare product-significant schema,
+migration, query, policy, and behavior changes with that task-start confirmed
+baseline, not only with PIP text edited on the working branch. Apply the
+semantic-expansion boundary in
+[Authority and Evidence](authority-and-evidence.md#inference-and-proposal). A
+semantic delta must map to an independently confirmed decision or remain
+proposed or blocked. Ordinary implementation choices inside confirmed behavior
+and material constraints do not need this review.
+
+When current implementation materially helps future interpretation, use the
+sparse observation pattern in
+[Product Intent Package Standard](product-intent-package-standard.md#product-doctrine-and-implementation-observations)
+and leave the confirmed target intact. A divergence requires an open conflict
+only when a product decision is needed; divergent code does not by itself make
+a clear target PIP unready. Routine history stays in Git or tasks.
+
 ## Staleness
 
 `stale` means a prior item should not be relied on until its relationship to a
@@ -130,7 +158,9 @@ Confirm that:
 
 - the target baseline, release boundary, outcome, actors, capabilities,
   exclusions, and measures are understandable and mutually consistent;
-- target intent is confirmed by the accountable authority; and
+- target intent is confirmed by the accountable authority, with a direct
+  confirmation decision and reviewed revision for a newly confirmed or
+  materially reconfirmed package; and
 - every unresolved question or conflict that could change the release is either
   resolved or clearly blocks handoff.
 
@@ -163,6 +193,11 @@ its affected columns, status, confirmed intent, and product purpose. Confirm
 that a concurrency restriction traces to its named invariant or capacity bound
 and is no broader or longer than that constraint requires. Leave unconfirmed
 physical choices to engineering.
+
+An index or constraint may support an owning confirmed rule but cannot establish
+that rule. Before treating a persisted classification or policy predicate as
+confirmed, verify that the owning target fact defines its meaning, affected
+population, owner and update lifecycle, and consumers.
 
 When the PIP explicitly constrains database connection use, confirm that it
 considers aggregate fan-out across replicas and workers, permits necessary
@@ -202,21 +237,30 @@ Confirm that:
 - no `blocked` or `stale` item remains in the approved release scope;
 - observed, inferred, and proposed material is not presented as confirmed
   target intent; and
-- the accountable product or release authority approves the package target.
+- implementation observations are visibly `observed`, source-backed, sparse,
+  and separate from target doctrine; and
+- the accountable product authority, or an authority with explicit delegated
+  product scope, approves the package target.
 
 Record readiness only in `product.yaml`: set `status: build_ready` and set
-`confirmation_decision_id` to the approving decision in `governance.yaml`.
-Do not create a separate readiness file or gate ledger.
+`confirmation_decision_id` to the approving decision in `governance.yaml` and
+`confirmation_revision` to the immutable target-intent revision that decision
+reviewed. The reviewed revision normally precedes the signoff metadata commit.
+Do not create a separate readiness file or gate ledger. Legacy format-6
+packages may add the revision at their next material reconfirmation.
 
 ## Handoff result
 
-Return one of two results:
+Report two independent results; do not make implementation behavior product
+authority by collapsing them:
 
-- **Confirmed handoff:** name the target release, confirmation decision,
-  important constraints, optional artifacts used, and remaining engineering
-  discretion.
-- **Blocked handoff:** name the smallest unresolved questions, their authorities,
-  affected outcomes or IDs, and what work can proceed independently.
+- **PIP target authority and readiness:** state the package status and target
+  release. For `build_ready`, name the confirmation decision and reviewed
+  revision. For `blocked`, name the smallest unresolved questions, their
+  authorities, affected outcomes or IDs, and what can proceed independently.
+- **Implementation alignment:** state `aligns`, `deviates`, or `unclear`, then
+  name only the material observations and remaining engineering discretion. A
+  build-ready target may coexist with deviating implementation.
 
 A package may be useful before it is ready. Do not hide uncertainty to produce
 a ready label, and do not delay a ready package because non-observable
