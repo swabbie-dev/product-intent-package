@@ -55,6 +55,7 @@ trace graph. Do not split files or create diagrams merely to fill ID gaps.
 | Outcome, actors, capabilities, release boundary, exclusions, measures | `product.yaml` |
 | Authority, consequential decisions, unresolved questions, conflicts, or proposed changes | `governance.yaml` |
 | Material current implementation evidence needed to reconcile the target | `governance.yaml.implementation_observations` |
+| Scoped DCL target and current assessments | One optional `dcl` mapping on the owning YAML record, or one local sequence summary when Markdown is the owner; governance owns target confirmation |
 | Observable proof of product outcomes | `acceptance.yaml` |
 | Actor action, navigation, visible outcome, and visible recovery choice | User flow |
 | Detailed content and actions for a surface | Screen record, when needed |
@@ -97,6 +98,13 @@ not an implementation registry or change log. By default, keep a proposed
 doctrine change in a `governance.yaml.open_items` record while leaving the
 confirmed target unchanged. Use a visibly parallel proposed record in the
 owning artifact only when its existing structure supports one.
+
+An optional local `dcl` mapping deliberately places a scoped target beside
+`pip_current` and `implementation_current` assessments for comparison. Only the
+target is doctrine, and it follows normal proposal and confirmation rules. The
+two current levels and any `gap_note` are inferred analysis even when their
+basis cites observed PIP or implementation facts. Do not let their proximity to
+a confirmed target or build-ready package give them product authority.
 
 ## User flows
 
@@ -160,6 +168,36 @@ participants, ordered sync or async messages, authority and data boundaries,
 point of durable change, and material timeout, retry, fallback, duplication,
 partial-failure, compensation, or human recovery behavior. This is the view
 that explains how a process succeeds, degrades, retries, or recovers.
+
+For every sequence that describes an implementable process, normally show a
+compact DCL summary immediately below the `SEQ-*` introduction and above the
+Mermaid fence:
+
+```text
+**DCL:** Target 3 (`confirmed`, `DEC-012`) · PIP current 5 (`inferred`) · Implementation current 4 (`inferred`, `git:0123456789abcdef0123456789abcdef01234567`)
+**DCL gap:** PIP appears overbuilt; manual recovery is permitted by the confirmed target, while integrity protections remain required.
+```
+
+Show `not assessed` or `not implemented` when a current value is unavailable;
+do not invent one or silently imply alignment. When an existing YAML record
+owns the sequence, its optional `dcl` mapping is the structured owner and this
+summary is the readable representation. When the Markdown sequence is the only
+owner, the summary is sufficient; do not add a sidecar YAML file or registry
+solely for DCL.
+
+One DCL scope has one owner. Related capabilities, rules, data records, quality
+constraints, user flows, and state machines link to that owner rather than
+copying its levels or basis.
+
+DCL describes the process's required engineering and operational
+sophistication, not diagram length, documentation detail, code volume, or
+completeness. A detailed sequence may describe a DCL 2 process and a short
+sequence may describe a DCL 7 boundary. If a parent sequence coordinates
+independently operated subprocesses with materially different DCLs, do not
+average them or assign the highest child level to the parent. Give each child
+its own focused sequence and level; assign the parent a level only when its
+coordination is itself a coherent responsibility. Do not copy sequence DCL into
+the linked state machine or user flow.
 
 For an existing codebase, inspect the implementation before writing the
 sequence. Keep physical systems as lifelines; use a message or adjacent note to

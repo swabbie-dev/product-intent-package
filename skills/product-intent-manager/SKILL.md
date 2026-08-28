@@ -52,7 +52,10 @@ When creating, changing, implementing, or auditing work governed by a PIP:
   authority`. Every observation stays `observed`, cites a `source_ref`, links
   affected IDs when useful, and says whether it `aligns`, `deviates`, or is
   `unclear` relative to confirmed intent. Routine and superseded implementation
-  history stays in Git or the task system.
+  history stays in Git or the task system. The optional scoped
+  `dcl.implementation_current` assessment below may keep only a rough inferred
+  level, stable source reference, and concise basis beside its target; it does
+  not replace the observation lane or make implementation evidence doctrine.
 - **Do not normalize divergence into doctrine.** When implementation differs
   from the confirmed target, preserve the target and record the implementation
   as observed. When a product decision is needed, record an implementer-
@@ -85,6 +88,48 @@ absent from confirmed intent would:
 State the product effect, persistence or migration effect, and smallest viable
 alternative. Do not add an approval ceremony for ordinary engineering choices
 that remain inside confirmed outcomes and constraints.
+
+## Scoped development complexity
+
+Use Development Complexity Level (DCL) only as an optional, scoped comparison
+between the engineering sophistication justified by confirmed product needs,
+the sophistication currently encoded by the PIP, and the sophistication found
+in an assessed implementation. Read
+[Development Complexity](references/development-complexity.md) before assigning
+or changing a level.
+
+Determine DCL only after understanding the current target release, actors, user
+interactions, whether users wait for the process, failure consequences, manual
+operation and recovery, real and credible near-term load, data sensitivity,
+security or compliance constraints, and operating cost. Assign it to the
+smallest coherent responsibility or process. Different parts of one product
+may legitimately require very different levels. Never create, inherit, average,
+or enforce one package-wide DCL. Give each scope one owner and link related
+artifacts instead of copying its values.
+
+An optional `dcl` mapping may appear on a YAML record when the comparison helps
+readers make or review implementation decisions. Recommend it for each
+implementable `SEQ-*` process. A sequence stored in Markdown shows a compact
+DCL summary immediately above the Mermaid diagram so the values are visible
+with the logic; when a YAML record owns the sequence, the summary represents
+that record rather than creating another authority source. Keep these meanings
+separate:
+
+- `target` is proposed or authority-confirmed product doctrine for the declared
+  release; confirmation comes from the reviewed package decision or a more
+  specific `DEC-*` when one exists;
+- `pip_current` is an `inferred` assessment of the complexity demanded by the
+  current PIP logic; and
+- `implementation_current` is an `inferred`, source-referenced assessment of
+  the implementation as of an identified revision.
+
+When known values differ, add a concise `gap_note` explaining whether the
+difference is intentional, an open PIP deficiency, incomplete implementation,
+or possible overbuilding. A DCL difference is a review signal, not authority to
+delete or add machinery. Exact confirmed requirements override the shorthand
+level. A low DCL never waives authorization, security, privacy, data-integrity,
+money-safety, destructive-operation, or similarly dangerous-edge protections.
+Diagram size and detail do not determine DCL.
 
 ## Diagram detail boundary
 
@@ -228,7 +273,8 @@ targets, new test machinery, proof documents, or readiness gates.
 3. Add an artifact only when it resolves a real product, experience, behavior,
    data, system, quality, or acceptance question. Read
    [Artifact Responsibilities](references/artifact-responsibilities.md) before
-   choosing or separating diagrams.
+   choosing or separating diagrams. When scoped DCL materially helps readers
+   understand intended or accidental complexity, apply the guidance above.
 4. Label intent as `observed`, `inferred`, `proposed`, `confirmed`, `blocked`,
    or `stale`. Read [Authority and Evidence](references/authority-and-evidence.md)
    when reconstructing, resolving conflict, or seeking confirmation.
@@ -257,6 +303,8 @@ creating or migrating package structure.
   relationship is meaningful. Do not duplicate all possible relationships.
 - Make artifacts conditional. A missing optional artifact is not a coverage
   failure when the product does not need it.
+- Keep DCL optional and scoped. Do not turn it into package-wide maturity,
+  completeness, readiness, or acceptance scoring.
 - Follow the diagram detail boundary above. Keep each fact in the view that owns
   it and link across views instead of copying detail.
 - Treat confirmed reuse or modification anchors and exact confirmed design
@@ -287,7 +335,7 @@ Return the requested package update or implementation-alignment result plus a
 short note stating the mode, target and release boundary, confirmation decision
 and revision, material decisions, material implementation observations and
 their alignment, unresolved or stale items, optional artifacts added or
-removed, the PIP target's readiness, and implementation alignment as separate
-results. When implementation planning was requested, also return or link the
-minimal task set and its proportionate verification scope without placing it
-inside the PIP.
+removed, any material scoped DCL gaps when DCL is used, the PIP target's
+readiness, and implementation alignment as separate results. When
+implementation planning was requested, also return or link the minimal task set
+and its proportionate verification scope without placing it inside the PIP.

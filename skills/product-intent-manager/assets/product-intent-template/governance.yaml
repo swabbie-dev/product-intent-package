@@ -14,6 +14,9 @@ decisions: []
 #   affects: []
 # `decision_ref` identifies the direct authority statement or approval source;
 # same-task PIP, ticket, test, audit, and implementation edits cannot confirm one another.
+# A `dcl.target.decision_id` may point to a specific decision here. Do not add
+# one merely to restate the reviewed package confirmation. DCL current
+# assessments remain inferred.
 
 implementation_observations: []
 # Keep this sparse and material; it is not a change log or product authority.

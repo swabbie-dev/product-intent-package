@@ -7,14 +7,17 @@ of what product to build, how people use it, and which outcomes and constraints
 matter. It is not a substitute for source code, a project-management system, or
 an exhaustive implementation specification.
 
-## Format 6.1
+## Format 6.2
 
-This standard defines format `6.1.0`. Format 6 removes mandatory registries and
+This standard defines format `6.2.0`. Format 6 removes mandatory registries and
 completeness machinery that duplicate the product records. Format 6.1 adds a
 reviewed confirmation revision and a sparse implementation-observation lane so
 later as-built evidence cannot silently inherit product authority. It still uses
 direct links, conditional artifacts, ordinary Git history, and default
-engineering discretion.
+engineering discretion. Format 6.2 adds an optional, scoped Development
+Complexity Level (DCL) mapping and a readable sequence-summary convention. It
+does not add a package-wide score, required registry, or migration requirement
+for existing packages.
 
 The default package contains exactly five files:
 
@@ -62,6 +65,9 @@ These paths are conventions, not a requirement to create every file.
    choices only when they can affect a confirmed outcome or material bound.
 6. **Handoff is an outcome review.** Do not prove readiness by counting files,
    fields, IDs, links, or categories.
+7. **Complexity is scoped.** When DCL is useful, assign it to one coherent
+   responsibility after understanding its users and operation; never average
+   or inherit one product-wide level.
 
 ## Adjacent sources of truth
 
@@ -182,6 +188,13 @@ authorization level: an observation is evidence and cannot be confirmed.
 Routine implementation changes and superseded observations stay in Git or the
 task system; this list is not a change log or implementation registry.
 
+The optional `dcl.implementation_current` field defined below is a narrow local
+assessment, not an exception to this authority boundary. It may summarize the
+rough complexity of a cited implementation snapshot where readers compare it
+with the same record's target and PIP-current levels. Keep detailed as-built
+mechanisms in their source, a material implementation observation, or the task
+system rather than turning `dcl` into an implementation registry.
+
 By default, record an implementer-recommended doctrine change without altering
 the confirmed owner:
 
@@ -218,6 +231,74 @@ Declare one target baseline in `product.yaml`:
 
 Do not mix baselines inside active intent. A reconstruction can retain observed
 facts about several environments while confirming only one target.
+
+## Optional scoped development complexity
+
+Development Complexity Level (DCL) is an optional comparison for one coherent
+responsibility in the declared target release. It is not a package score,
+maturity framework, acceptance gate, or feature checklist. The owning YAML
+record may use this mapping:
+
+```yaml
+dcl:
+  target:
+    level: 3
+    status: confirmed
+    decision_id: DEC-012
+    basis: >-
+      Users do not wait for this process, interruption is acceptable, and an
+      operator can retry it manually for this release.
+  pip_current:
+    level: 5
+    status: inferred
+    basis: >-
+      The current PIP requires leasing, automated recovery, and generalized
+      orchestration beyond the confirmed target.
+  implementation_current:
+    level: 4
+    status: inferred
+    source_ref: git:0123456789abcdef0123456789abcdef01234567
+    basis: >-
+      The assessed worker retains durable queue recovery but omits some PIP
+      mechanisms.
+  gap_note: >-
+    The PIP appears overbuilt. Simplification may be proposed, while confirmed
+    integrity and unsafe-input protections remain required.
+```
+
+Apply these semantics:
+
+- Each scope has one owning YAML record or one owning Markdown sequence
+  summary. Related artifacts link to it rather than copying the levels or
+  basis. Do not add a top-level default, inherit a connected level, or calculate
+  a product average or maximum.
+- `target.level` is a whole integer from 1 through 10 for this scope and release.
+  `target.status` follows normal intent status. A confirmed target is covered by
+  `product.yaml` package confirmation or, when one owns it, the more specific
+  `decision_id`. Do not create a decision merely to restate package
+  confirmation. An agent- or implementer-authored target remains `proposed`.
+- `pip_current` is an `inferred` assessment of sophistication demanded by the
+  current PIP logic. `implementation_current` is an `inferred` assessment of
+  the implementation and cites its stable snapshot in `source_ref`. Underlying
+  mechanisms may be observed; the numeric levels remain inference.
+- `gap_note` is required when known values differ. The difference is a review
+  signal, not authority to add or remove behavior.
+- Omit an unassessed current value rather than inventing one. In the readable
+  sequence summary, state `not assessed` or `not implemented` so omission is
+  not mistaken for alignment.
+
+Recommend DCL for every sequence that describes an implementable process. Put
+a compact target, PIP-current, implementation-current, and gap summary directly
+above its Mermaid block. When a YAML record owns the sequence, the summary is a
+readable representation of its `dcl` mapping. When Markdown is the only owner,
+the summary is sufficient; do not create a sidecar YAML registry solely for
+DCL. Do not copy a sequence's DCL into its linked user flow or state machine.
+
+Missing DCL never makes a package incomplete or unready. Existing packages add
+it only when a product or implementation review would benefit. Exact confirmed
+requirements always override the shorthand level. See
+[Development Complexity](development-complexity.md) for the scale, evidence
+questions, dangerous-edge rule, mixed-scope example, and interpretation.
 
 ## Stable IDs and direct links
 

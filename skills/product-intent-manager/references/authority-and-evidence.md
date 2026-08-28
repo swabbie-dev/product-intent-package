@@ -55,6 +55,18 @@ or push also does not authorize a newly discovered product decision. A direct,
 unambiguous statement from the accountable authority remains sufficient; cite
 it instead of creating a second signoff ceremony.
 
+A scoped `dcl.target` is target intent. Keep it `proposed` until it is covered
+by the reviewed package confirmation or a more specific independently
+attributable decision from the accountable product authority. Link to the
+specific `DEC-*` only when one owns the target; do not create a decision merely
+to restate package confirmation. `dcl.pip_current` and
+`dcl.implementation_current` are inferred assessments: their supporting PIP,
+code, or runtime facts may be observed, but the numeric levels are not. They do
+not become product authority by appearing beside a confirmed target or inside a
+build-ready package. Changing a confirmed target level or its product basis is
+a semantic target change; refreshing a source-backed current assessment does
+not itself change or reconfirm the target.
+
 ## Evidence discipline
 
 Typical sources support different claims:

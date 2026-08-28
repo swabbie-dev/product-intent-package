@@ -1,4 +1,4 @@
-schema_version: 6.1.0
+schema_version: 6.2.0
 package_id: PIP-UNSET
 status: draft
 confirmation_decision_id: null
@@ -26,6 +26,10 @@ capabilities: []
 #   outcome: ''
 #   status: proposed
 #   related_ids: []
+# A YAML record may own the optional `dcl` mapping only when that record is the
+# smallest coherent operational scope. Never add a package-wide default or copy
+# one scope's DCL across capabilities, processes, or other records. See the
+# Product Intent Manager DCL guidance for the field shape.
 
 release:
   included_capability_ids: []

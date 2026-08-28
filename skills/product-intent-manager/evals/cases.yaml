@@ -67,6 +67,22 @@ cases:
       - present any desired doctrine change as proposed or as an open conflict rather than confirmed
       - avoid redrawing canonical target diagrams to ratify the implementation
 
+  - id: scoped-development-complexity
+    prompt: Assess DCL for a PIP whose offline preparation may stop and be retried
+      manually, whose publication boundary protects durable public state, and whose
+      user-facing retrieval must serve a large, rapidly growing corpus. The current
+      PIP and implementation differ.
+    should_activate: true
+    must:
+      - derive separate scoped targets from current users, interactions, failure consequences, recovery expectations, risk, and credible load
+      - avoid a package-wide level, average, inherited level, or feature checklist
+      - use the optional dcl field on a coherently scoped YAML owner when one exists
+      - show target, PIP-current, and implementation-current values with each implementable sequence
+      - keep the target proposed until accountable product authority confirms it and keep both current values inferred
+      - cite the implementation snapshot and explain differing known values in a gap note
+      - preserve exact dangerous-edge protections regardless of a surrounding process's low DCL
+      - treat a mismatch as a review signal rather than authority to add or delete machinery
+
   - id: negative-ordinary-coding
     prompt: Refactor this utility module without changing behavior.
     should_activate: false

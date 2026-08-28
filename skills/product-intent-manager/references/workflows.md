@@ -9,7 +9,7 @@ permission to mutate an external tracker.
 ## Create
 
 1. Copy the five-file template from `assets/product-intent-template/`.
-2. In `product.yaml`, set format `6.1.0`, package identity, target baseline and
+2. In `product.yaml`, set format `6.2.0`, package identity, target baseline and
    release, desired outcome, actors, capabilities, exclusions, and measures.
 3. In `governance.yaml`, name the default product authority. Add another
    authority only when a material decision has a genuinely different owner.
@@ -19,7 +19,9 @@ permission to mutate an external tracker.
 5. Define observable capability and release outcomes in `acceptance.yaml`.
 6. Use [Artifact Responsibilities](artifact-responsibilities.md) to add only
    the state, data, sequence, contract, journey, screen, quality, or deployment
-   detail that resolves a real ambiguity.
+   detail that resolves a real ambiguity. When an implementable sequence would
+   benefit from a scoped complexity comparison, assign DCL only after the
+   actors, interactions, operation, risk, and credible load are understood.
 7. Obtain authority confirmation for target intent, record the confirming
    decision and immutable reviewed revision, and apply the four handoff checks
    in [Change and Handoff](change-and-handoff.md).
@@ -68,6 +70,12 @@ where those details matter. Treat source material as evidence, not target intent
    intended, a defect, a legacy constraint, a future proposal, or out of scope.
 8. Move only confirmed choices into active target intent. Keep unsupported
    branches observed, inferred, proposed, or blocked.
+
+Before proposing a scoped DCL target during reconstruction, establish whether
+users wait for the work, which failures they can see, whether interruption and
+manual recovery are acceptable, and the current and credible near-term data
+volume, growth, and concurrency. Do not infer the target from company stage or
+from the complexity already present in the implementation.
 
 Do not document every module, table, or edge case merely because it exists. Do
 not treat the current implementation as the design authority. A concise blocked
@@ -127,17 +135,22 @@ by a PIP:
    maintained fact, broad backfill, or product-policy predicate.
 4. Proceed with ordinary internal choices that stay within confirmed outcomes,
    constraints, and delegated engineering authority.
-5. Record only a material current as-built fact needed for interpretation,
+5. When an affected record uses DCL, compare its confirmed or proposed target
+   with the current PIP and assessed implementation. Preserve exact confirmed
+   requirements, cite the implementation snapshot, and explain mismatches.
+   Treat `pip_current` above target as a simplification candidate, never as
+   deletion authority. Route a target-level change through normal governance.
+6. Record only a material current as-built fact needed for interpretation,
    audit, or reconciliation in `governance.yaml.implementation_observations`.
    Keep it `observed`, cite its source, link affected IDs, and state whether it
    aligns, deviates, or is unclear. Keep routine history outside the PIP.
-6. If implementation diverges, preserve the confirmed target and add an open
+7. If implementation diverges, preserve the confirmed target and add an open
    conflict only when a product decision is required. Put an implementer
    recommendation in `governance.yaml.open_items` as `type: proposed_change`
    with `status: proposed`; use a parallel proposed record in the owning target
    artifact only when its existing structure supports one. Do not rewrite the
    confirmed target or mark the observation confirmed.
-7. If the accountable authority accepts the proposal, update the owning target
+8. If the accountable authority accepts the proposal, update the owning target
    facts and acceptance, add a confirmed decision, resolve the open item, and
    establish a new reviewed revision. Otherwise implement toward the existing
    doctrine or leave the affected work blocked.
@@ -175,3 +188,5 @@ For a format-5 or similarly heavy package:
 
 Do not chase mechanical parity with the old file count. Preserve product
 meaning, authority, evidence, unresolved uncertainty, and observable acceptance.
+Do not add DCL retroactively unless a current product or implementation decision
+would benefit from it.

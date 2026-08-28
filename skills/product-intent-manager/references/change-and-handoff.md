@@ -50,6 +50,16 @@ and leave the confirmed target intact. A divergence requires an open conflict
 only when a product decision is needed; divergent code does not by itself make
 a clear target PIP unready. Routine history stays in Git or tasks.
 
+When scoped DCL is present, compare `target`, `pip_current`, and
+`implementation_current` for that responsibility. Verify the target's claimed
+authority, the implementation assessment's `source_ref`, and a `gap_note` for
+differing known values. Treat a mismatch as a review signal: it may show an
+intentional stage-appropriate omission, a PIP deficiency, incomplete
+implementation, possible overbuilding, or an unrecorded constraint. Inspect the
+exact requirements before deciding. Do not lower the target merely to make the
+current design appear aligned, and do not use the number as permission to add
+or remove mechanisms.
+
 ## Staleness
 
 `stale` means a prior item should not be relied on until its relationship to a
@@ -77,6 +87,9 @@ After a change:
 - render each changed Mermaid diagram, and render the full diagram inventory
   only when shared styling or another renderer-sensitive convention changes;
 - verify changed source and intent-status statements; and
+- when a changed record uses DCL, verify its scope, whole level from 1 through
+  10, target authority, current-assessment evidence, and required gap
+  explanation; and
 - when the package is tracked in Git, run `git diff --check`.
 
 Use existing project tools when available. If a renderer is unavailable, report
@@ -209,6 +222,15 @@ touch the same database. Preserve parallel work on modest infrastructure unless
 a confirmed correctness invariant or material capacity bound establishes the
 need to coordinate it.
 
+When DCL is used, confirm that each level applies to one coherent
+responsibility and was derived from the current actors, interactions, wait
+path, failure consequences, acceptable recovery, real or credible near-term
+load, and material risk. Confirm that a sequence's readable DCL summary agrees
+with any owning YAML `dcl` mapping, that differing known values have a clear
+`gap_note`, and that exact requirements still own product behavior. Do not fail
+this check merely because another record has no DCL, and do not treat a numeric
+mismatch alone as an acceptance failure.
+
 ### 3. Acceptance and engineering discretion
 
 Confirm that `acceptance.yaml` contains observable scenarios for the in-scope
@@ -259,8 +281,9 @@ authority by collapsing them:
   revision. For `blocked`, name the smallest unresolved questions, their
   authorities, affected outcomes or IDs, and what can proceed independently.
 - **Implementation alignment:** state `aligns`, `deviates`, or `unclear`, then
-  name only the material observations and remaining engineering discretion. A
-  build-ready target may coexist with deviating implementation.
+  name only the material observations, material scoped DCL gaps when DCL is
+  used, and remaining engineering discretion. A build-ready target may coexist
+  with deviating implementation.
 
 A package may be useful before it is ready. Do not hide uncertainty to produce
 a ready label, and do not delay a ready package because non-observable
