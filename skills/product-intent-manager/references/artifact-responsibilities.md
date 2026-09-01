@@ -143,6 +143,12 @@ adapt example code to repository, accessibility, and security needs, but may
 not silently add, remove, merge, split, or redesign product surfaces. Raise a
 material conflict through the product or design leader.
 
+A link to an entire Figma file, design project, board, or folder provides
+context but does not identify an exact implementation target. Treat it as
+binding only after the affected surface points to the governing frame or node
+and, when ambiguity is possible, the applicable branch or version. A local
+mockup should likewise link to the exact file and named surface or variant.
+
 ## Sequences
 
 A sequence owns detailed process logic for one consequential process. Include
@@ -229,6 +235,13 @@ initiated, where it becomes valid or durable, and which system executes or
 observes it. Do not copy ordered calls, retries, fallback attempts, timeouts,
 screen navigation, or database fields into this view.
 
+Omit polling cycles, heartbeats, lease renewals, retry attempts, progress ticks,
+and other routine self-loops when they do not change a stable lifecycle state.
+Their timing, limit, failure, and recovery logic belongs in the owning sequence.
+If a repeated operation has a product-significant result without changing state,
+mention that invariant in a short note and link the sequence rather than drawing
+its internal loop.
+
 ## Data models and ERDs
 
 Use one data-model view for conceptual relationships and persisted entities.
@@ -251,11 +264,14 @@ convention:
    expression, or otherwise specialized index. Use `P` for a specialized index
    even when it is also unique, and state `UNIQUE` in its full definition.
 3. Put the base badge plus a role suffix on every affected attribute row.
-   `·1`, `·2`, and so on mean first, second, and subsequent key columns in that
-   index's order; they do not mean table-column position or sort direction. Use
-   `·where` for a predicate-only column, `·inc` for an included column, and
-   `·expr` for a column that supplies an indexed expression. Show every badge
-   when one column participates in several indexes.
+   `·1`, `·2`, and so on mean first, second, and subsequent direct key columns
+   in that index's order; they do not mean table-column position or sort
+   direction. Use `·expr` when the attribute supplies a separate indexed
+   expression, `·inc` for an included column, and `·where` only when the
+   attribute participates solely in the predicate. A direct key or expression
+   may also appear in the predicate, but it keeps its numeric or `·expr` badge;
+   do not add a redundant same-index `·where` badge. Show every badge when one
+   column participates in several indexes.
 4. Repeat each base badge once in an `INDEXES` compartment immediately below
    the entity. Write that index's complete current definition; do not use
    shorthand such as `same key`, combine multiple physical names in one entry,
@@ -321,13 +337,21 @@ remain independent definitions. If `priority` comes from an expression over a
 payload rather than a stored column, put `[P3·expr]` on the source attribute and
 write the exact expression in `[P3]`.
 
+One attribute may legitimately have both numeric and `·expr` badges for the
+same base index only when the full definition contains two distinct roles: a
+direct ordered key and a separate expression derived from that attribute. Do
+not use two badges merely because one direct key also appears in `WHERE`.
+
 An index may support an owning product rule; its predicate cannot establish the
 rule by itself. Define the meaning, affected population, owner, update
 lifecycle, and consumers of any product classification before encoding it in a
 partial index or constraint. Inspect current schema, migrations, and owning
 queries before naming a physical index. Omit routine primary-key and ordinary
 implementation indexes unless their behavior is independently product-
-significant.
+significant. Ordinarily, show a primary-key column as `PK` in the entity and do
+not give its automatically created index a `U*` badge or `INDEXES` entry. Add
+one only when its particular physical definition or query responsibility is
+itself required product intent, not merely because it owns row identity.
 
 ### Product-significant lock and lease notation
 

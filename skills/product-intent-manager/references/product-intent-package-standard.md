@@ -127,6 +127,13 @@ success_measures:
   - An observable product measure when one is useful.
 ```
 
+`outcome` is the user or product result this release creates. `boundary` is the
+included and excluded product scope needed to interpret that result. Keep
+algorithms, queue behavior, runtime topology, database rules, deployment
+settings, retry logic, and similar implementation mechanics in their owning
+artifacts. Link those owners when needed instead of repeating their contents in
+the root record.
+
 The `dcl` mapping is optional. Omit any other empty field. Add an ID only when
 another file or external system references the record. Do not add a package ID
 unless something genuinely refers to the package by that ID. Do not duplicate
@@ -246,6 +253,9 @@ content hierarchy, states, and interactions and should adapt compatible example
 or export code when available. They must not silently add, remove, merge, split,
 or redesign the target. Generated code is implementation reference, not an
 exception to repository, accessibility, security, or product constraints.
+A whole design-file, project, board, or folder link supplies context but is not
+an exact target; identify the governing frame, node, branch, version, or local
+mockup next to the affected surface.
 
 Routine indexes, connection-pool design, and database coordination remain with
 engineering unless they affect a stated product outcome, invariant, quality or

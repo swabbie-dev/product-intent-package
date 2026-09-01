@@ -11,13 +11,17 @@ Keep these boundaries clear from the start:
 
 - **Sequence diagrams hold detailed process logic:** ordered calls and events,
   input sources, existing code to reuse or modify, decisions, durable changes,
-  retries, fallbacks, timeouts, partial failures, and recovery.
+  retries, fallbacks, timeouts, partial failures, recovery, polling, heartbeats,
+  and lease renewal.
 - **State machines show high-level process interaction:** stable lifecycle states
   and the transitions produced by the processes represented in sequence
-  diagrams. They intentionally omit each process's internal logic.
+  diagrams. They intentionally omit each process's internal logic and routine
+  self-loops that do not change a stable lifecycle state.
 - **User flows show the user experience and mockup inventory:** actor actions,
   clearly bounded user-visible surfaces and states, navigation, visible failure
-  and recovery, and outcomes. They intentionally omit internal system logic.
+  and recovery, and outcomes. They intentionally omit internal system logic. A
+  binding design target identifies the exact frame, node, branch, version, or
+  local mockup; a link to an entire design file is context only.
 
 Missing sequence-level detail in a state machine or user flow is correct. Link
 to the owning sequence instead of copying its internals into those views.
@@ -64,6 +68,12 @@ question. Read the
 creating or migrating package structure and
 [Artifact Responsibilities](references/artifact-responsibilities.md) before
 choosing or separating diagrams.
+
+Keep the root product record outward-facing. `outcome` states the user or
+product result. `boundary` states what this product and release include and
+exclude. Do not turn either into an inventory of algorithms, queues, database
+mechanics, deployment settings, or concurrency rules; put those facts in their
+owning artifacts and link them when context is necessary.
 
 Use one owner for each fact and direct links where another artifact needs
 context. Assign a stable ID only when another file or external system refers to
@@ -127,11 +137,13 @@ When the PIP governs implementation or an implementation-oriented sequence:
   external payload, or a named constant, configuration, or setting.
 - **Follow exact mockups.** A mockup linked as the current release target is the
   required surface, component, state, content hierarchy, and interaction
-  design. Use compatible example or exported code when available. Do not add,
-  remove, merge, split, or materially redesign views or components without the
-  product or design leader changing the target. Raise feasibility,
-  accessibility, security, or repository conflicts instead of silently
-  deviating.
+  design. A whole design-project or file link is useful context but is not an
+  exact implementation target; identify the governing frame, node, branch,
+  version, or local mockup next to the affected surface. Use compatible example
+  or exported code when available. Do not add, remove, merge, split, or
+  materially redesign views or components without the product or design leader
+  changing the target. Raise feasibility, accessibility, security, or
+  repository conflicts instead of silently deviating.
 
 Engineering owns unspecified internals when they do not change current
 behavior, security, privacy, data integrity, compatibility, reliability,
@@ -147,8 +159,14 @@ Record database mechanics only when they are product-significant:
   physical index definition; never group two indexes under one badge, even when
   their keys or purpose overlap. Give indexes with different predicates,
   expressions, included columns, uniqueness, methods, directions, or key order
-  separate badges. The compartment owns each full definition and its product or
-  process reason. Omit routine implementation indexes.
+  separate badges. For one index, use a numeric suffix for a direct ordered key,
+  `·expr` for a separate indexed expression, `·inc` for an included column, and
+  `·where` only for a predicate-only column. Do not add `·where` to a column
+  already represented as that index's direct key or expression. The compartment
+  owns each full definition and its product or process reason. Keep an ordinary
+  primary key as `PK` in the entity and omit its index badge unless the physical
+  index has an independently product-significant purpose. Omit routine
+  implementation indexes.
 - Before allowing several database clients or pools in one process, check
   whether a bounded shared pool can combine them without serializing genuinely
   independent transactions, causing head-of-line blocking, breaking session

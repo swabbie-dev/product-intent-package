@@ -7,7 +7,10 @@ rules:
       - the counter is loaded
       - an increment is attempted
     then:
-      - loading returns the current persisted value without mutation
-      - each accepted increment increases the persisted value by exactly one and returns the new value
-      - a confirmed failure before commit leaves the value unchanged and offers Retry
-      - an unknown increment outcome blocks another increment until the current persisted value is read successfully
+      - loading returns the current persisted value, target, and state without mutation
+      - each new increment request has one client-generated request key
+      - while the counter is open, each accepted request atomically increases the value by one and records one receipt containing the resulting value and state
+      - replaying a recorded request key returns its receipt without another mutation
+      - reaching the target changes the counter from open to complete and prevents further increments
+      - a confirmed failure before commit leaves the value unchanged, creates no receipt, and offers Retry
+      - an unknown increment outcome blocks a new request until the original request key is reconciled

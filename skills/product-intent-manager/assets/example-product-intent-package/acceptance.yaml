@@ -16,6 +16,7 @@ scenarios:
       - the persisted counter value is 5
       - the screen displays 5
       - exactly one mutation occurs
+      - one durable receipt records the request and resulting value
 
   - id: ACC-002
     name: Recover from a confirmed precommit failure
@@ -32,6 +33,7 @@ scenarios:
       - the persisted counter value remains 4
       - the screen displays the unchanged value and offers Retry
       - the user may attempt another increment
+      - no increment receipt is created
 
   - id: ACC-003
     name: Meet the increment latency and reliability target
@@ -45,6 +47,7 @@ scenarios:
     then:
       - p95 accepted-increment latency is no more than 500 milliseconds
       - the final persisted value accounts for every accepted increment
+      - every accepted request has exactly one durable receipt
 
   - id: ACC-004
     name: Recover from an initial read failure
@@ -71,8 +74,28 @@ scenarios:
       - the persisted counter value is 4
       - one increment commits but its response is lost
     when:
-      - the client detects an unknown outcome and reloads the counter
+      - the client detects an unknown outcome and reconciles the original request
     then:
-      - the client does not submit another increment
+      - the API returns the original request's durable receipt
+      - the client does not create a second increment request
       - the screen displays the current persisted value of 5
       - exactly one mutation has occurred
+
+  - id: ACC-006
+    name: Complete the counter at its target
+    verifies:
+      - CAP-001
+      - RULE-001
+      - SM-001
+      - SEQ-001
+    given:
+      - the persisted counter value is 9
+      - the fixed target is 10
+      - the counter state is open
+    when:
+      - one increment is accepted
+    then:
+      - the persisted counter value is 10
+      - the counter state is complete
+      - the screen shows Target reached without an Increment action
+      - another increment cannot advance the value

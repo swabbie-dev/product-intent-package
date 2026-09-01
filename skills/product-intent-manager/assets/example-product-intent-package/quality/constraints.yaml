@@ -4,6 +4,6 @@ constraints:
     applies_to:
       - CAP-001
       - SEQ-001
-    measure: Accepted increment latency and persistence consistency under concurrent load.
-    target: p95 latency is no more than 500 milliseconds at 10 requests per second, with no lost accepted increments.
-    verification: Run a load and concurrency check and compare accepted increments with the final persisted value.
+    measure: Accepted increment latency, receipt uniqueness, and persistence consistency under concurrent load.
+    target: p95 latency is no more than 500 milliseconds at 10 requests per second, with no lost or duplicate accepted increments.
+    verification: Run a focused load and concurrency check and compare unique accepted request keys, durable receipts, and the final persisted value.

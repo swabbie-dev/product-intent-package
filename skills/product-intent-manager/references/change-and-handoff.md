@@ -139,7 +139,9 @@ For product-significant database design, check that:
 - each physical index has exactly one badge and one complete `INDEXES`
   compartment entry; indexes are never grouped under one badge or abbreviated
   as `same key`, and every attribute badge matches its key order, predicate,
-  expression, or included-column role;
+  expression, or included-column role without a redundant same-index `·where`;
+- routine primary-key indexes remain `PK` entity facts unless their particular
+  physical definition has an independently product-significant purpose;
 - each index states its product or process reason;
 - an index or predicate supports an independently stated product rule rather
   than inventing a classification;

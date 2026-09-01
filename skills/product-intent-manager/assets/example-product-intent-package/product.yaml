@@ -1,8 +1,8 @@
 schema_version: 7.0.0
 name: Counter
 release: 1.0.0
-outcome: A user can read and increment one persisted counter without creating an uncertain duplicate increment.
-boundary: One user-facing counter backed by an application service and persistent storage.
+outcome: A user can see and advance shared progress toward a fixed target without creating a duplicate increment after an uncertain response.
+boundary: One shared counter, one fixed target, and the user-visible loading, increment, completion, failure, and reconciliation paths.
 dcl:
   level: 4
   basis: >-
@@ -11,15 +11,17 @@ dcl:
 actors:
   - id: ACTOR-001
     name: User
-    goal: See the current counter value and increase it by one.
+    goal: See progress toward the target and advance it by one.
 capabilities:
   - id: CAP-001
-    name: Read and increment counter
+    name: Read and advance shared progress
     actor_ids:
       - ACTOR-001
-    outcome: The persisted value is visible and one-at-a-time increment requests are handled safely.
+    outcome: The persisted value and target are visible, each accepted request advances progress once, and reaching the target completes the counter.
 exclusions:
   - Authentication, accounts, and multi-tenancy
+  - Changing or resetting the target
 success_measures:
-  - Every accepted increment changes the persisted value exactly once.
-  - The user sees the persisted value after loading, incrementing, or reconciling an unknown outcome.
+  - Every accepted request changes the persisted value exactly once and has one durable receipt.
+  - The user sees the persisted progress after loading, incrementing, or reconciling an unknown outcome.
+  - The counter becomes complete at the target and cannot advance beyond it.

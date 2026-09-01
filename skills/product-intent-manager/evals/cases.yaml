@@ -45,9 +45,23 @@ cases:
       - make surface boundaries clear enough to identify needed mockups and state variants
       - keep ordered runtime logic, input provenance, retries, and fallbacks in focused sequences
       - keep stable lifecycle states and process interaction in state machines
+      - omit polling, heartbeats, lease renewal, retries, and other non-state-changing loops from state machines
       - keep entities and relationships in the data model or ERD
       - use stack context for physical participants, deployment, responsibilities, and owned state
       - preserve context with direct references instead of copied logic
+
+  - id: product-significant-index-notation
+    prompt: Review an ERD where a partial index gives the same column both [P1·1]
+      and [P1·where], routine primary keys are labeled as unique indexes, and two
+      physical queue indexes share [I1].
+    should_activate: true
+    must:
+      - assign a separate base badge to each complete physical index
+      - keep numeric suffixes for direct ordered keys
+      - use expr for a separate indexed expression, inc for an included column, and where only for a predicate-only column
+      - remove redundant same-index where badges from direct keys or expression sources
+      - keep routine primary-key indexes out of the index compartment unless their physical behavior is independently product-significant
+      - preserve the complete definition and product or process reason in the index compartment
 
   - id: pip-governed-implementation
     prompt: Implement the application described by this Product Intent Package.

@@ -2,7 +2,8 @@
 
 ## SEQ-001 Increment once
 
-This sequence applies `RULE-001` to `DATA-001` during `FLOW-001`.
+This sequence applies `RULE-001` to `DATA-001` and `DATA-002` during
+`FLOW-001`.
 
 **DCL:** 4 (product default)
 
@@ -13,41 +14,62 @@ sequenceDiagram
   participant S as ARCH-002 Serverless API
   participant D as ARCH-003 Supabase Postgres
 
-  U->>B: Press Increment
+  U->>B: Press Increment or Retry
   Note over U,B: trigger <- user action on SCREEN-001
-  B->>S: API-001 Request one increment
-  Note over B,S: increment amount <- product constant 1
-  S->>D: Attempt atomic DATA-001 increment
-  alt Increment is accepted and result arrives
-    D-->>S: Committed new value
-    S-->>B: New value
-    B-->>U: Display new value
-  else Failure is confirmed before commit
+  alt New action or retry after a confirmed precommit failure
+    B->>B: Generate and retain request_key for this attempt
+    Note over B: request_key <- browser-generated UUID
+  else Retry after reconciliation confirmed no receipt
+    Note over B: request_key <- retained input from the original SEQ-001 attempt
+  end
+  Note over B: increment amount <- product constant 1
+  B->>S: API-001 Increment(request_key)
+  S->>D: Begin short transaction and find DATA-002 by [U1]
+  alt Receipt already exists
+    D-->>S: Recorded value_after and state_after
+    S-->>B: Return recorded result without mutation
+    B-->>U: Display recorded progress or completion
+  else Request key is new and counter is open
+    S->>D: Atomically increment DATA-001, complete at target, and insert DATA-002
+    D-->>S: Commit value_after and state_after
+    S-->>B: Return committed result
+    B-->>U: Display progress or Target reached
+  else Counter is already complete
     D-->>S: No mutation
+    S-->>B: Return complete counter
+    B-->>U: Show Target reached without Increment
+  else Failure is confirmed before commit
+    D-->>S: Roll back without receipt or counter change
     S-->>B: Confirmed failure
     B-->>U: Show unchanged value and Retry
   else Client cannot determine the outcome
-    Note over S,D: The increment may or may not have committed
+    Note over S,D: The transaction may or may not have committed
     S--xB: No conclusive result
-    B-->>U: Show reconciling and prevent another increment
-    Note over B,D: Continue with SEQ-002 before accepting another increment
+    B-->>U: Show reconciling and prevent a new request
+    Note over B,D: Continue with SEQ-002 using the same request_key
   end
 ```
 
 ### Current rationale
 
-- The API requests one atomic database increment because a client-side read-
-  then-write could lose concurrent accepted increments.
-- A failure known to occur before commit may offer Retry because the value is
-  known to be unchanged.
-- An unknown outcome does not automatically retry because the first request may
-  already have committed; `SEQ-002` must re-read durable state before another
-  increment is allowed.
+- The browser creates one request key for a new action and retains it through
+  reconciliation because a network failure must not turn uncertainty into a
+  second product action. A retry after reconciliation confirms no receipt reuses
+  that key; a known precommit failure may start a new attempt with a new key.
+- The API checks `[U1]` before mutation and returns an existing receipt because
+  replaying a recorded request is a read, not another increment.
+- The counter update, completion transition, and receipt insert share one short
+  transaction because partial commit would make progress, state, and replay
+  protection disagree.
+- A failure known to occur before commit may offer Retry because the value and
+  receipt are known to be unchanged.
+- An unknown outcome does not create a new request because the first transaction
+  may already have committed; `SEQ-002` reconciles the original key.
 
-## SEQ-002 Load or reconcile the current value
+## SEQ-002 Load or reconcile progress
 
-This sequence reads `DATA-001` for initial load, read retry, or reconciliation
-during `FLOW-001`.
+This sequence loads `DATA-001` initially and resolves an unknown `SEQ-001`
+outcome through `DATA-002` during `FLOW-001`.
 
 **DCL:** 4 (product default)
 
@@ -58,15 +80,25 @@ sequenceDiagram
   participant S as ARCH-002 Serverless API
   participant D as ARCH-003 Supabase Postgres
 
-  U->>B: Open Counter or choose Retry
-  Note over U,B: trigger <- user action on SCREEN-001
-  Note over B,D: trigger may also be unknown outcome returned by SEQ-001
-  B->>S: API-002 Request current value
-  S->>D: Read DATA-001
-  alt Read succeeds
-    D-->>S: Current persisted value
-    S-->>B: Current persisted value
-    B-->>U: Display value and allow Increment
+  alt Initial load or read retry
+    U->>B: Open Counter or choose Retry
+    Note over U,B: trigger <- user action on SCREEN-001
+    B->>S: API-002 Current progress
+    S->>D: Read DATA-001 value, target, and state
+  else Unknown increment outcome
+    Note over B: request_key <- retained input from SEQ-001
+    B->>S: API-002 Reconcile(request_key)
+    S->>D: Find DATA-002 by request_key through [U1]
+  end
+  alt Current progress or receipt is found
+    D-->>S: Persisted progress and state
+    S-->>B: Persisted progress and state
+    B-->>U: Display progress or Target reached
+  else Receipt is not found after the unknown outcome
+    D-->>S: No recorded request
+    S-->>B: Confirmed not applied
+    B-->>U: Show unchanged progress and Retry
+    Note over B: Retry reuses the retained request_key
   else Read fails
     D-->>S: Read failure
     S-->>B: Confirmed failure
@@ -76,7 +108,13 @@ sequenceDiagram
 
 ### Current rationale
 
-- Initial load, read retry, and unknown-outcome reconciliation use the same read
-  process because each needs the current durable value without mutation.
+- Initial load and reconciliation share one read process because each must
+  return authoritative progress without creating a new product action.
+- Reconciliation looks up the original request receipt rather than inferring
+  success from the latest counter value because other users may have advanced
+  the counter afterward.
+- A missing receipt permits Retry only with the retained request key because a
+  concurrent original transaction and its retry must still resolve to one
+  `[U1]` receipt.
 - Increment remains unavailable after a read failure because the browser cannot
-  safely present or mutate a value it has not reconciled with `DATA-001`.
+  safely present or mutate progress it has not reconciled.
