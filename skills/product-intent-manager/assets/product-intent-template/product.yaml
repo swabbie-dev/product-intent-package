@@ -1,11 +1,6 @@
-schema_version: 6.2.0
+schema_version: 6.3.0
 package_id: PIP-UNSET
 status: draft
-confirmation_decision_id: null
-confirmation_revision: null
-# For build_ready, use the immutable full Git revision of the target intent
-# reviewed by the confirming authority. It normally precedes the metadata-only
-# commit that records these confirmation fields.
 name: ''
 
 target:

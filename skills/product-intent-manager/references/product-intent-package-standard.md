@@ -2,34 +2,33 @@
 
 ## Purpose
 
-A Product Intent Package (PIP) is the smallest authority-confirmed description
+A Product Intent Package (PIP) is the smallest current description
 of what product to build, how people use it, and which outcomes and constraints
 matter. It is not a substitute for source code, a project-management system, or
 an exhaustive implementation specification.
 
-## Format 6.2
+## Format 6.3
 
-This standard defines format `6.2.0`. Format 6 removes mandatory registries and
-completeness machinery that duplicate the product records. Format 6.1 adds a
-reviewed confirmation revision and a sparse implementation-observation lane so
-later as-built evidence cannot silently inherit product authority. It still uses
-direct links, conditional artifacts, ordinary Git history, and default
-engineering discretion. Format 6.2 adds an optional, scoped Development
-Complexity Level (DCL) mapping and a readable sequence-summary convention. It
-does not add a package-wide score, required registry, or migration requirement
-for existing packages.
+This standard defines format `6.3.0`. Format 6 removes mandatory registries and
+completeness machinery that duplicate the product records. Format 6.2 adds an
+optional, scoped Development Complexity Level (DCL) mapping and a readable
+sequence-summary convention. Format 6.3 makes governance optional and removes
+package signatures and confirmation records from the default format. In a
+small or single-product-leader team, the canonical PIP is the current product
+intent and Git records its history. Governance is reserved for larger teams in
+which several product leaders or delegated authorities need explicit decision
+scope, precedence, or durable cross-team rationale.
 
-The default package contains exactly five files:
+The default package contains exactly four files:
 
 | File | Responsibility |
 | --- | --- |
-| `product.yaml` | Package identity and status, reviewed confirmation revision, target baseline and release, outcome, actors, capabilities, exclusions, and measures |
-| `governance.yaml` | Default authority, consequential decisions, unresolved questions, conflicts or proposed changes, and sparse material implementation observations |
+| `product.yaml` | Package identity and status, target baseline and release, outcome, actors, capabilities, exclusions, and measures |
 | `acceptance.yaml` | Observable scenarios that establish whether confirmed product outcomes were met |
 | `architecture/stack-context.md` | Physical clients, services, managed platforms, data stores, external systems, responsibilities, and connections |
 | `experience/user-flows.md` | Actor goals, actions, screen topology, choices, visible outcomes, failure, and recovery |
 
-Populate these five files when instantiating a real package. Do not pre-create
+Populate these four files when instantiating a real package. Do not pre-create
 empty optional directories or placeholder files. Add another artifact only when
 it communicates distinct information needed to understand, decide, build, or
 accept this product. See [Artifact Responsibilities](artifact-responsibilities.md).
@@ -38,6 +37,7 @@ Use these paths when the corresponding optional artifact is needed:
 
 | Optional artifact | Canonical path |
 | --- | --- |
+| Multi-authority governance | `governance.yaml` |
 | Journey | `experience/journeys/JOURNEY-*.md` |
 | Screen detail or local mockup | `experience/screens.yaml`, `experience/mockups/` |
 | Product-specific design patterns | `experience/design-system.md` or a link to the authoritative design system |
@@ -79,7 +79,7 @@ notes. The task system owns the minimal steps, assignments, and working state
 needed to reach the confirmed PIP end-state; it does not become product
 authority. Link to those sources instead of copying them into competing
 locations. State conflict precedence only where sources can plausibly disagree,
-and route unresolved target decisions to the accountable authority.
+and route unresolved target decisions through the product leader.
 
 The optional implementation-observation lane is a narrow exception for a
 material current fact needed to compare implementation with target intent. It
@@ -88,8 +88,9 @@ implementation detail into the PIP or make the package the as-built authority.
 
 A companion MRD, market analysis, design system, or operations guide may live
 beside or outside the package without becoming another core PIP file. Record
-these ownership boundaries in existing repository guidance or governance when
-needed; do not create a source-of-truth registry merely to list them. Never
+these ownership boundaries in existing repository guidance or optional
+governance when a multi-authority team genuinely needs it; do not create a
+source-of-truth registry merely to list them. Never
 leave target behavior or a build-affecting product decision only in an adjacent
 tool. Do not add a task file, ticket mirror, or implementation-plan registry to
 the package; use the project's existing task system or concise working notes.
@@ -104,73 +105,75 @@ distinct from the package-level `product.yaml.status`:
 | `observed` | Directly supported by a source or runtime observation; not necessarily desired |
 | `inferred` | Reasonably derived from evidence but not directly observed or confirmed |
 | `proposed` | Candidate target awaiting a decision |
-| `confirmed` | Accepted as target intent by the accountable authority |
+| `confirmed` | Part of the current target intent in the canonical PIP |
 | `blocked` | A missing decision, conflict, or evidence gap prevents responsible progress |
 | `stale` | Previously usable intent may have changed because a dependency changed |
 
-Do not merge these meanings. Preserve the prior confirmation or evidence link
+Do not merge these meanings. Preserve the prior source or relevant context
 when marking an item stale. Historical or rejected material may remain in Git;
 it does not need to remain in the active package unless its rationale matters.
 
-For a `build_ready` package, the final confirmation decision establishes
-`confirmed` as the default only for active target claims covered by that
-decision at `product.yaml.confirmation_revision`. Meaning-preserving editorial,
-formatting, artifact relocation that preserves stable IDs and meaning, or
-representation changes retain that authority; new or changed semantic claims
-do not inherit confirmation. Write a local status and source or decision
-reference when a claim differs from that baseline, especially for `observed`,
-`inferred`, `proposed`, `blocked`, or `stale` material. A package-level status
-must never make an unconfirmed claim appear confirmed.
+For a `build_ready` package, active target claims in the canonical PIP are the
+current product doctrine. The team's normal ownership and Git review practices
+control who may change that canonical state; the PIP does not duplicate those
+practices with signatures, approval references, or confirmation revisions.
+Write a local status and source reference when a claim is `observed`, `inferred`,
+`proposed`, `blocked`, or `stale` rather than current target intent. A
+package-level status must never make those claims appear confirmed.
 
-## Product confirmation
+## Product authority and optional governance
 
-For a newly confirmed or materially reconfirmed `build_ready` package, pair:
+For a small team or a product routed through one product leader, do not create
+`governance.yaml`, an authority registry, a decision log, a signature, or a
+package-confirmation record. The current canonical PIP states the intended
+product and Git records how it changed.
 
-- `confirmation_decision_id`: the confirmed `DEC-*` owned by the accountable
-  product authority, normally the product leader, or an explicitly delegated
-  product authority; and
-- `confirmation_revision`: the immutable full Git revision of the target-intent
-  content that authority reviewed.
+Add `governance.yaml` only when a larger team has several product leaders or
+delegated authorities whose scopes can overlap, conflict, or require explicit
+precedence. Even then, keep only the authority and decision context needed to
+coordinate the current product. Never repeat a product rule, diagram, flow,
+constraint, or requirement in a decision record; the owning artifact remains
+doctrine. A decision record may preserve who controlled a disputed scope, why a
+cross-team tradeoff was chosen, or which later decision supersedes it when that
+context remains operationally important.
 
-The reviewed revision normally precedes the commit that records the signoff
-metadata, so it does not need to refer to a commit containing itself. This is a
-normal Git reference, not a separately calculated package hash or a value to
-update for every implementation observation. When Git is genuinely unavailable,
-use another immutable reviewed-content reference and say what it identifies.
+Team size, implementation contributors, and specialist review roles do not by
+themselves justify governance. If product-intent decisions still route through
+one product leader, omit it.
 
-The decision's `decision_ref` must identify the direct approval source. The
-person or agent who writes the YAML is not automatically the authority. A
-direct, unambiguous product-authority instruction may itself be the approval;
-do not require a ceremonial second signoff.
-
-Existing format-6.0 packages may retain a legacy `build_ready` confirmation with
-no `confirmation_revision` until the next material reconfirmation. Do not force
-a package migration solely to add the field.
+Decision history inside the PIP is not required merely because a product is
+complex, long-lived, or implemented by many people. Use Git and the task system
+for ordinary history. Existing format-6.0 through 6.2 packages may retain legacy
+governance and confirmation fields until an explicit simplification or migration;
+do not add them to new format-6.3 packages.
 
 ## Product doctrine and implementation observations
 
 Keep target intent and implementation evidence visibly distinct:
 
-- Confirmed target intent is product doctrine. Proposed target intent is a
-  candidate change awaiting authority.
+- Current target intent in the canonical PIP is product doctrine. Proposed
+  target intent is a candidate change awaiting product-leader adoption.
 - Implementation evidence is always `observed`. It can show alignment or
   divergence but cannot change the target, confirm a proposal, or satisfy
   product authority merely because it was added to the PIP.
 
 | Content | Status | Authority effect |
 | --- | --- | --- |
-| Target claim accepted by the accountable authority within its scope | `confirmed` | Governs that claim; package-level product doctrine still requires product authority or explicit delegation |
+| Current target claim in the canonical PIP | `confirmed` | Governs that claim |
 | Current as-built implementation fact | `observed` | Evidence only; may align or diverge |
-| Implementer-recommended doctrine change | `proposed` | Awaits accountable authority |
+| Implementer-recommended doctrine change | `proposed` | Awaits product-leader adoption |
 | Consequential unresolved target choice | `blocked` | Must not be treated as build intent |
 | Previously confirmed target requiring review | `stale` | Retains history but is not currently reliable |
 
-Do not add a separate `authorization_level` field. Status, the confirming
-decision, its accountable authority, and the reviewed revision already express
-the necessary authorization boundary.
+Do not add a separate `authorization_level`, signature, or confirmation field.
+The canonical target, explicit local statuses, normal repository ownership, and
+optional multi-authority governance express the necessary boundary.
 
-Use the optional `governance.yaml.implementation_observations` list only for a
-material current fact needed to interpret, audit, or reconcile the target:
+Keep a material implementation observation beside its owning target when
+possible, using a visibly separate Markdown callout or local YAML record. When
+optional governance is already justified for a multi-authority team, its
+`implementation_observations` list may own a material cross-artifact fact needed
+to interpret, audit, or reconcile the target:
 
 ```yaml
 implementation_observations:
@@ -195,8 +198,11 @@ with the same record's target and PIP-current levels. Keep detailed as-built
 mechanisms in their source, a material implementation observation, or the task
 system rather than turning `dcl` into an implementation registry.
 
-By default, record an implementer-recommended doctrine change without altering
-the confirmed owner:
+By default, leave the canonical target unchanged and keep an implementer-
+recommended doctrine change in the owning artifact as visibly `proposed`, or in
+the existing task system when the artifact has no natural parallel proposal.
+When optional governance already exists because several authorities must
+coordinate, it may use:
 
 ```yaml
 open_items:
@@ -207,18 +213,19 @@ open_items:
     authority_id: AUTH-001
 ```
 
-Use a parallel proposed record in the owning artifact only when that artifact's
-existing shape clearly supports one. If the accountable authority accepts the
-change, update the owning target fact and acceptance, add a confirmed `DEC-*`,
-resolve the open item, and establish a new reviewed revision.
+If the product leader accepts the change, update the owning target fact and
+acceptance through the normal Git workflow and resolve the proposal. Add a
+`DEC-*` only when a multi-authority team still needs its authority, rationale,
+precedence, or supersession context.
 
 If an implementation fact needs local diagram context, add a separate Markdown
 callout labeled `Implementation observation — observed, not product authority`
 with its source, relationship to confirmed intent, and affected IDs. Do not
 redraw the canonical target diagram to match an unapproved implementation. If
-the product authority adopts an implementer recommendation, leave the
-observation as evidence, update the owning target fact and acceptance, and add
-a confirmed `DEC-*` instead of changing the observation to `confirmed`.
+the product leader adopts an implementer recommendation, leave the observation
+as evidence and update the owning target fact and acceptance. Do not change the
+observation to `confirmed` or create a decision record unless optional multi-
+authority governance genuinely needs one.
 
 ## Target baseline
 
@@ -226,11 +233,11 @@ Declare one target baseline in `product.yaml`:
 
 - `greenfield`: no implementation defines the starting product;
 - `as_implemented`: reproduce a specifically identified implementation;
-- `intended_current`: describe what authorities intend now; or
+- `intended_current`: describe what the product leader intends now; or
 - `target_next`: describe a planned future release.
 
 Do not mix baselines inside active intent. A reconstruction can retain observed
-facts about several environments while confirming only one target.
+facts about several environments while defining only one current target.
 
 ## Optional scoped development complexity
 
@@ -244,7 +251,6 @@ dcl:
   target:
     level: 3
     status: confirmed
-    decision_id: DEC-012
     basis: >-
       Users do not wait for this process, interruption is acceptable, and an
       operator can retry it manually for this release.
@@ -273,10 +279,12 @@ Apply these semantics:
   basis. Do not add a top-level default, inherit a connected level, or calculate
   a product average or maximum.
 - `target.level` is a whole integer from 1 through 10 for this scope and release.
-  `target.status` follows normal intent status. A confirmed target is covered by
-  `product.yaml` package confirmation or, when one owns it, the more specific
-  `decision_id`. Do not create a decision merely to restate package
-  confirmation. An agent- or implementer-authored target remains `proposed`.
+  `target.status` follows normal intent status. A confirmed target is part of
+  the canonical PIP. In a package that already uses optional multi-authority
+  governance, `decision_id` may identify a decision that owns a disputed or
+  delegated target scope. Do not create governance merely for DCL. An agent- or
+  implementer-authored target remains `proposed` until adopted into the
+  canonical product intent.
 - `pip_current` is an `inferred` assessment of sophistication demanded by the
   current PIP logic. `implementation_current` is an `inferred` assessment of
   the implementation and cites its stable snapshot in `source_ref`. Underlying
@@ -345,7 +353,9 @@ preserve existing `Q-*` and `CON-*` IDs that still have cross-file references.
   necessary; link them as evidence or external artifacts rather than converting
   them only for consistency.
 - Track the package in Git. Let Git record ordinary edits and deleted material.
-  Record a decision only when its authority, rationale, or consequence matters.
+  Do not create a decision history for a small or single-product-leader team.
+  In optional multi-authority governance, retain only decisions whose authority,
+  rationale, precedence, or supersession still matters to coordination.
 
 ## Engineering discretion
 
@@ -384,13 +394,13 @@ to compensate for either as an ordinary product requirement.
 
 ## Package status
 
-Keep package status and final approval in `product.yaml`. Use `draft` or
-`blocked` until the four handoff checks pass. Then use `status: build_ready` and
-set `confirmation_decision_id` to the approving decision in `governance.yaml`
-and `confirmation_revision` to the immutable target-intent revision the
-authority reviewed. Later observed implementation notes do not invalidate a
-clear confirmed target. A material semantic target change requires a new
-decision and reviewed revision before it inherits `confirmed`;
-meaning-preserving mechanical changes do not. Do not create a separate readiness
-ledger. See
+Keep package status in `product.yaml`. Use `draft` or `blocked` until the four
+handoff checks pass, then use `status: build_ready`. Do not add a signature,
+approval record, confirmation decision, or confirmation revision for a
+single-product-leader package. The canonical PIP is the current target and its
+Git revision identifies that state. Later observed implementation notes do not
+invalidate a clear target. Apply material semantic changes through the team's
+normal product-owner and Git workflow; use optional governance only when
+several product authorities need explicit coordination. Do not create a
+separate readiness ledger. See
 [Change and Handoff](change-and-handoff.md).

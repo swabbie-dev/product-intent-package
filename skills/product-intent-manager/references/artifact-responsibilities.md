@@ -6,11 +6,12 @@ Use the smallest set of artifacts that answers the product questions at hand.
 Every artifact must own distinct information. If two artifacts would explain
 the same fact, keep the fact in the more appropriate owner and link to it.
 
-The five default files establish product scope, governance, acceptance, the
-physical system map, and actor flows. Add the following only when triggered:
+The four default files establish product scope, acceptance, the physical system
+map, and actor flows. Add the following only when triggered:
 
 | Optional artifact | Add when |
 | --- | --- |
+| Governance | Several product leaders or delegated authorities need explicit scope, precedence, supersession, or durable cross-team rationale |
 | Journey map | Time, phases, recurrence, roles, or handoffs add context that a focused flow cannot show |
 | Screen records | Screen-specific content, actions, validation, responsive behavior, or visible states need detail beyond the flow |
 | Design records | Repeated visual, content, component, interaction, responsive, or accessibility rules constrain the design handoff |
@@ -24,7 +25,7 @@ physical system map, and actor flows. Add the following only when triggered:
 | Separate deployment view | Environment, region, network, failover, or rollout topology makes stack context hard to read |
 
 Do not create a file merely to record `not applicable`. State a consequential
-exclusion in `product.yaml` or `governance.yaml`; otherwise omit the artifact.
+exclusion in `product.yaml`; otherwise omit the artifact.
 
 ## Diagram responsibilities
 
@@ -53,9 +54,10 @@ trace graph. Do not split files or create diagrams merely to fill ID gaps.
 | Information | Owner |
 | --- | --- |
 | Outcome, actors, capabilities, release boundary, exclusions, measures | `product.yaml` |
-| Authority, consequential decisions, unresolved questions, conflicts, or proposed changes | `governance.yaml` |
-| Material current implementation evidence needed to reconcile the target | `governance.yaml.implementation_observations` |
-| Scoped DCL target and current assessments | One optional `dcl` mapping on the owning YAML record, or one local sequence summary when Markdown is the owner; governance owns target confirmation |
+| Current product target | Its owning product, flow, behavior, data, architecture, quality, or acceptance artifact |
+| Multi-authority scope, precedence, durable rationale, or supersession | Optional `governance.yaml` |
+| Material current implementation evidence needed to reconcile the target | A separate local observation beside the owning target; optional governance only for a cross-artifact fact in a multi-authority package |
+| Scoped DCL target and current assessments | One optional `dcl` mapping on the owning YAML record, or one local sequence summary when Markdown is the owner |
 | Observable proof of product outcomes | `acceptance.yaml` |
 | Actor action, navigation, visible outcome, and visible recovery choice | User flow |
 | Detailed content and actions for a surface | Screen record, when needed |
@@ -92,16 +94,17 @@ observation — observed, not product authority` with its evidence source,
 affected IDs, and whether it aligns, deviates, or is unclear relative to the
 confirmed target. Keep routine or superseded history in Git or tasks.
 
-The optional `governance.yaml.implementation_observations` list is the default
-owner for a cross-artifact implementation fact. It is a sparse evidence lane,
-not an implementation registry or change log. By default, keep a proposed
-doctrine change in a `governance.yaml.open_items` record while leaving the
-confirmed target unchanged. Use a visibly parallel proposed record in the
-owning artifact only when its existing structure supports one.
+Keep an implementation observation beside its owning target by default. It is
+a sparse evidence lane, not an implementation registry or change log. Keep a
+proposed doctrine change visibly parallel to the current owner when that
+artifact supports it, or in the existing task system. A package that already
+needs optional multi-authority governance may use its
+`implementation_observations` or `open_items` lists for material cross-artifact
+facts or proposals that several leaders must coordinate.
 
 An optional local `dcl` mapping deliberately places a scoped target beside
 `pip_current` and `implementation_current` assessments for comparison. Only the
-target is doctrine, and it follows normal proposal and confirmation rules. The
+target is doctrine, and it follows normal proposal and adoption rules. The
 two current levels and any `gap_note` are inferred analysis even when their
 basis cites observed PIP or implementation facts. Do not let their proximity to
 a confirmed target or build-ready package give them product authority.
@@ -174,7 +177,7 @@ compact DCL summary immediately below the `SEQ-*` introduction and above the
 Mermaid fence:
 
 ```text
-**DCL:** Target 3 (`confirmed`, `DEC-012`) · PIP current 5 (`inferred`) · Implementation current 4 (`inferred`, `git:0123456789abcdef0123456789abcdef01234567`)
+**DCL:** Target 3 (`confirmed`) · PIP current 5 (`inferred`) · Implementation current 4 (`inferred`, `git:0123456789abcdef0123456789abcdef01234567`)
 **DCL gap:** PIP appears overbuilt; manual recovery is permitted by the confirmed target, while integrity protections remain required.
 ```
 
@@ -432,7 +435,7 @@ For a research-based current-state journey, follow exactly these safeguards:
    supports them; link the source and distinguish direct evidence from
    researcher inference.
 4. Keep findings and opportunities separate from candidate product responses
-   and authority-confirmed decisions.
+   and current product decisions.
 
 Store a journey as editable Markdown containing a lifecycle table, a fenced
 Mermaid diagram, or both. Add stable IDs only for journey parts referenced by

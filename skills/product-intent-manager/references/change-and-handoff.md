@@ -5,31 +5,33 @@
 For a material product-intent change:
 
 1. Identify the authoritative fact and the target release.
-2. Confirm the changed observable outcome with the accountable authority when
-   the request itself is not already an authoritative, unambiguous decision.
+2. Route the changed observable outcome through the product leader when the
+   request itself is not already an unambiguous product decision.
 3. Follow direct links and review obvious semantic dependents. Mark only items
    that may actually be affected as `stale`.
 4. Update the owner first, then affected flows, optional detail, and acceptance.
 5. Resolve or expose any contradiction introduced by the change.
-6. Reconfirm the affected target scope and update the package status.
+6. Adopt the affected target through the normal product-leader and Git workflow
+   and update the package status.
 
 Preserve a stable cross-file ID when the meaning is unchanged. If meaning is
 split or replaced, retain enough decision context to explain the relationship.
 Do not maintain a global dependency graph, per-artifact version counter, or
 package hash to automate this judgment.
 
-Use Git for ordinary history. Add a `DEC-*` record only when authority,
-rationale, a consequential tradeoff, or supersession must remain visible in the
-active package. Do not duplicate every diff in a change log.
+Use Git for ordinary history. Do not add governance or a `DEC-*` record for a
+small or single-product-leader team. In a package that already needs optional
+multi-authority governance, retain a decision only when its scope, rationale,
+precedence, or supersession must remain visible for coordination. Do not
+duplicate every diff in a change log.
 
 ## Implementation alignment discipline
 
 At the start of PIP-governed implementation or audit, note in the existing task
 or working context:
 
-- the task-start PIP Git revision and target release;
-- `confirmation_decision_id` and `confirmation_revision`, when present; and
-- any later direct authority statements that change the confirmed baseline.
+- the task-start canonical PIP Git revision and target release; and
+- any later direct product-leader instructions that change the baseline.
 
 Do not create another ledger. Same-task PIP, ticket, audit, test, diagram, or
 code changes do not become independent authority merely because they agree.
@@ -43,16 +45,16 @@ semantic delta must map to an independently confirmed decision or remain
 proposed or blocked. Ordinary implementation choices inside confirmed behavior
 and material constraints do not need this review.
 
-When current implementation materially helps future interpretation, use the
-sparse observation pattern in
+When current implementation materially helps future interpretation, keep a
+sparse observation beside its owning target using the pattern in
 [Product Intent Package Standard](product-intent-package-standard.md#product-doctrine-and-implementation-observations)
 and leave the confirmed target intact. A divergence requires an open conflict
 only when a product decision is needed; divergent code does not by itself make
 a clear target PIP unready. Routine history stays in Git or tasks.
 
 When scoped DCL is present, compare `target`, `pip_current`, and
-`implementation_current` for that responsibility. Verify the target's claimed
-authority, the implementation assessment's `source_ref`, and a `gap_note` for
+`implementation_current` for that responsibility. Verify the target status,
+the implementation assessment's `source_ref`, and a `gap_note` for
 differing known values. Treat a mismatch as a review signal: it may show an
 intentional stage-appropriate omission, a PIP deficiency, incomplete
 implementation, possible overbuilding, or an unrecorded constraint. Inspect the
@@ -66,7 +68,7 @@ or remove mechanisms.
 changed dependency is reviewed. It does not mean every linked artifact must be
 rewritten. After review:
 
-- update and reconfirm the item if its meaning changed;
+- update and adopt the item if its meaning changed;
 - restore its prior active status if it remains correct; or
 - remove or replace it if it no longer belongs in the target.
 
@@ -143,7 +145,7 @@ Delete ceremony that does not survive those questions. A task can link to the
 owning sequence, mockup, state machine, user flow, or acceptance scenario; it
 does not need to restate their content. If implementation planning exposes a
 product decision or changes the desired end-state, route that change back to
-the PIP and accountable authority instead of settling it only in the task.
+the PIP and product leader instead of settling it only in the task.
 
 ### Verify in proportion to consequence
 
@@ -165,15 +167,13 @@ specific risk or project requirement makes one necessary.
 
 ## Four handoff checks
 
-### 1. Scope and authority
+### 1. Scope and target
 
 Confirm that:
 
 - the target baseline, release boundary, outcome, actors, capabilities,
   exclusions, and measures are understandable and mutually consistent;
-- target intent is confirmed by the accountable authority, with a direct
-  confirmation decision and reviewed revision for a newly confirmed or
-  materially reconfirmed package; and
+- the canonical PIP clearly states the current target; and
 - every unresolved question or conflict that could change the release is either
   resolved or clearly blocks handoff.
 
@@ -250,7 +250,7 @@ confirmed reuse or modification anchor, or an unapproved change to a confirmed
 mockup's views, components, states, or interactions. Route a material conflict
 to the accountable technical, product, or design authority.
 
-### 4. Consistency and approval
+### 4. Consistency and current target
 
 Confirm that:
 
@@ -261,25 +261,24 @@ Confirm that:
   target intent; and
 - implementation observations are visibly `observed`, source-backed, sparse,
   and separate from target doctrine; and
-- the accountable product authority, or an authority with explicit delegated
-  product scope, approves the package target.
+- the package reflects the product leader's current target rather than an
+  unadopted implementer proposal.
 
-Record readiness only in `product.yaml`: set `status: build_ready` and set
-`confirmation_decision_id` to the approving decision in `governance.yaml` and
-`confirmation_revision` to the immutable target-intent revision that decision
-reviewed. The reviewed revision normally precedes the signoff metadata commit.
-Do not create a separate readiness file or gate ledger. Legacy format-6
-packages may add the revision at their next material reconfirmation.
+Record readiness only in `product.yaml`: set `status: build_ready`. Do not add a
+signature, approval reference, confirmation decision, or confirmation revision.
+Git already identifies the current PIP revision. Do not create a separate
+readiness file or gate ledger. Legacy format-6 packages may retain their prior
+confirmation metadata until an explicit simplification or migration.
 
 ## Handoff result
 
 Report two independent results; do not make implementation behavior product
 authority by collapsing them:
 
-- **PIP target authority and readiness:** state the package status and target
-  release. For `build_ready`, name the confirmation decision and reviewed
-  revision. For `blocked`, name the smallest unresolved questions, their
-  authorities, affected outcomes or IDs, and what can proceed independently.
+- **PIP target and readiness:** state the package status, target release, and
+  canonical Git revision when useful. For `blocked`, name the smallest
+  unresolved questions, their product route, affected outcomes or IDs, and what
+  can proceed independently.
 - **Implementation alignment:** state `aligns`, `deviates`, or `unclear`, then
   name only the material observations, material scoped DCL gaps when DCL is
   used, and remaining engineering discretion. A build-ready target may coexist

@@ -1,6 +1,6 @@
 ---
 name: product-intent-manager
-description: Create, reconstruct, simplify, or update an explicitly requested Product Intent Package (PIP), or preserve its authority while planning, implementing, or auditing work governed by it. Use when the user asks to work on a PIP or explicitly implement or audit against one; do not activate for ordinary product planning, diagramming, coding, or project documentation with no PIP.
+description: Create, reconstruct, simplify, or update an explicitly requested Product Intent Package (PIP), or preserve its current target while planning, implementing, or auditing work governed by it. Use when the user asks to work on a PIP or explicitly implement or audit against one; do not activate for ordinary product planning, diagramming, coding, or project documentation with no PIP.
 ---
 
 # Product Intent Manager
@@ -10,68 +10,75 @@ matters, how people use it, and which observable outcomes constrain
 implementation. Do not turn the package into an implementation specification
 or a proof that every possible document exists.
 
-## Product authority and implementation evidence
+## Canonical PIP and implementation evidence
 
-Treat authority as a property of the meaning and its source, not of who typed
-the file. Use these meanings consistently:
+For a small team or a product routed through one product leader, the canonical
+PIP is the current product intent. Git records how it changed. Do not create
+`governance.yaml`, authority registries, decision histories, signatures,
+approval references, or confirmation revisions for these teams.
 
-- `confirmed`: target doctrine accepted by the accountable authority;
+Use optional governance only for a larger team in which several product leaders
+or delegated authorities can make overlapping decisions and readers need
+explicit scope, precedence, supersession, or durable cross-team rationale. Even
+then, a governance decision never repeats product content; diagrams, rules,
+requirements, and acceptance remain the doctrine owners.
+
+Team size, implementation contributors, or specialist reviewers alone do not
+justify governance. If product-intent choices still route through one product
+leader, omit it.
+
+Use these meanings consistently when content is not simply current target intent:
+
+- `confirmed`: current target doctrine in the canonical PIP;
 - `observed`: current implementation evidence, never product authority;
-- `proposed`: a candidate doctrine change awaiting authority; and
-- `blocked` or `stale`: target intent that must not govern implementation yet.
+- `proposed`: a candidate target change not yet adopted into the canonical PIP;
+  and
+- `blocked` or `stale`: content that must not govern implementation yet.
 
-Do not add an `authorization_level` field. Status, the confirming decision and
-authority, and the reviewed revision express the authorization boundary.
-Git records ordinary edits. For a semantic change, use a `proposed_change` open
-item while it awaits authority; once accepted, update the owning target facts,
-add a confirmed decision, and record the new reviewed revision. Record a
-material as-built difference separately as an implementation observation.
+Do not add an `authorization_level`, signature, or confirmation field. Record a
+material as-built difference separately as an implementation observation. Keep
+ordinary changes and history in Git.
 
 When creating, changing, implementing, or auditing work governed by a PIP:
 
-- **Preserve the authority baseline.** Identify the task-start PIP revision,
-  `confirmation_decision_id`, `confirmation_revision`, and any later direct
-  authority decisions in the existing task or working context. Do not create a
-  ledger. Product confirmation covers the target meaning reviewed at that
-  revision. Meaning-preserving editorial or representation changes retain its
-  authority; new or changed semantic claims do not inherit it.
-- **Prevent circular confirmation.** New or changed semantic claims introduced
+- **Preserve the target baseline.** Identify the task-start canonical PIP Git
+  revision and any later direct product-leader instructions in the existing
+  task or working context. Do not create another ledger. New semantic claims do
+  not become target intent merely because an implementer edits a working copy.
+- **Prevent circular adoption.** New or changed semantic claims introduced
   in PIP edits, tickets, tests, audit findings, diagrams, or implementation
-  receipts during the same work remain `observed` or `proposed` unless they
-  directly encode an independently attributable authority decision. These
-  artifacts cannot confirm one another. Meaning-preserving edits need no new
-  status or confirmation, but cannot serve as confirmation evidence. Permission
-  to implement, migrate, commit, or push does not authorize new product
-  semantics.
+  receipts during the same work remain `observed` or `proposed` unless the
+  product leader adopts them. These artifacts cannot validate one another as
+  product intent. Permission to implement, migrate, commit, or push does not by
+  itself adopt a new product meaning.
 - **Separate doctrine from implementation evidence.** Keep confirmed target
-  facts in their owning artifacts and use the proposal pattern below. Put only
-  material current implementation evidence needed to interpret, audit, or
-  reconcile the target in the optional
-  `governance.yaml.implementation_observations` list, or in a visibly separate
-  Markdown callout labeled `Implementation observation — observed, not product
-  authority`. Every observation stays `observed`, cites a `source_ref`, links
-  affected IDs when useful, and says whether it `aligns`, `deviates`, or is
-  `unclear` relative to confirmed intent. Routine and superseded implementation
-  history stays in Git or the task system. The optional scoped
+  facts in their owning artifacts. Put a material current implementation fact
+  beside its owner as a visibly separate local YAML record or Markdown callout
+  labeled `Implementation observation — observed, not product authority`. A
+  multi-authority package that already needs governance may instead use its
+  sparse `implementation_observations` list for a cross-artifact fact. Every
+  observation stays `observed`, cites a `source_ref`, links affected IDs when
+  useful, and says whether it `aligns`, `deviates`, or is `unclear` relative to
+  current intent. Routine and superseded history stays in Git or the task
+  system. The optional scoped
   `dcl.implementation_current` assessment below may keep only a rough inferred
   level, stable source reference, and concise basis beside its target; it does
   not replace the observation lane or make implementation evidence doctrine.
 - **Do not normalize divergence into doctrine.** When implementation differs
-  from the confirmed target, preserve the target and record the implementation
-  as observed. When a product decision is needed, record an implementer-
-  recommended doctrine change in `governance.yaml.open_items` with
-  `type: proposed_change` and `status: proposed`, unless the owning artifact
-  already supports a visibly parallel proposed record. If the authority adopts
-  the change, update the owning target facts and acceptance, add a confirmed
-  decision, resolve the open item, and reconfirm the package; never change the
+  from the current target, preserve the target and record the implementation as
+  observed. Keep an implementer recommendation visibly `proposed` in the owning
+  artifact or existing task system. Use `governance.yaml.open_items` only when
+  optional multi-authority governance already exists and the authorities must
+  coordinate the proposal. If the product leader adopts it, update the owning
+  target facts and acceptance through the normal Git workflow; never change the
   observation itself to `confirmed`.
 
 ## Semantic expansion boundary
 
 A constraint at one processing boundary does not authorize moving it to
 another. For example, `safe to expose` does not mean `eligible to retrieve`
-unless the accountable authority confirms that relationship. Qualify ambiguous
-terms such as `eligible`, `safe`, `valid`, and `shared` with the domain, stage,
+unless the current PIP or product leader establishes that relationship. Qualify
+ambiguous terms such as `eligible`, `safe`, `valid`, and `shared` with the domain, stage,
 population, data, algorithm, lifecycle, or output they actually constrain.
 
 Pause for one concise authority question before an implementation mechanism
@@ -115,9 +122,9 @@ with the logic; when a YAML record owns the sequence, the summary represents
 that record rather than creating another authority source. Keep these meanings
 separate:
 
-- `target` is proposed or authority-confirmed product doctrine for the declared
-  release; confirmation comes from the reviewed package decision or a more
-  specific `DEC-*` when one exists;
+- `target` is proposed or current product doctrine for the declared release;
+  when optional multi-authority governance already exists, a specific `DEC-*`
+  may own a disputed or delegated scope;
 - `pip_current` is an `inferred` assessment of the complexity demanded by the
   current PIP logic; and
 - `implementation_current` is an `inferred`, source-referenced assessment of
@@ -260,24 +267,27 @@ targets, new test machinery, proof documents, or readiness gates.
 - **Complete:** close material gaps in an existing package.
 - **Update:** change confirmed intent and its affected dependents.
 - **Simplify:** remove duplicate machinery without losing product meaning.
-- **Implement or audit:** preserve the confirmed target while comparing planned
-  or observed implementation against its authority baseline.
+- **Implement or audit:** preserve the current target while comparing planned
+  or observed implementation against its task-start PIP revision.
 
 ## Workflow
 
 1. Read the existing package and repository guidance. For a new package, start
-   from the five-file template in `assets/product-intent-template/`.
+   from the four-file template in `assets/product-intent-template/`.
 2. Establish the target baseline and release boundary, desired outcome, actors,
-   capabilities, exclusions, measures, accountable product authority, and the
-   reviewed confirmation revision when one exists.
+   capabilities, exclusions, measures, and the product leader or normal project
+   route that maintains the canonical PIP. Do not record that route inside a
+   small-team PIP.
 3. Add an artifact only when it resolves a real product, experience, behavior,
    data, system, quality, or acceptance question. Read
    [Artifact Responsibilities](references/artifact-responsibilities.md) before
    choosing or separating diagrams. When scoped DCL materially helps readers
    understand intended or accidental complexity, apply the guidance above.
-4. Label intent as `observed`, `inferred`, `proposed`, `confirmed`, `blocked`,
-   or `stale`. Read [Authority and Evidence](references/authority-and-evidence.md)
-   when reconstructing, resolving conflict, or seeking confirmation.
+4. Label non-current material as `observed`, `inferred`, `proposed`, `blocked`,
+   or `stale`; use `confirmed` where an explicit status field is useful for
+   current target intent. Read
+   [Authority and Evidence](references/authority-and-evidence.md) when
+   reconstructing or resolving conflict.
 5. Keep one authoritative home for each fact. When adjacent sources own market
    context, detailed design, implemented behavior, operations, or release
    tracking, name those boundaries and link to them instead of copying them
@@ -303,6 +313,9 @@ creating or migrating package structure.
   relationship is meaningful. Do not duplicate all possible relationships.
 - Make artifacts conditional. A missing optional artifact is not a coverage
   failure when the product does not need it.
+- Do not create `governance.yaml` for a small or single-product-leader team.
+  Use it only when several product authorities need explicit coordination, and
+  never use its decisions to repeat the owning PIP content.
 - Keep DCL optional and scoped. Do not turn it into package-wide maturity,
   completeness, readiness, or acceptance scoring.
 - Follow the diagram detail boundary above. Keep each fact in the view that owns
@@ -314,8 +327,9 @@ creating or migrating package structure.
   choices do not change confirmed behavior, security, privacy, data integrity,
   compatibility, reliability, operability, cost bounds, or other stated
   constraints. Do not require a discretion record for ordinary implementation.
-- Treat Git as the history of ordinary edits. Record a decision only when its
-  rationale or authority matters beyond the diff.
+- Treat Git as the history of ordinary edits. Only an optional multi-authority
+  governance file may retain decisions, and only when authority, rationale,
+  precedence, or supersession must remain visible across that team.
 - Check changed YAML, direct links, status claims, and Mermaid output in
   proportion to the change. Do not add a validator or full-package test suite
   merely to perform ordinary documentation checks.
@@ -332,10 +346,11 @@ creating or migrating package structure.
 ## Deliver
 
 Return the requested package update or implementation-alignment result plus a
-short note stating the mode, target and release boundary, confirmation decision
-and revision, material decisions, material implementation observations and
-their alignment, unresolved or stale items, optional artifacts added or
-removed, any material scoped DCL gaps when DCL is used, the PIP target's
-readiness, and implementation alignment as separate results. When
+short note stating the mode, target and release boundary, task-start PIP
+revision when implementation was governed by one, any material multi-authority
+governance context when present, material implementation observations and their
+alignment, unresolved or stale items, optional artifacts added or removed, any
+material scoped DCL gaps when DCL is used, the PIP target's readiness, and
+implementation alignment as separate results. When
 implementation planning was requested, also return or link the minimal task set
 and its proportionate verification scope without placing it inside the PIP.

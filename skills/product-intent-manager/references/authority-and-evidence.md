@@ -11,16 +11,17 @@ defined in the [Package Standard](product-intent-package-standard.md). A polishe
 diagram, current implementation, or confident agent recommendation does not
 change an item's status.
 
-## Minimal authority model
+## Minimal product ownership
 
-Name one `default_authority_id` in `governance.yaml`. This may be the product
-owner for a small project. Add another authority only when a different person
-or role actually controls a material domain such as design, architecture,
-security/privacy, legal/compliance, operations, or release approval.
+For a small team or a product routed through one product leader, the canonical
+PIP is the current product intent. Let the repository's normal ownership,
+review, and merge process control changes. Do not add an authority record,
+signature, confirmation reference, or decision history to the package.
 
-An authority may delegate a bounded decision. Record the delegator, delegate,
-scope, constraints, and affected cross-file IDs only when the delegation matters
-to the package. Do not create a registry of theoretical authority domains.
+Create optional `governance.yaml` only when a larger team has several product
+leaders or delegated authorities whose scopes may overlap or conflict. Record
+only the scopes, precedence, or delegations needed to coordinate real decisions;
+do not create a registry of theoretical authority domains.
 
 Engineering already owns non-observable implementation choices within confirmed
 product and material technical constraints. It does not need a decision or
@@ -28,44 +29,36 @@ delegation for each internal choice. Product behavior, user-visible tradeoffs,
 security/privacy, data integrity, compatibility, reliability, operability, and
 stated cost or quality bounds still require the appropriate authority.
 
-## Scoped product confirmation
+## Canonical target
 
-Authorship is not authority. An implementer or agent may accurately record an
-accountable product authority's decision, while text written by a product leader
-is not automatically a release decision unless its meaning and scope are clear.
+The canonical PIP states the product target. An implementer or agent may draft a
+change, but that working edit does not become product intent until it is adopted
+through the team's normal product-leader and Git workflow. No additional PIP
+signature or confirmation record is needed.
 
-For a newly confirmed or materially reconfirmed package,
-`product.yaml.confirmation_decision_id` identifies the accountable product
-authority's approval and `confirmation_revision` identifies the immutable target
-content that authority reviewed. The reviewed Git revision normally precedes
-the metadata-only commit that records the signoff. Product confirmation covers
-the meaning of that target baseline. Meaning-preserving editorial, formatting,
-artifact relocation that preserves stable IDs and meaning, or representation
-changes retain its authority; semantic changes do not.
-
-Specialized design, technical, security, legal, operations, or release
-authorities may confirm decisions inside their actual or delegated scope. A
-specialized decision cannot change product behavior, population membership,
-privacy meaning, or another product doctrine outside that scope.
+In a larger team using optional governance, specialized design, technical,
+security, legal, operations, or release authorities may decide matters inside
+their actual or delegated scope. A specialized decision cannot change product
+behavior, population membership, privacy meaning, or another product doctrine
+outside that scope.
 
 PIP edits, tickets, tests, audits, diagrams, code, and implementation receipts
-created from the same agent inference are not independent confirmation evidence
-and cannot confirm one another. Broad authority to implement, migrate, commit,
-or push also does not authorize a newly discovered product decision. A direct,
-unambiguous statement from the accountable authority remains sufficient; cite
-it instead of creating a second signoff ceremony.
+created from the same agent inference cannot validate one another as product
+intent. Permission to implement, migrate, commit, or push also does not by
+itself adopt a newly discovered product meaning. A direct, unambiguous product-
+leader instruction is sufficient; apply it without creating signoff metadata.
 
-A scoped `dcl.target` is target intent. Keep it `proposed` until it is covered
-by the reviewed package confirmation or a more specific independently
-attributable decision from the accountable product authority. Link to the
-specific `DEC-*` only when one owns the target; do not create a decision merely
-to restate package confirmation. `dcl.pip_current` and
+A scoped `dcl.target` is target intent. Keep an implementer-authored value
+`proposed` until the product leader adopts it into the canonical PIP. In a
+package that already needs optional multi-authority governance, link a specific
+`DEC-*` only when it owns a disputed or delegated target; do not create
+governance merely for DCL. `dcl.pip_current` and
 `dcl.implementation_current` are inferred assessments: their supporting PIP,
 code, or runtime facts may be observed, but the numeric levels are not. They do
 not become product authority by appearing beside a confirmed target or inside a
 build-ready package. Changing a confirmed target level or its product basis is
 a semantic target change; refreshing a source-backed current assessment does
-not itself change or reconfirm the target.
+not itself change the target.
 
 ## Evidence discipline
 
@@ -97,10 +90,10 @@ reconcile the target, using the sparse observation pattern in
 [Product Intent Package Standard](product-intent-package-standard.md#product-doctrine-and-implementation-observations).
 Implementation evidence remains `observed` and cannot acquire product authority.
 
-Put a source reference directly on the claim or decision it supports. Use the
-optional `sources` section of `governance.yaml` only when several records reuse
-the same source or its version and limitations need one shared description. Do
-not create an evidence catalog merely to number every source.
+Put a source reference directly on the claim it supports. In a package that
+already needs optional multi-authority governance, a shared `sources` section
+may describe one consequential source reused by several governance records. Do
+not create governance or an evidence catalog merely to number sources.
 
 For a consequential source, retain enough context to find it again: location,
 version, date or environment, inspected scope, supported claim, and limitation.
@@ -118,12 +111,13 @@ authorized that action.
   seen. State the reasoning and uncertainty briefly.
 - Use `proposed` for a recommended target. State the consequential tradeoff when
   useful.
-- Use `confirmed` only after an accountable authority accepts a testable target.
+- Use `confirmed` where an explicit status is useful for target content adopted
+  into the canonical PIP.
 - Use `blocked` when the missing choice would change what is built or accepted.
 - Use `stale` when a dependency change makes prior intent unsafe to rely on.
 
-Do not ask an authority to confirm facts that are already adequately evidenced.
-Ask for the target decision that evidence cannot provide.
+Do not ask the product leader to decide facts that are already adequately
+evidenced. Ask for the target choice that evidence cannot provide.
 
 When an ambiguous phrase would support a consequential implementation choice,
 quote the source and distinguish:
@@ -137,7 +131,7 @@ These are working-analysis distinctions, not additional PIP statuses. Qualify
 words such as `eligible`, `safe`, `valid`, or `shared` with the processing stage,
 population, data, algorithm, lifecycle, or output they actually constrain.
 
-Ask one concise authority question before an unconfirmed interpretation would
+Ask one concise product question before an unadopted interpretation would
 create a durable product classification, split a population, move a rule to a
 different processing boundary, add maintained derived state or a broad
 backfill, encode product policy in an index or constraint predicate, or
@@ -151,30 +145,32 @@ For a material gap or contradiction:
 
 1. State one decision needed and the affected product outcome or cross-file IDs.
 2. Present the relevant evidence and its limitations without choosing a winner.
-3. Route the question to the accountable authority.
+3. Route the question through the product leader.
 4. Offer a recommendation or small set of options only when it helps the choice.
 5. Normalize the answer into an observable decision and clarify only if that
    normalization adds interpretation.
-6. Record a `DEC-*` decision when its authority or rationale matters, update the
-   owning facts, and mark affected dependents stale until reviewed.
+6. Update the owning facts after the product leader decides. Record a `DEC-*`
+   only when optional multi-authority governance already exists and the
+   decision's scope, rationale, precedence, or supersession must remain visible.
 
-A direct, unambiguous answer from the accountable authority does not require a
-ceremonial second confirmation. Do not resolve conflict by selecting the newest
+A direct, unambiguous answer from the product leader requires no signature or
+secondary confirmation. Do not resolve conflict by selecting the newest
 document, the running code, the most polished design, a majority view, or a
 person outside the decision domain.
 
 Keep a material unresolved question, contradiction, or implementer-recommended
-doctrine change in `governance.yaml.open_items` with `type: question`,
-`type: conflict`, or `type: proposed_change`. A proposed change uses
-`status: proposed`; leave the confirmed owning fact unchanged while it awaits a
-decision. Give it a stable `OPEN-*` ID only when another file or external
-system refers to it.
+change visibly `blocked` or `proposed` beside its owning fact, or in the existing
+task system when it has no natural PIP owner. Leave the current owning fact
+unchanged while it awaits a decision. A package that already needs optional
+multi-authority governance may instead use `governance.yaml.open_items` when
+several leaders must coordinate it. Give it a stable `OPEN-*` ID only when
+another file or external system refers to it.
 When migrating, preserve a referenced `Q-*` or `CON-*` ID. A blocked package
 with a concise, authority-routed question is a valid deliverable.
 
-## Confirmation quality
+## Decision quality
 
-A confirmation must be specific enough to produce an observable product result
+A product decision must be specific enough to produce an observable result
 or a material constraint. Tighten vague requests such as “fast,” “secure,”
 “intuitive,” “like the current app,” or “handle errors gracefully” only to the
 degree needed for this release. Do not turn every adjective into a formal

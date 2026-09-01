@@ -84,9 +84,9 @@ Use the optional `dcl` mapping defined in the
 [Package Standard](product-intent-package-standard.md#optional-scoped-development-complexity)
 on the one YAML record that owns the scope. Only `target` is doctrine.
 `pip_current`, `implementation_current`, and `gap_note` are inferred analysis.
-A confirmed target is covered by the reviewed package confirmation or a more
-specific linked `DEC-*`; do not create a decision merely to repeat package
-confirmation.
+A confirmed target is part of the canonical PIP. In a package that already
+needs optional multi-authority governance, a specific linked `DEC-*` may own a
+disputed or delegated target scope; do not create governance merely for DCL.
 
 Keep the local `basis` short and specific. Cite the assessed implementation
 snapshot in `implementation_current.source_ref`. Omit an unassessed value
@@ -98,8 +98,9 @@ human-facing summary so absence is not mistaken for alignment. Update
 When known values differ, `gap_note` states whether the comparison suggests an
 intentional stage-appropriate omission, a PIP deficiency, incomplete
 implementation, possible overbuilding, or unresolved context. It does not
-authorize a change. Route a material target choice through normal `OPEN-*` and
-`DEC-*` records and implementation work through the task system.
+authorize a change. Route a material target choice through the product leader
+and implementation work through the task system. Use `OPEN-*` or `DEC-*` only
+when an existing multi-authority governance file needs that coordination context.
 
 ## Sequence convention
 
@@ -107,7 +108,7 @@ Recommend DCL for every sequence that describes an implementable process. In a
 Markdown sequence file, place a compact summary immediately below the `SEQ-*`
 heading and introductory sentence and immediately above its Mermaid diagram:
 
-> **DCL:** Target 3 (`confirmed`, `DEC-012`) · PIP current 5 (`inferred`) ·
+> **DCL:** Target 3 (`confirmed`) · PIP current 5 (`inferred`) ·
 > Implementation current 4 (`inferred`,
 > `git:0123456789abcdef0123456789abcdef01234567`)
 >

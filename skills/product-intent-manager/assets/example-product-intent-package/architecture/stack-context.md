@@ -1,7 +1,7 @@
 # Stack context
 
-`ARCH-001` through `ARCH-004` provide `CAP-001`. `DEC-005` confirms these
-physical deployment choices.
+`ARCH-001` through `ARCH-004` provide `CAP-001`. These physical deployment
+choices are part of the confirmed Counter 1.0 target.
 
 ```mermaid
 flowchart LR

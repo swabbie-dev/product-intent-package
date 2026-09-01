@@ -3,9 +3,10 @@ cases:
     prompt: Create a Product Intent Package for a small single-user application.
     should_activate: true
     must:
-      - start with the five default format-6 files
+      - start with the four default format-6.3 files
+      - omit governance, authority registries, decision history, signatures, and confirmation metadata for this small product
       - add an optional artifact only when it answers a distinct question
-      - record outcome, actors, capabilities, release scope, decisions, blockers, and acceptance
+      - record outcome, actors, capabilities, release scope, blockers, and acceptance
       - use direct stable-ID links rather than an artifact index or traceability graph
       - omit a journey when a focused user flow already explains the experience
       - leave non-observable implementation choices to engineering within confirmed constraints
@@ -18,7 +19,7 @@ cases:
       - declare one target baseline
       - treat sources as evidence rather than automatic target intent
       - separate observed, inferred, proposed, confirmed, blocked, and stale material
-      - route material conflicts to the accountable authority
+      - route material conflicts through the product leader
       - preserve a legacy package format unless migration is explicitly requested
       - create only artifacts supported by product complexity
 
@@ -51,8 +52,8 @@ cases:
     prompt: Implement the application described by this completed Product Intent Package.
     should_activate: true
     must:
-      - preserve the task-start PIP revision, confirmation decision, and reviewed confirmation revision as the authority baseline
-      - prevent same-task tickets, code, tests, audits, and PIP edits from serving as circular confirmation for new semantic claims
+      - preserve the task-start canonical PIP revision as the target baseline
+      - prevent same-task tickets, code, tests, audits, and working PIP edits from circularly establishing new product intent
       - pause for authority before a new classification, population split, processing-boundary change, broad backfill, or product-policy predicate
       - keep ordinary engineering choices within confirmed outcomes and constraints
       - record only material current implementation evidence as observed and separate from target doctrine
@@ -61,7 +62,7 @@ cases:
     prompt: An implementer added a persisted eligibility flag and changed retrieval behavior even though the confirmed PIP only required safe public output. Update the PIP to document what now exists.
     should_activate: true
     must:
-      - preserve safe public output as the confirmed target unless accountable product authority changes it
+      - preserve safe public output as the current target unless the product leader changes it
       - record the current implementation as an observed source-backed implementation observation
       - state whether the implementation aligns, deviates, or is unclear relative to confirmed intent
       - present any desired doctrine change as proposed or as an open conflict rather than confirmed
@@ -78,7 +79,7 @@ cases:
       - avoid a package-wide level, average, inherited level, or feature checklist
       - use the optional dcl field on a coherently scoped YAML owner when one exists
       - show target, PIP-current, and implementation-current values with each implementable sequence
-      - keep the target proposed until accountable product authority confirms it and keep both current values inferred
+      - keep the target proposed until the product leader adopts it and keep both current values inferred
       - cite the implementation snapshot and explain differing known values in a gap note
       - preserve exact dangerous-edge protections regardless of a surrounding process's low DCL
       - treat a mismatch as a review signal rather than authority to add or delete machinery

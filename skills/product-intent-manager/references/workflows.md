@@ -8,11 +8,13 @@ permission to mutate an external tracker.
 
 ## Create
 
-1. Copy the five-file template from `assets/product-intent-template/`.
-2. In `product.yaml`, set format `6.2.0`, package identity, target baseline and
+1. Copy the four-file template from `assets/product-intent-template/`.
+2. In `product.yaml`, set format `6.3.0`, package identity, target baseline and
    release, desired outcome, actors, capabilities, exclusions, and measures.
-3. In `governance.yaml`, name the default product authority. Add another
-   authority only when a material decision has a genuinely different owner.
+3. Do not create `governance.yaml` for a small or single-product-leader team.
+   Copy `assets/governance-template.yaml` only when several product leaders or
+   delegated authorities require explicit scope, precedence, or durable
+   cross-team rationale.
 4. Draft the main actor paths in `experience/user-flows.md` and the physical
    product boundary in `architecture/stack-context.md`. Keep unresolved choices
    proposed or blocked.
@@ -22,9 +24,10 @@ permission to mutate an external tracker.
    detail that resolves a real ambiguity. When an implementable sequence would
    benefit from a scoped complexity comparison, assign DCL only after the
    actors, interactions, operation, risk, and credible load are understood.
-7. Obtain authority confirmation for target intent, record the confirming
-   decision and immutable reviewed revision, and apply the four handoff checks
-   in [Change and Handoff](change-and-handoff.md).
+7. Adopt the target through the team's normal product-leader and Git workflow,
+   then apply the four handoff checks in
+   [Change and Handoff](change-and-handoff.md). Do not add PIP signatures or
+   confirmation records.
 
 Develop the product model in that order, but move backward whenever evidence or
 a decision changes an earlier premise.
@@ -38,7 +41,7 @@ incomplete, or inconsistent.
 
 Choose one baseline: a specifically identified implementation,
 intended-current product, or target-next release. Identify the release boundary,
-source environments, known exclusions, and accountable authority. Do not blend
+source environments, known exclusions, and product leader. Do not blend
 several implementations into one implied target.
 
 ### Inspect useful evidence
@@ -65,8 +68,11 @@ where those details matter. Treat source material as evidence, not target intent
    only when they reveal distinct product meaning.
 5. Label direct findings `observed` and reasoned interpretations `inferred`.
 6. Compare implementation, tests, documents, designs, and stakeholder claims.
-   Put consequential gaps or conflicts in `governance.yaml.open_items`.
-7. Ask the accountable authority whether each material observed behavior is
+   Keep consequential gaps or conflicts visibly `blocked` beside their owners
+   or in the existing task system. Use `governance.yaml.open_items` only when
+   optional multi-authority governance already exists and the leaders must
+   coordinate them.
+7. Ask the product leader whether each material observed behavior is
    intended, a defect, a legacy constraint, a future proposal, or out of scope.
 8. Move only confirmed choices into active target intent. Keep unsupported
    branches observed, inferred, proposed, or blocked.
@@ -85,21 +91,22 @@ package is more useful than a comprehensive invented one.
 
 For an incomplete package:
 
-1. Read the five core files and any optional artifacts already present.
+1. Read the four core files and any optional artifacts already present,
+   including governance when the package uses it.
 2. Check whether a reviewer can identify the release, actor outcomes, material
-   behavior and risk, observable acceptance, and unresolved authority decisions.
+   behavior and risk, observable acceptance, and unresolved product decisions.
 3. Follow existing direct links and inspect semantic dependents; do not rebuild
    an exhaustive graph.
 4. Add or repair only artifacts needed to close a material ambiguity.
 5. Remove empty, duplicative, or purely ceremonial records after preserving any
    unique confirmed fact in its proper owner.
 6. Apply the handoff checks. Do not trust an old ready label without reviewing
-   the current target and confirmation decision.
+   the current target.
 
 ## Update
 
-Treat a change request as evidence until the accountable authority confirms the
-changed product outcome, unless the requester is already that authority and the
+Treat a change request as evidence until the product leader adopts the changed
+product outcome, unless the requester is already that leader and the
 request is unambiguous.
 
 1. Identify the owning fact, affected actors and capabilities, and target
@@ -110,10 +117,11 @@ request is unambiguous.
    constraints, and acceptance where applicable.
 4. Preserve stable cross-file IDs for the same meaning. Create or retire IDs
    only when meaning is added, split, replaced, or removed.
-5. Record a decision when authority, rationale, tradeoff, or supersession must
-   survive beyond the Git diff.
-6. Reconfirm the changed target, record its new reviewed revision, and repeat
-   the four handoff checks.
+5. Let Git preserve the change. Only a package that already needs optional
+   multi-authority governance should retain a `DEC-*`, and only when scope,
+   rationale, precedence, or supersession must remain visible across that team.
+6. Adopt the changed target through the normal product-leader and Git workflow,
+   then repeat the four handoff checks.
 
 Do not rewrite every file or increment per-artifact versions for an ordinary
 change. Git retains routine edit history.
@@ -123,9 +131,8 @@ change. Git retains routine edit history.
 Use this workflow when code or implementation planning is explicitly governed
 by a PIP:
 
-1. Record the task-start PIP revision, target release, confirmation decision,
-   confirmation revision, and any later direct authority decisions in the
-   existing task or working notes.
+1. Record the task-start canonical PIP revision, target release, and any later
+   direct product-leader instructions in the existing task or working notes.
 2. Treat code, migrations, tests, tickets, logs, and runtime behavior as
    implementation evidence. They do not change confirmed target intent.
 3. Compare the planned or observed implementation with the task-start confirmed
@@ -139,25 +146,29 @@ by a PIP:
    with the current PIP and assessed implementation. Preserve exact confirmed
    requirements, cite the implementation snapshot, and explain mismatches.
    Treat `pip_current` above target as a simplification candidate, never as
-   deletion authority. Route a target-level change through normal governance.
+   deletion authority. Route a target-level change through the product leader.
 6. Record only a material current as-built fact needed for interpretation,
-   audit, or reconciliation in `governance.yaml.implementation_observations`.
-   Keep it `observed`, cite its source, link affected IDs, and state whether it
-   aligns, deviates, or is unclear. Keep routine history outside the PIP.
+   audit, or reconciliation beside its owning target. A package that already
+   needs optional multi-authority governance may put a cross-artifact fact in
+   `governance.yaml.implementation_observations`. Keep it `observed`, cite its
+   source, link affected IDs, and state whether it aligns, deviates, or is
+   unclear. Keep routine history outside the PIP.
 7. If implementation diverges, preserve the confirmed target and add an open
    conflict only when a product decision is required. Put an implementer
-   recommendation in `governance.yaml.open_items` as `type: proposed_change`
-   with `status: proposed`; use a parallel proposed record in the owning target
-   artifact only when its existing structure supports one. Do not rewrite the
-   confirmed target or mark the observation confirmed.
-8. If the accountable authority accepts the proposal, update the owning target
-   facts and acceptance, add a confirmed decision, resolve the open item, and
-   establish a new reviewed revision. Otherwise implement toward the existing
-   doctrine or leave the affected work blocked.
+   recommendation in the existing task system or a parallel `proposed` record
+   in the owning target artifact when its structure supports one. Use
+   `governance.yaml.open_items` only for coordination in an existing multi-
+   authority governance file. Do not rewrite the current target or mark the
+   observation confirmed.
+8. If the product leader accepts the proposal, update the owning target facts
+   and acceptance through the normal Git workflow and resolve the proposal.
+   Otherwise implement toward the existing doctrine or leave the affected work
+   blocked. Add a decision record only when an existing multi-authority team
+   needs its coordination context.
 
 An agent-authored PIP edit, implementation ticket, test, and audit conclusion
-cannot confirm one another. Compare implementation handoff against the
-task-start authority baseline, not only the PIP as edited during the task.
+cannot establish one another as product intent. Compare implementation handoff
+against the task-start canonical PIP, not only the PIP as edited during the task.
 
 ## Simplify or migrate an older package
 
@@ -167,8 +178,10 @@ For a format-5 or similarly heavy package:
    evidence links, and acceptance outcomes before removing machinery.
 2. Move the active outcome, actors, capabilities, release scope, exclusions,
    and measures into `product.yaml`.
-3. Move current authorities, consequential decisions, and unresolved material
-   questions or conflicts into `governance.yaml`.
+3. Remove governance for a small or single-product-leader team after preserving
+   current product meaning in its owning artifacts. For a larger multi-authority
+   team, keep only the authority, decision, and active conflict context needed
+   for coordination in `governance.yaml`.
 4. Keep acceptance scenarios in `acceptance.yaml` and express necessary
    relationships through `verifies` and a small number of `related_ids` links.
 5. Preserve existing cross-file IDs that still identify the same meaning. Drop
@@ -183,7 +196,7 @@ For a format-5 or similarly heavy package:
    duplicated metadata after their unique information has a direct owner.
 9. Let Git preserve ordinary historical content. Do not hash the package or
    duplicate repository history inside it.
-10. Check all remaining direct links and confirm the migrated target. A
+10. Check all remaining direct links and review the migrated target. A
     representation-only migration must not silently change product behavior.
 
 Do not chase mechanical parity with the old file count. Preserve product
