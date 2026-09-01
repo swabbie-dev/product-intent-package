@@ -153,6 +153,14 @@ operability, cost bounds, or other stated constraints.
 
 Record database mechanics only when they are product-significant:
 
+- An ERD may omit incidental implementation columns, but it must show each
+  persisted column that directly determines product behavior as its own row
+  with the exact physical name, type, and product-significant constraint. This
+  includes facts that affect selection, ranking, eligibility, authorization,
+  lifecycle, recovery, compatibility, visible outcomes, or product-significant
+  audit behavior. Do not hide them in a synthetic row such as
+  `fitness_controls SMALLINT × 5`. A clearly labeled cross-diagram reference
+  projection may stay abbreviated and link to the owning `DATA-*` entity.
 - For a consequential index, show a textual, color-matched badge on every
   affected ERD attribute and repeat the badge in an `INDEXES` compartment below
   the entity. One base badge such as `[I1]` identifies exactly one complete
@@ -166,7 +174,8 @@ Record database mechanics only when they are product-significant:
   owns each full definition and its product or process reason. Keep an ordinary
   primary key as `PK` in the entity and omit its index badge unless the physical
   index has an independently product-significant purpose. Omit routine
-  implementation indexes.
+  implementation indexes. Every index or coordination badge must sit on the
+  exact physical column it describes, never on a grouped or synthetic row.
 - Before allowing several database clients or pools in one process, check
   whether a bounded shared pool can combine them without serializing genuinely
   independent transactions, causing head-of-line blocking, breaking session

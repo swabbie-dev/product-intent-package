@@ -250,6 +250,22 @@ constraints. Keep conceptual and persisted meanings distinct when both are
 needed, even if one diagram shows their mapping. Do not use the ERD for
 navigation, process order, transition validity, or a full database definition.
 
+Not being a full schema does not permit hiding persisted product behavior. In
+the owning entity, show every persisted column individually by its exact
+physical name and type when its value affects selection, ranking, eligibility,
+authorization, lifecycle, recovery, compatibility, a visible outcome, or audit
+behavior that itself matters to the product. Show its product-significant null,
+key, uniqueness, range, enumeration, retention, or other constraint when
+applicable. Do not replace several such fields with an invented summary row
+such as `fitness_controls SMALLINT × 5`; show the five physical columns.
+
+Omit incidental implementation-only columns that do not change product meaning.
+An entity repeated only to provide context in another diagram may use a clearly
+labeled `REFERENCE PROJECTION` with an explicit link to the owning `DATA-*`
+entity and abbreviate fields not needed for that relationship. A reference
+projection does not redefine the entity and must not conceal a product fact
+needed to understand the diagram.
+
 ### Product-significant index notation
 
 When an index is product-significant, use the combined badge-and-compartment
@@ -271,7 +287,9 @@ convention:
    attribute participates solely in the predicate. A direct key or expression
    may also appear in the predicate, but it keeps its numeric or `·expr` badge;
    do not add a redundant same-index `·where` badge. Show every badge when one
-   column participates in several indexes.
+   column participates in several indexes. Every badged attribute must be the
+   exact physical column with its exact type; never attach an index badge to a
+   grouped, synthetic, or abbreviated projection row.
 4. Repeat each base badge once in an `INDEXES` compartment immediately below
    the entity. Write that index's complete current definition; do not use
    shorthand such as `same key`, combine multiple physical names in one entry,
@@ -360,6 +378,10 @@ textual badges such as `[LEASE1·scope]`, `[LEASE1·owner]`,
 `[LEASE1·until]`, `[LEASE1·fence]`, and, when it is durable,
 `[LEASE1·state]`. Repeat the base badge in a `COORDINATION` compartment below
 the entity:
+
+Every coordination badge must identify the exact persisted physical column and
+type. Do not place a lease or lock role on a grouped field or a cross-diagram
+reference projection.
 
 ```text
 COORDINATION

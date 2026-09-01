@@ -136,6 +136,9 @@ For an existing-product or design-led implementation, also check that:
 
 For product-significant database design, check that:
 
+- persisted columns that determine product behavior appear individually with
+  exact physical names, types, and material constraints rather than synthetic
+  grouped rows, while abbreviated cross-diagram references are clearly marked;
 - each physical index has exactly one badge and one complete `INDEXES`
   compartment entry; indexes are never grouped under one badge or abbreviated
   as `same key`, and every attribute badge matches its key order, predicate,
@@ -150,6 +153,8 @@ For product-significant database design, check that:
 - persisted lease fields use matching ERD coordination badges and a
   `COORDINATION` compartment, while runtime acquisition, renewal, expiry,
   fencing, release, and recovery stay in the owning sequence;
+- every index or coordination badge sits on the exact physical column and type,
+  never a grouped field or abbreviated reference projection;
 - a coordination overlay is present only when multiple contenders or mechanisms
   need a contention map, and it agrees with the linked sequence and data model;
 - connection design considers aggregate fan-out and combines process-local

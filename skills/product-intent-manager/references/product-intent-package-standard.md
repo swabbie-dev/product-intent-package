@@ -267,6 +267,15 @@ should consolidate clients or pools within a process when that reduces fan-out
 without harming necessary concurrency or session behavior. See
 [Artifact Responsibilities](artifact-responsibilities.md).
 
+An ERD is selective but exact about persisted product behavior. Show each
+persisted column individually with its physical name, type, and material
+constraint when it affects selection, ranking, eligibility, authorization,
+lifecycle, recovery, compatibility, visible outcomes, or product-significant
+audit behavior. Omit incidental implementation columns, and clearly label an
+abbreviated entity repeated only as a cross-diagram reference projection. Never
+collapse product-significant columns into a synthetic grouped field. Every
+index or coordination badge requires the exact physical column and type.
+
 ## Optional governance
 
 Do not create `governance.yaml` for a small team or a product whose decisions

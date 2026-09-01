@@ -63,6 +63,18 @@ cases:
       - keep routine primary-key indexes out of the index compartment unless their physical behavior is independently product-significant
       - preserve the complete definition and product or process reason in the index compartment
 
+  - id: selective-but-exact-erd
+    prompt: Simplify an ERD by replacing five persisted ranking controls with one
+      synthetic fitness_controls field and abbreviating a related entity copied
+      from another data diagram.
+    should_activate: true
+    must:
+      - restore every persisted product-behavior column with its exact physical name and type in the owning entity
+      - preserve product-significant constraints on those columns
+      - omit only incidental implementation columns
+      - allow the copied entity to remain abbreviated only when it is labeled as a reference projection and links to its DATA owner
+      - require exact physical columns and types for every index or coordination badge
+
   - id: pip-governed-implementation
     prompt: Implement the application described by this Product Intent Package.
     should_activate: true
