@@ -142,6 +142,11 @@ For product-significant database design, check that:
   than inventing a classification;
 - any explicit lock or serialization protects a named invariant, is no broader
   or longer than needed, and cannot be replaced by a simpler narrow mechanism;
+- persisted lease fields use matching ERD coordination badges and a
+  `COORDINATION` compartment, while runtime acquisition, renewal, expiry,
+  fencing, release, and recovery stay in the owning sequence;
+- a coordination overlay is present only when multiple contenders or mechanisms
+  need a contention map, and it agrees with the linked sequence and data model;
 - connection design considers aggregate fan-out and combines process-local
   clients or pools where that preserves effective concurrency and session
   needs; and

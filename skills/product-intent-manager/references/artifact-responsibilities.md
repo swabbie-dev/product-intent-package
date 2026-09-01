@@ -25,6 +25,7 @@ triggered:
 | Sequence | Ordered cross-system work, async behavior, or recovery changes an outcome |
 | Quality constraints | A measurable performance, reliability, security, privacy, accessibility, compatibility, operations, or cost bound matters |
 | Separate deployment view | Environment, region, network, failover, or rollout topology makes stack context hard to read |
+| Separate coordination view | Several processes or coordination mechanisms make the stack-context coordination overlay hard to read |
 
 Do not create a file merely to record `not applicable`.
 
@@ -42,6 +43,12 @@ These five views are enough for ordinary application work. A decision table is
 a supporting logic format, not another diagram type. Deployment normally stays
 inside stack context. Do not add component, container, system-context,
 screen-map, domain-model, or similar diagrams that repeat these views.
+
+Coordination is an optional overlay on stack context, not a sixth default
+diagram responsibility. It shows which physical processes contend through
+which mechanism and what resource the mechanism protects. The ERD owns any
+persisted lease structure, and a sequence owns acquisition, renewal, timeout,
+retry, fencing, release, and recovery order.
 
 Keep diagrams with the same responsibility consolidated until readability
 requires focused files. If split, use one ID-named Markdown file per diagram and
@@ -61,6 +68,7 @@ trace graph.
 | Valid states and process-triggered transitions | State machine |
 | Ordered calls, events, input provenance, retries, fallbacks, and runtime failure | Sequence |
 | Physical responsibility, owned state, provider, deployment placement, trust boundary | Stack context |
+| Cross-process contenders, coordination scope, mechanism, and protected resource | Stack-context coordination overlay |
 | Entity identity, relationship, and cardinality | Data model / ERD |
 | Request, response, event, and error shape | Contract |
 | Product-significant field or storage constraint | Schema detail |
@@ -91,6 +99,8 @@ process choices.
   state used by the flow or state machine.
 - A state transition links to a sequence when process ownership or coordination
   matters.
+- A coordination overlay links a product-significant mechanism to the `SEQ-*`
+  that owns its runtime behavior and the `DATA-*` that stores lease state.
 - Acceptance scenarios name the `CAP-*`, `RULE-*`, `SM-*`, `SEQ-*`, or quality
   outcome they verify.
 
@@ -201,6 +211,11 @@ for hypothetical races, and do not require oversized database infrastructure to
 compensate for avoidable contention. Ordinary short-lived database locks used
 internally for atomic statements or constraints do not require PIP detail.
 
+For a product-significant lease, the sequence owns acquisition, renewal,
+expiry, stale-owner rejection, fencing, release, and recovery order. For a
+product-significant lock, it owns acquisition, timeout or refusal, release, and
+recovery. Do not copy that order into an ERD or coordination overlay.
+
 ## State machines
 
 A state machine owns stable lifecycle states, triggers, guards, permitted and
@@ -272,6 +287,33 @@ queries before naming a physical index. Omit routine primary-key and ordinary
 implementation indexes unless their behavior is independently product-
 significant.
 
+### Product-significant lock and lease notation
+
+Use the ERD only for persisted coordination structure. A stored lease may use
+textual badges such as `[LEASE1·scope]`, `[LEASE1·owner]`,
+`[LEASE1·until]`, `[LEASE1·fence]`, and, when it is durable,
+`[LEASE1·state]`. Repeat the base badge in a `COORDINATION` compartment below
+the entity:
+
+```text
+COORDINATION
+[LEASE1] COORD-001 Store assembly lease
+         SCOPE: store_id
+         OWNER: lease_owner
+         EXPIRES: leased_until
+         FENCE: lease_version
+         PROTECTS: DATA-007 publication
+         DETAILS: SEQ-014
+```
+
+Use `[LOCK1]` for a persisted lock record. Matching colors may distinguish
+locks from leases, but text is canonical and color must not be the only signal.
+Do not put a transaction or advisory lock in the ERD when it has no persisted
+fields; show a product-significant transient lock in its sequence and, only
+when its contention relationships need explanation, the coordination overlay.
+This notation documents an already justified mechanism; it does not make a
+lock or lease necessary.
+
 ## Stack context and deployment
 
 Stack context is the sole system-context diagram. Show actors, product boundary,
@@ -298,6 +340,27 @@ pool sizes or load-test ceremony without a stated provider or product bound.
 Place security and operational controls on the node, connection, or trust zone
 where they apply. Do not draw logical APIs, events, records, policies, or
 capabilities as peer services.
+
+### Coordination overlay
+
+Add a coordination overlay to stack context only when several competing
+processes, several coordination mechanisms, or an unclear protected-resource
+relationship makes the system hard to understand. For one straightforward
+lock or lease, its sequence plus any persisted ERD fields is simpler.
+
+The overlay shows physical contenders, the narrow coordination scope, the
+lock, lease, queue, or comparable mechanism, where its state or ownership
+lives, expiry and fencing when applicable, and the protected resource or write.
+Reuse existing `ARCH-*` and `DATA-*` IDs. Assign a stable `COORD-*` ID only when
+the mechanism is referenced from several artifacts. Link to the `SEQ-*` that
+owns detailed process logic instead of copying message order, retry behavior,
+or recovery into the overlay.
+
+Keep the overlay in `architecture/stack-context.md` by default. Move it to
+`architecture/coordination.md` only when it would make the main stack diagram
+unreadable; the separate file remains a focused stack-context view, not a new
+required diagram type. A coordination overlay explains contention but never
+replaces the requirement to justify an exceptional lock or lease.
 
 ## Decision tables
 

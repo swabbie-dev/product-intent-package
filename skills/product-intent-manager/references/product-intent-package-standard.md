@@ -49,6 +49,7 @@ Use these conventional paths when an optional artifact is needed:
 | Runtime sequences | `sequences/sequences.md` |
 | Measurable quality constraints | `quality/constraints.yaml` |
 | Complex deployment topology | `architecture/deployment.md` |
+| Complex coordination topology | `architecture/coordination.md` |
 
 See [Artifact Responsibilities](artifact-responsibilities.md) for the trigger
 and ownership of each artifact.
@@ -211,8 +212,8 @@ short prose link. Do not create a central artifact index, traceability graph,
 coverage matrix, or duplicate reverse edge merely to show completeness.
 
 Common prefixes include `ACTOR`, `CAP`, `JOURNEY`, `FLOW`, `SCREEN`, `RULE`,
-`SM`, `DATA`, `ARCH`, `API`, `EVT`, `SEQ`, `QC`, and `ACC`. A prefix does not
-make its artifact type mandatory.
+`SM`, `DATA`, `ARCH`, `API`, `EVT`, `SEQ`, `COORD`, `QC`, and `ACC`. A prefix
+does not make its artifact type mandatory.
 
 ## File formats
 

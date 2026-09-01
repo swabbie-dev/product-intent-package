@@ -157,6 +157,13 @@ Record database mechanics only when they are product-significant:
   check, idempotency rule, short transaction, or partitioned design cannot
   protect. Do not require oversized database infrastructure to compensate for
   avoidable contention.
+- When several processes or coordination mechanisms make contention hard to
+  understand, add a coordination overlay to `architecture/stack-context.md`.
+  It shows the contenders, narrow scope, mechanism, storage or owner, expiry or
+  fencing when applicable, and protected resource. Keep one straightforward
+  lock or lease in its sequence and, for persisted lease fields, its ERD. Split
+  the overlay into `architecture/coordination.md` only when stack context would
+  otherwise become unreadable.
 
 See [Artifact Responsibilities](references/artifact-responsibilities.md) for
 the diagram conventions.
