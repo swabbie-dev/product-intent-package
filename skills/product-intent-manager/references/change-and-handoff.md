@@ -8,16 +8,25 @@ handoff, checklist, or review-result fields or files because of these checks.
 
 For a material product-intent change:
 
-1. Identify the owning fact and release.
-2. If the new end state is not already an unambiguous product-leader decision,
-   create an isolated PIP fork rather than editing the canonical package.
-3. Follow direct links and review obvious semantic dependents.
-4. Update the owner first, then affected flows, behavior, data, architecture,
+1. Identify the owning fact and release, then verify the requester's identity
+   and current editing authority from `governance.yaml` or unambiguous project
+   guidance.
+2. Follow direct links and review obvious semantic dependents before deciding
+   whether the complete change fits that authority.
+3. If the new end state is not already an unambiguous authorized decision, or
+   any required dependent edit falls outside a scoped editor's access, create
+   one complete isolated PIP fork rather than editing the canonical package.
+   Never apply only an in-scope fragment that leaves canonical intent
+   contradictory, unstable, or incomplete.
+4. When authority covers the complete change, update the owner first, then
+   affected flows, behavior, data, architecture,
    sequences, constraints, and acceptance.
 5. Refresh affected `Current rationale` sections so they state all and only the
    active reasons for the resulting design.
 6. Resolve contradictions outside the package, then adopt one coherent end
-   state through the team's normal product-leader and Git process.
+   state through an editor whose authority covers the complete change and the
+   team's normal Git process. Do not create a per-change signoff or approval
+   record; Git owns commit history.
 
 Preserve a stable cross-file ID when meaning is unchanged. Do not maintain a
 global dependency graph, per-artifact version counter, package hash, change log,
@@ -28,7 +37,8 @@ or product history inside the PIP.
 At the start of PIP-governed implementation or audit, note the canonical PIP Git
 revision and release in the existing task or working context. Compare product-
 significant behavior, design, schema, migration, query, policy, and data changes
-with that baseline and later direct product-leader instructions.
+with that baseline and later direct instructions from a verified authority whose
+scope covers the change.
 
 Implementation findings stay in the task, audit, or code review. Do not add an
 as-built lane, implementation observation, deviation status, or implementation

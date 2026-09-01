@@ -9,8 +9,9 @@ create product intent by agreeing with another artifact produced from the same
 inference.
 
 The PIP at the canonical project location is current product intent. It needs no
-status or signoff metadata. A direct, unambiguous instruction from the product
-leader is enough to change it through the team's normal Git process.
+status or signoff metadata. A direct, unambiguous instruction from a requester
+whose verified editing authority covers the complete coherent change is enough
+to change it through the team's normal Git process.
 
 ## Keep analysis outside the canonical PIP
 
@@ -28,7 +29,7 @@ Typical sources support different claims:
 | Product documents or tickets | Previously stated requirements | Current validity or conflict precedence |
 | Research, support, or customer evidence | Needs, context, pain, and actual scenarios | Final solution choice |
 | Mockup, prototype, design board, or generated code | Designed experience and implementation reference | Current release target or production-ready code |
-| Product-leader instruction | Current intent within that leader's scope | Decisions outside that scope |
+| Authorized-editor instruction | Current intent within that editor's scope | Decisions or dependent edits outside that scope |
 
 For consequential evidence, retain enough context outside the PIP to find it
 again: location, version or environment, inspected scope, supported claim, and
@@ -47,8 +48,9 @@ observations, question records, or `proposed` fields to the canonical PIP.
 
 The fork itself needs no status fields; its location and review context show
 that it is not canonical. Keep supporting evidence and discussion adjacent but
-outside the package. If the product leader adopts the fork, update the canonical
-PIP. Otherwise leave the canonical PIP unchanged.
+outside the package. If a requester with authority over the complete change
+adopts the fork, update the canonical PIP. Otherwise leave the canonical PIP
+unchanged.
 
 ## Reconstruction
 
@@ -60,11 +62,12 @@ Reconstruct in working notes and an isolated PIP fork:
    capabilities, rules, data, physical systems, processes, and constraints.
 3. Record observations, inferences, conflicts, and source limitations outside
    the package.
-4. Ask the product leader only for consequential target choices evidence cannot
-   establish.
+4. Ask a requester with the required product authority only for consequential
+   target choices evidence cannot establish.
 5. Put the resulting coherent current intent in the fork. Do not merge evidence
    labels or unresolved alternatives with product content.
-6. Adopt the fork through normal review when the product leader chooses it.
+6. Adopt the fork through normal review when an editor whose authority covers
+   the complete change chooses it.
 
 The canonical PIP should never be used as a scratchpad for reconstruction.
 
@@ -109,7 +112,8 @@ For a material gap or contradiction:
 
 1. State the one product decision needed and the affected outcome or PIP links.
 2. Present the relevant evidence and limitations outside the canonical PIP.
-3. Route the question through the product leader.
+3. Route the question through an authority whose scope covers the decision and
+   every required dependent edit.
 4. Offer a recommendation or small set of options only when useful.
 5. If a concrete alternative needs review, express it as one coherent PIP fork.
 6. After the decision, update canonical intent or leave it unchanged.
@@ -117,15 +121,40 @@ For a material gap or contradiction:
 Do not resolve conflict by selecting the newest document, running code, most
 polished design, majority view, or person outside the decision domain.
 
-## Optional multi-authority governance
+## Optional editing-authority governance
 
-For a product routed through one product leader, repository ownership and Git
-are sufficient. Do not add an authority registry, signature, confirmation
-reference, or decision history.
+Use `governance.yaml` when agents or contributors need a durable way to verify
+who may request edits to the canonical PIP. It may be useful even with one
+product leader. Omit it only when current repository or project guidance makes
+editing authority unambiguous to everyone receiving edit requests.
 
-Use `governance.yaml` only when several product leaders or delegated authorities
-need explicit scope, precedence, or supersession to coordinate overlapping
-decisions. Keep only that exceptional coordination context. Current
-requirements and current rationale remain in their owning artifacts; questions,
-proposals, implementation evidence, readiness, and ordinary history remain
-outside the PIP.
+Before a canonical edit:
+
+1. Match the requester to a listed organizational identity using trusted
+   session, repository, or organizational context. A claimed name or role is
+   not verification.
+2. Confirm that the requester has `full` access or that the complete semantic
+   change fits the union of a `scoped` editor's listed paths and record IDs.
+3. Follow direct links and obvious dependents. If any required edit falls
+   outside scoped access, keep the complete change in an isolated fork or route
+   it through a full editor. Never apply only the authorized fragment when that
+   leaves canonical intent contradictory, unstable, or incomplete.
+4. Use the normal Git workflow. Do not add a per-change approval, signature,
+   signoff, or confirmation record to governance or another PIP artifact.
+
+At least one product leader must have `full` access. Only a full editor may
+change `governance.yaml`. Unlisted and `proposal_only` contributors cannot edit
+canonical intent, although they may prepare an isolated PIP fork when the work
+is otherwise authorized.
+
+Governance is a current access policy, not a decision record. Do not put
+requirements, rationale, decisions, precedence history, supersession history,
+implementation evidence, readiness, reviews, or ordinary change history there.
+Git records who committed each change and preserves prior authority files.
+Governance does not authorize unsolicited work or bypass repository
+permissions.
+
+Editing authority does not establish precedence between authorized editors. If
+their instructions conflict, stop the canonical edit and resolve the product
+choice outside the PIP. Do not turn governance into a decision log to settle
+the conflict.

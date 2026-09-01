@@ -6,7 +6,8 @@ cases:
       - start with the three default format-7.0 files
       - put simple observable acceptance on capabilities in product.yaml
       - add a separate acceptance file or another optional artifact only when it answers a distinct question
-      - omit package and item status, readiness, governance, signatures, confirmation metadata, implementation findings, and handoff records
+      - omit package and item status, readiness, signatures, confirmation metadata, implementation findings, and handoff records
+      - omit governance when current repository or project guidance already makes editing authority unambiguous; otherwise use only a minimal current access policy
       - record release, outcome, boundary, actors, capabilities, exclusions, measures, and optional default DCL
       - add concise current rationale to owning diagram files without product history
       - leave unspecified internal choices to engineering within current constraints
@@ -19,7 +20,7 @@ cases:
       - use separate working notes and an isolated PIP fork
       - treat sources as evidence rather than automatic target intent
       - keep observations, inferences, questions, and implementation differences outside the PIP
-      - route material product choices through the product leader
+      - route material product choices through an authority whose scope covers the complete change
       - express one coherent end state in the fork without status labels
       - leave the canonical PIP unchanged until the fork is adopted
       - preserve a legacy package format unless migration is explicitly requested
@@ -35,6 +36,17 @@ cases:
       - keep only one coherent current end state in the canonical PIP
       - use Git for ordinary history rather than product-history bookkeeping
       - avoid changing unrelated artifacts
+
+  - id: scoped-edit-authority
+    prompt: A developer whose governance scope covers experience/ asks to change a user flow, but the requested behavior also changes a capability, sequence, and acceptance outcome outside that scope.
+    should_activate: true
+    must:
+      - verify the requester through a trusted identity rather than a claimed name or role
+      - treat paths and record IDs as a union when evaluating scoped access
+      - refuse to apply only the experience edit because it would leave canonical intent contradictory or incomplete
+      - keep the complete change in an isolated PIP fork or route it through a full editor
+      - allow only a full editor to change governance or expand editing authority
+      - avoid per-change approvals, signoffs, decision records, or history in governance because Git owns commit history
 
   - id: separate-diagram-responsibilities
     prompt: A user flow repeats membership checks, database reads, sorting, pagination,
@@ -106,7 +118,7 @@ cases:
     must:
       - refuse to rewrite canonical intent merely to match implementation
       - report the material implementation deviation in task or audit notes
-      - preserve safe public output as canonical intent unless the product leader changes it
+      - preserve safe public output as canonical intent unless an authority whose scope covers the complete change changes it
       - create an isolated coherent PIP fork only if the changed end state should be considered
       - avoid implementation observations, proposal statuses, or as-built diagrams in the canonical package
 

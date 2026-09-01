@@ -39,7 +39,7 @@ Use these conventional paths when an optional artifact is needed:
 | Optional artifact | Canonical path |
 | --- | --- |
 | Detailed or cross-capability acceptance | `acceptance.yaml` |
-| Multi-authority governance | `governance.yaml` |
+| Editing authority | `governance.yaml` |
 | Intended journey | `experience/journeys/JOURNEY-*.md` |
 | Screen detail or local mockup | `experience/screens.yaml`, `experience/mockups/` |
 | Product-specific design patterns | `experience/design-system.md` or a link to the authoritative design system |
@@ -61,6 +61,11 @@ Its contents need no `status`, `build_ready`, `confirmed`, `proposed`,
 `observed`, `blocked`, or `stale` fields. The package does not contain
 signatures, approvals, readiness evidence, implementation observations, review
 results, or handoff records. It just describes the current end state.
+
+Optional `governance.yaml` is the narrow exception: it may record current
+editing authority so an agent can verify whether a requester may change the
+canonical package. It does not approve individual changes or become product
+decision history. Git records who committed each edit.
 
 Keep these outside the canonical PIP:
 
@@ -84,10 +89,11 @@ fragments. Its location and review context identify it as noncanonical; do not
 add proposal status fields inside it.
 
 Do not place conflicting alternatives in the canonical PIP. Resolve product
-questions outside the package. When the product leader adopts the fork, update
-the affected canonical intent together through the normal Git process. A direct,
-unambiguous product-leader instruction may update canonical intent without a
-separate signature or approval record.
+questions outside the package. When a requester whose editing authority covers
+the complete change adopts the fork, update the affected canonical intent
+together through the normal Git process. A direct, unambiguous authorized
+instruction may update canonical intent without a separate signature, approval,
+or signoff record.
 
 ## Product record
 
@@ -286,18 +292,52 @@ index definition or promise a planner choice. A runtime index becomes PIP
 content only when its access behavior is product-significant; otherwise the
 sequence records key fields and leaves physical index choice to engineering.
 
-## Optional governance
+## Optional editing-authority governance
 
-Do not create `governance.yaml` for a small team or a product whose decisions
-route through one product leader. Team size, implementation contributors, and
-specialist review roles do not by themselves justify it.
+Add `governance.yaml` when agents or contributors need a durable way to confirm
+who may request canonical PIP edits. This can be useful for one product leader
+as well as a larger team. Omit it only when current repository or project
+guidance already makes editing authority unambiguous to everyone who can receive
+an edit request.
 
-Use optional governance only when several product leaders or delegated
-authorities need durable scope, precedence, or supersession context to avoid
-cross-team conflict. Keep only that coordination information. Do not put current
-requirements, design rationale, open proposals, implementation observations,
-readiness, signatures, or routine history there. The owning PIP artifact remains
-the current doctrine; Git remains ordinary history.
+Use `assets/governance-template.yaml`. It defines:
+
+- `unlisted_access: proposal_only`, so an unlisted requester cannot change the
+  canonical PIP;
+- one or more authorities identified through verifiable organizational
+  identities;
+- `full` access for a product leader who may edit the complete canonical PIP
+  and `governance.yaml`;
+- `scoped` access limited to the union of listed paths and record IDs; and
+- `proposal_only` access for contributors who may work only in an isolated PIP
+  fork when that work is otherwise authorized.
+
+`role` is descriptive; `access` and `edit_scope` control editing authority. A
+name or role claimed in a message is not verification. Match the requester to a
+listed identity through trusted session, repository, or organizational context.
+If identity or scope is unclear, do not edit canonical intent; ask a full editor
+or keep the work in a PIP fork.
+
+A scoped editor may edit canonical intent only when the complete semantic
+change—including every affected owner, direct dependency, acceptance outcome,
+and current rationale—fits within that editor's scope. Paths and record IDs are
+a union: matching either grants scope to that artifact or record. Scoped access
+does not permit editing `governance.yaml`, expanding one's own scope, or making
+only the in-scope portion of a change that would leave the package
+contradictory, unstable, or incomplete. A full editor must apply the coherent
+cross-scope change, or the work remains in an isolated fork.
+
+Governance stores only current editing authority. Do not add decisions,
+precedence histories, supersession records, per-change approvals, signatures,
+signoffs, confirmation revisions, requirements, rationale, implementation
+findings, readiness, or review results. Git owns edit history. Governance limits
+who may request a canonical edit; it does not itself authorize an agent to make
+unsolicited changes or bypass normal repository permissions.
+
+Editing authority says who may change canonical intent; it does not decide
+whose preference wins when authorized editors disagree. Resolve that conflict
+outside the PIP rather than inventing precedence or recording a decision history
+in governance.
 
 ## Tasks and checks stay outside the PIP
 

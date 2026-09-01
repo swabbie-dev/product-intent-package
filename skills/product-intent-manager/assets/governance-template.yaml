@@ -1,23 +1,32 @@
-# Copy this file to `governance.yaml` only when several product leaders or
-# delegated authorities need explicit scope, precedence, or supersession to
-# coordinate overlapping decisions. Do not use it for readiness, signoff,
-# proposals, implementation findings, or routine history.
+# Copy this file to `governance.yaml` when agents or contributors need a
+# durable way to confirm who may request canonical PIP edits. This records
+# current editing authority only. Do not add decisions, approvals, signoffs,
+# change records, implementation findings, or history.
 
-authorities: []
-# List only product authorities whose overlapping or delegated scopes must be
-# distinguished for the team.
-# - id: AUTH-001
-#   name: ''
-#   role: product_leader
-#   scope: []
-#   precedence: ''
+unlisted_access: proposal_only
 
-decisions: []
-# Keep only cross-authority decisions whose ownership, precedence, or
-# supersession must remain visible to the team. The owning PIP artifact still
-# holds the current requirement and current rationale; do not repeat them here.
-# - id: DEC-001
-#   authority_id: AUTH-001
-#   affects: []
-#   supersedes: []
-#   coordination_context: ''
+authorities:
+  - name: ''
+    role: product_leader
+    identities:
+      - ''
+      # Use a verifiable organizational identity such as github:username.
+    access: full
+
+  # - name: ''
+  #   role: product_leader
+  #   identities:
+  #     - ''
+  #   access: scoped
+  #   edit_scope:
+  #     paths:
+  #       - experience/
+  #     record_ids:
+  #       - FLOW-001
+  #       - SCREEN-001
+
+  # - name: ''
+  #   role: developer
+  #   identities:
+  #     - ''
+  #   access: proposal_only

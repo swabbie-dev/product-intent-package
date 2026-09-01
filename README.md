@@ -21,7 +21,7 @@ The Product Intent skill contains:
 - `references/`, guidance loaded only when relevant;
 - `assets/product-intent-template/`, the three-file default package;
 - `assets/acceptance-template.yaml`, optional detailed acceptance;
-- `assets/governance-template.yaml`, optional multi-authority coordination;
+- `assets/governance-template.yaml`, optional current editing authority;
 - `assets/example-product-intent-package/`, a proportional worked example; and
 - `evals/cases.yaml`, realistic behavior cases.
 
@@ -47,15 +47,18 @@ capability behavior, or detailed quality outcomes are clearer separately.
 
 If a different product end state needs review, create an isolated PIP fork in a
 branch, worktree, or separate proposal location. Make the fork internally
-coherent and keep the canonical package unchanged until the product leader
-adopts it. Do not mix competing proposals into canonical intent or add proposal
-statuses to either package.
+coherent and keep the canonical package unchanged until a requester whose
+editing authority covers the complete change adopts it. Do not mix competing
+proposals into canonical intent or add proposal statuses to either package.
 
-Do not add `governance.yaml` for a small or single-product-leader team. A larger
-team may add it only when several product leaders or delegated authorities need
-explicit scope, precedence, or supersession to coordinate overlapping
-decisions. It does not own current requirements, rationale, readiness,
-proposals, implementation findings, or routine history.
+Add `governance.yaml` when agents or contributors need a durable way to verify
+who may request canonical PIP edits. It may grant a product leader `full`
+access and give other product leaders or developers `scoped` or
+`proposal_only` access. A scoped editor may not apply only part of a semantic
+change when required dependent edits fall outside that scope; a full editor
+must make the complete coherent change or it remains in an isolated fork.
+Governance stores current editing authority only—not decisions, approvals,
+signoffs, requirements, rationale, or history. Git records who committed edits.
 
 Add journeys, screen records, rules, state machines, data models, contracts,
 sequences, quality constraints, mockups, or a separate deployment view only

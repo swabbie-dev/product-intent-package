@@ -24,10 +24,12 @@ evidence, and review results outside the PIP.
    [PIP Use and Alignment Checks](change-and-handoff.md). Do not store their
    result or add status, readiness, signoff, or handoff content to the PIP.
 
-For a small or single-product-leader team, omit governance. Copy
-`assets/governance-template.yaml` only when several product leaders or delegated
-authorities genuinely need scope, precedence, or supersession to coordinate
-decisions.
+Determine where current PIP editing authority is defined. Copy
+`assets/governance-template.yaml` when agents or contributors need a durable
+way to verify edit requesters. Include at least one full product leader and only
+real, verifiable organizational identities; do not ship placeholder entries.
+Omit the file when current repository or project guidance already makes
+editing authority unambiguous.
 
 ## Reconstruct
 
@@ -35,8 +37,9 @@ Use reconstruction when a product exists but its intent is missing, incomplete,
 or inconsistent. Do not use the canonical PIP as the research workspace.
 
 1. Create an isolated PIP fork and separate working notes.
-2. Identify the product and release being reconstructed, the product leader,
-   source environments, and known boundary. Do not blend several
+2. Identify the product and release being reconstructed, the authorities who
+   can choose and adopt its complete end state, source environments, and known
+   boundary. Do not blend several
    implementations into one implied end state.
 3. Inspect only useful evidence: running surfaces, documents, research, designs,
    routes, behavior, tests, data, contracts, integrations, operations, incidents,
@@ -46,12 +49,13 @@ or inconsistent. Do not use the canonical PIP as the research workspace.
 5. Reconstruct from the outside inward: actors and visible flows, capabilities
    and acceptance, physical stack, then only the state, data, sequence, rule,
    contract, quality, or journey detail needed to resolve product meaning.
-6. Ask the product leader whether each consequential behavior is intended, a
-   defect, a legacy constraint, a different future product, or out of scope.
+6. Ask a product authority whose scope covers the choice whether each
+   consequential behavior is intended, a defect, a legacy constraint, a
+   different future product, or out of scope.
 7. Express the resulting coherent end state in the fork without evidence
    labels, questions, alternatives, or proposal fields.
-8. Adopt the fork through normal product-leader and Git review. Until then, the
-   canonical PIP remains unchanged.
+8. Adopt the fork through an editor whose authority covers the complete change
+   and the normal Git workflow. Until then, the canonical PIP remains unchanged.
 
 Before assigning DCL, establish current user interactions, whether users wait,
 failure consequences, acceptable interruption and recovery, credible load,
@@ -82,10 +86,12 @@ alternative needs review.
 
 ## Update
 
-If the product leader's request already gives an unambiguous new end state,
-update the owning canonical facts and affected dependents through the team's
-normal Git workflow. If the change is still a recommendation, alternative, or
-unresolved choice, create an isolated PIP fork instead.
+If the request already gives an unambiguous new end state, first verify that the
+requester's current editing authority covers the complete coherent change.
+Then update the owning canonical facts and affected dependents through the
+team's normal Git workflow. If authority is insufficient or the change is still
+a recommendation, alternative, or unresolved choice, create an isolated PIP
+fork instead.
 
 1. Identify the owning fact, affected actors and capabilities, and release.
 2. Review direct links plus obvious semantic dependents.
@@ -110,8 +116,8 @@ a PIP:
 2. Treat code, migrations, tests, tickets, logs, and runtime behavior as
    implementation evidence. They do not change product intent.
 3. Compare planned or observed product-significant behavior, schema, policy,
-   queries, and design with the task-start PIP and any later direct product-
-   leader instruction.
+   queries, and design with the task-start PIP and any later direct instruction
+   from a verified authority whose scope covers the complete change.
 4. Inspect existing implementation owners before adding code. Follow sequence
    anchors marked `reuse unchanged` or `modify existing`, and verify input
    provenance.
@@ -124,8 +130,8 @@ a PIP:
    implementation toward the PIP when authorized. Do not edit the canonical PIP
    merely to document what the implementation currently does.
 8. If the team wants the implementation difference to become product intent,
-   create a coherent PIP fork for product-leader review. Adopt it only after the
-   product decision.
+   create a coherent PIP fork for review by an authority whose scope covers the
+   complete change. Adopt it only after that product decision.
 
 When useful, compare the PIP's default or overridden target DCL with an observed
 implementation DCL in the audit notes. Never persist the implementation level
@@ -143,8 +149,12 @@ For a format-6 or similarly heavy package:
 3. Remove package and item statuses, readiness labels, signatures, confirmation
    metadata, handoff records, implementation observations, proposal lanes,
    source catalogs, and routine decision history from the canonical PIP.
-4. Remove governance for a single-product-leader team. In a real multi-
-   authority team, retain only scope, precedence, and supersession context.
+4. When edit-request authority needs to be explicit, replace older governance
+   machinery with the minimal current `full`, `scoped`, and `proposal_only`
+   access policy. Remove decisions, approval or signoff records, precedence and
+   supersession histories, confirmation metadata, and ordinary change history.
+   Omit governance only when current repository or project guidance already
+   makes editing authority unambiguous.
 5. Move simple acceptance inline. Keep `acceptance.yaml` only when its scenarios
    remain easier to understand separately.
 6. Consolidate context/component/container views into stack context, screen maps

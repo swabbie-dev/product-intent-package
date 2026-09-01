@@ -13,7 +13,7 @@ triggered:
 | Optional artifact | Add when |
 | --- | --- |
 | Detailed acceptance | Several scenarios, failure paths, cross-capability behavior, or quality outcomes make inline acceptance hard to read |
-| Governance | Several product leaders or delegated authorities need explicit scope, precedence, or supersession to coordinate decisions |
+| Editing authority | Agents or contributors need a durable way to verify who may request canonical PIP edits and at what scope |
 | Journey map | Intended phases, recurrence, role changes, or handoffs add context a focused flow cannot show |
 | Screen records | Surface-specific content, actions, validation, responsive behavior, or visible states need detail beyond the flow or linked design |
 | Design records | Repeated visual, content, component, interaction, responsive, or accessibility rules constrain the product |
@@ -73,7 +73,7 @@ trace graph.
 | Request, response, event, and error shape | Contract |
 | Product-significant field or storage constraint | Schema detail |
 | Narrow DCL exception | `dcl_override` on the owning YAML record or a DCL line in the owning Markdown file |
-| Multi-authority scope, precedence, or supersession | Optional `governance.yaml` |
+| Current canonical editing authority and scope | Optional `governance.yaml` |
 
 ## Current rationale
 

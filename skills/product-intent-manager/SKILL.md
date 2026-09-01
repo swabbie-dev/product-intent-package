@@ -41,14 +41,18 @@ worktree, or separate proposal location. Make that fork internally coherent as
 one complete intended end state; do not mix competing alternatives into the
 canonical package. Its location makes it noncanonical, so its records need no
 `proposed` status. Adopt it by replacing the affected canonical intent through
-the team's normal product-leader and Git process.
+the team's normal authorized-editor and Git process.
 
-For a small team or a product routed through one product leader, do not create
-`governance.yaml`, authority registries, decision histories, signatures, or
-approval metadata. Optional governance is only for a larger team in which
-several product leaders or delegated authorities need explicit scope,
-precedence, or supersession to coordinate decisions. It must not duplicate the
-current requirements or rationale owned by the product artifacts.
+Add `governance.yaml` when agents or contributors need a durable way to confirm
+who may request canonical PIP edits. It records current editing authority only:
+at least one product leader with `full` access, plus any `scoped` or
+`proposal_only` contributors. It contains no decisions, approvals, signoffs,
+change records, requirements, rationale, or history; Git records who committed
+each change. A `scoped` editor may not leave canonical intent partial or
+contradictory. If a coherent change needs dependent edits outside that scope, a
+`full` editor must make the complete change or the work stays in an isolated
+PIP fork. Read [Authority and Evidence](references/authority-and-evidence.md)
+before accepting or applying a canonical edit request.
 
 ## Keep the package proportional
 
@@ -92,8 +96,8 @@ constraints, and material tradeoffs; keep it concise.
 Describe the reasons for the current state, not the chronology of how it was
 reached. Do not recount former designs, superseded decisions, dates, or a series
 of changes. Remove a reason when it no longer explains the current design. Git
-owns ordinary history; exceptional multi-authority coordination belongs only in
-optional governance.
+owns ordinary history; optional governance records only current editing
+authority.
 
 ## Development Complexity Level
 
@@ -229,8 +233,10 @@ permutations, blanket coverage, new test machinery, or proof artifacts.
 
 ## Workflow
 
-1. Read the canonical package, repository guidance, and the relevant references
-   below. For a new package, copy `assets/product-intent-template/`.
+1. Read the canonical package, `governance.yaml` or the repository's current
+   editing-authority guidance, and the relevant references below. Confirm that
+   the requester has authority for the complete coherent change. For a new
+   package, copy `assets/product-intent-template/`.
 2. Establish the release, outcome, boundary, actors, capabilities, exclusions,
    measures, and optional product-wide DCL.
 3. Put simple acceptance on each capability; add the optional acceptance file
@@ -259,7 +265,8 @@ authority boundaries, read
   files that contain only a diagram. Do not create skill-authored canonical
   JSON or `.mmd` files.
 - Keep the canonical PIP free of status, readiness, proposal, implementation,
-  handoff, and review metadata.
+  handoff, review, signoff, and decision-history metadata. Optional
+  `governance.yaml` contains current editing authority only.
 - Track the package in Git. Use Git history instead of duplicating change
   history inside the PIP.
 - Keep task state and implementation notes outside the package.
