@@ -1,205 +1,165 @@
 # Workflows
 
 Use the workflow that matches the request. In every mode, maintain only the
-artifacts needed for this product and release. When the request also includes
-implementation planning, apply [Minimal implementation tasks](change-and-handoff.md#minimal-implementation-tasks)
-after defining the confirmed delta. Keep tasks outside the PIP and do not infer
-permission to mutate an external tracker.
+artifacts needed for this product and keep tasks, analysis, implementation
+evidence, and review results outside the PIP.
 
 ## Create
 
-1. Copy the four-file template from `assets/product-intent-template/`.
-2. In `product.yaml`, set format `6.3.0`, package identity, target baseline and
-   release, desired outcome, actors, capabilities, exclusions, and measures.
-3. Do not create `governance.yaml` for a small or single-product-leader team.
-   Copy `assets/governance-template.yaml` only when several product leaders or
-   delegated authorities require explicit scope, precedence, or durable
-   cross-team rationale.
-4. Draft the main actor paths in `experience/user-flows.md` and the physical
-   product boundary in `architecture/stack-context.md`. Keep unresolved choices
-   proposed or blocked.
-5. Define observable capability and release outcomes in `acceptance.yaml`.
-6. Use [Artifact Responsibilities](artifact-responsibilities.md) to add only
-   the state, data, sequence, contract, journey, screen, quality, or deployment
-   detail that resolves a real ambiguity. When an implementable sequence would
-   benefit from a scoped complexity comparison, assign DCL only after the
-   actors, interactions, operation, risk, and credible load are understood.
-7. Adopt the target through the team's normal product-leader and Git workflow,
-   then apply the four handoff checks in
-   [Change and Handoff](change-and-handoff.md). Do not add PIP signatures or
-   confirmation records.
+1. Copy the three-file template from `assets/product-intent-template/`.
+2. In `product.yaml`, set format `7.0.0`, product name, release, outcome,
+   boundary, actors, capabilities, exclusions, measures, and optional product-
+   wide DCL.
+3. Put simple observable acceptance on each capability. Copy
+   `assets/acceptance-template.yaml` only when multiple scenarios, material
+   failure paths, cross-capability behavior, or quality outcomes need a separate
+   owner.
+4. Draft the physical product boundary in `architecture/stack-context.md` and
+   actor-visible paths in `experience/user-flows.md`.
+5. Add state, data, sequence, rule, contract, journey, screen, quality, or
+   deployment artifacts only when each adds distinct meaning.
+6. Add concise current rationale in the diagram file that owns every non-
+   obvious choice.
+7. Apply the skill-level checks in
+   [PIP Use and Alignment Checks](change-and-handoff.md). Do not store their
+   result or add status, readiness, signoff, or handoff content to the PIP.
 
-Develop the product model in that order, but move backward whenever evidence or
-a decision changes an earlier premise.
+For a small or single-product-leader team, omit governance. Copy
+`assets/governance-template.yaml` only when several product leaders or delegated
+authorities genuinely need scope, precedence, or supersession to coordinate
+decisions.
 
 ## Reconstruct
 
-Use reconstruction when a product exists but its intent is missing,
-incomplete, or inconsistent.
+Use reconstruction when a product exists but its intent is missing, incomplete,
+or inconsistent. Do not use the canonical PIP as the research workspace.
 
-### Establish the target
+1. Create an isolated PIP fork and separate working notes.
+2. Identify the product and release being reconstructed, the product leader,
+   source environments, and known boundary. Do not blend several
+   implementations into one implied end state.
+3. Inspect only useful evidence: running surfaces, documents, research, designs,
+   routes, behavior, tests, data, contracts, integrations, operations, incidents,
+   and migrations.
+4. In the working notes, distinguish direct observations, inferences,
+   contradictions, recommendations, and source limitations.
+5. Reconstruct from the outside inward: actors and visible flows, capabilities
+   and acceptance, physical stack, then only the state, data, sequence, rule,
+   contract, quality, or journey detail needed to resolve product meaning.
+6. Ask the product leader whether each consequential behavior is intended, a
+   defect, a legacy constraint, a different future product, or out of scope.
+7. Express the resulting coherent end state in the fork without evidence
+   labels, questions, alternatives, or proposal fields.
+8. Adopt the fork through normal product-leader and Git review. Until then, the
+   canonical PIP remains unchanged.
 
-Choose one baseline: a specifically identified implementation,
-intended-current product, or target-next release. Identify the release boundary,
-source environments, known exclusions, and product leader. Do not blend
-several implementations into one implied target.
-
-### Inspect useful evidence
-
-Inspect only sources needed to understand the in-scope product:
-
-- running surfaces, roles, account states, and feature flags;
-- product documents, decisions, tickets, research, support, and analytics;
-- design boards, prototypes, screenshots, and recordings;
-- routes, components, behavior, tests, data, APIs, events, and integrations; and
-- operations, monitoring, incidents, release notes, and migrations.
-
-Record a source's version, environment, scope, supported claim, and limitation
-where those details matter. Treat source material as evidence, not target intent.
-
-### Reconstruct from the outside inward
-
-1. Identify actors, goals, entry points, main paths, alternatives, visible
-   states, failure, and recovery.
-2. Identify the capabilities and observable outcomes those paths imply.
-3. Map physical clients, services, managed providers, stores, workers, and
-   external systems only as far as they affect product behavior or ownership.
-4. Add state, data, contract, sequence, journey, screen, or quality artifacts
-   only when they reveal distinct product meaning.
-5. Label direct findings `observed` and reasoned interpretations `inferred`.
-6. Compare implementation, tests, documents, designs, and stakeholder claims.
-   Keep consequential gaps or conflicts visibly `blocked` beside their owners
-   or in the existing task system. Use `governance.yaml.open_items` only when
-   optional multi-authority governance already exists and the leaders must
-   coordinate them.
-7. Ask the product leader whether each material observed behavior is
-   intended, a defect, a legacy constraint, a future proposal, or out of scope.
-8. Move only confirmed choices into active target intent. Keep unsupported
-   branches observed, inferred, proposed, or blocked.
-
-Before proposing a scoped DCL target during reconstruction, establish whether
-users wait for the work, which failures they can see, whether interruption and
-manual recovery are acceptable, and the current and credible near-term data
-volume, growth, and concurrency. Do not infer the target from company stage or
-from the complexity already present in the implementation.
-
-Do not document every module, table, or edge case merely because it exists. Do
-not treat the current implementation as the design authority. A concise blocked
-package is more useful than a comprehensive invented one.
+Before assigning DCL, establish current user interactions, whether users wait,
+failure consequences, acceptable interruption and recovery, credible load,
+risk, and operating needs. Do not infer DCL from company stage or implementation
+complexity.
 
 ## Complete
 
-For an incomplete package:
+For an incomplete canonical package:
 
-1. Read the four core files and any optional artifacts already present,
-   including governance when the package uses it.
-2. Check whether a reviewer can identify the release, actor outcomes, material
-   behavior and risk, observable acceptance, and unresolved product decisions.
-3. Follow existing direct links and inspect semantic dependents; do not rebuild
-   an exhaustive graph.
-4. Add or repair only artifacts needed to close a material ambiguity.
-5. Remove empty, duplicative, or purely ceremonial records after preserving any
-   unique confirmed fact in its proper owner.
-6. Apply the handoff checks. Do not trust an old ready label without reviewing
-   the current target.
+1. Read the three core files and existing optional artifacts.
+2. Check whether a reader can identify the release outcome, boundary, actors,
+   capabilities, visible experience, physical ownership, observable acceptance,
+   and material constraints.
+3. Follow direct links and inspect obvious semantic dependents; do not build an
+   exhaustive graph.
+4. Add or repair only the facts and artifacts needed to close a real ambiguity.
+5. Move simple acceptance inline; retain a separate file only when it improves
+   clarity.
+6. Add or refresh current rationale without preserving obsolete history.
+7. Remove empty, duplicative, implementation-only, status, readiness, review,
+   and other ceremonial content after preserving current intent in its owner.
+8. Apply the skill-level checks without creating a PIP check record.
+
+If completion exposes a product choice, keep the canonical PIP unchanged for
+that choice and resolve it outside the package. Use a PIP fork when a concrete
+alternative needs review.
 
 ## Update
 
-Treat a change request as evidence until the product leader adopts the changed
-product outcome, unless the requester is already that leader and the
-request is unambiguous.
+If the product leader's request already gives an unambiguous new end state,
+update the owning canonical facts and affected dependents through the team's
+normal Git workflow. If the change is still a recommendation, alternative, or
+unresolved choice, create an isolated PIP fork instead.
 
-1. Identify the owning fact, affected actors and capabilities, and target
-   release.
-2. Review direct links plus obvious semantic dependents. Mark a confirmed item
-   `stale` only when the change can actually affect it.
-3. Update the owner, then affected flows, behavior, data, system interactions,
-   constraints, and acceptance where applicable.
-4. Preserve stable cross-file IDs for the same meaning. Create or retire IDs
+1. Identify the owning fact, affected actors and capabilities, and release.
+2. Review direct links plus obvious semantic dependents.
+3. Update the owner, then affected flows, behavior, data, architecture,
+   sequences, constraints, and acceptance.
+4. Refresh each affected diagram's current rationale so it contains all and
+   only the reasons for the new current design.
+5. Preserve stable cross-file IDs when meaning is unchanged. Add or retire IDs
    only when meaning is added, split, replaced, or removed.
-5. Let Git preserve the change. Only a package that already needs optional
-   multi-authority governance should retain a `DEC-*`, and only when scope,
-   rationale, precedence, or supersession must remain visible across that team.
-6. Adopt the changed target through the normal product-leader and Git workflow,
-   then repeat the four handoff checks.
+6. Apply the skill-level checks. Let Git preserve the change history.
 
-Do not rewrite every file or increment per-artifact versions for an ordinary
-change. Git retains routine edit history.
+Do not place both old and new intent in the canonical PIP, add a proposal lane,
+or increment per-artifact versions for an ordinary change.
 
 ## Implement or audit against a PIP
 
-Use this workflow when code or implementation planning is explicitly governed
-by a PIP:
+Use this workflow only when implementation or audit is explicitly governed by
+a PIP:
 
-1. Record the task-start canonical PIP revision, target release, and any later
-   direct product-leader instructions in the existing task or working notes.
+1. Record the task-start canonical PIP Git revision and release in the existing
+   task or working notes, not in the PIP.
 2. Treat code, migrations, tests, tickets, logs, and runtime behavior as
-   implementation evidence. They do not change confirmed target intent.
-3. Compare the planned or observed implementation with the task-start confirmed
-   baseline. Apply the semantic-expansion check in
-   [Change and Handoff](change-and-handoff.md#implementation-alignment-discipline)
-   before a new classification, population split, boundary-stage change,
-   maintained fact, broad backfill, or product-policy predicate.
-4. Proceed with ordinary internal choices that stay within confirmed outcomes,
-   constraints, and delegated engineering authority.
-5. When an affected record uses DCL, compare its confirmed or proposed target
-   with the current PIP and assessed implementation. Preserve exact confirmed
-   requirements, cite the implementation snapshot, and explain mismatches.
-   Treat `pip_current` above target as a simplification candidate, never as
-   deletion authority. Route a target-level change through the product leader.
-6. Record only a material current as-built fact needed for interpretation,
-   audit, or reconciliation beside its owning target. A package that already
-   needs optional multi-authority governance may put a cross-artifact fact in
-   `governance.yaml.implementation_observations`. Keep it `observed`, cite its
-   source, link affected IDs, and state whether it aligns, deviates, or is
-   unclear. Keep routine history outside the PIP.
-7. If implementation diverges, preserve the confirmed target and add an open
-   conflict only when a product decision is required. Put an implementer
-   recommendation in the existing task system or a parallel `proposed` record
-   in the owning target artifact when its structure supports one. Use
-   `governance.yaml.open_items` only for coordination in an existing multi-
-   authority governance file. Do not rewrite the current target or mark the
-   observation confirmed.
-8. If the product leader accepts the proposal, update the owning target facts
-   and acceptance through the normal Git workflow and resolve the proposal.
-   Otherwise implement toward the existing doctrine or leave the affected work
-   blocked. Add a decision record only when an existing multi-authority team
-   needs its coordination context.
+   implementation evidence. They do not change product intent.
+3. Compare planned or observed product-significant behavior, schema, policy,
+   queries, and design with the task-start PIP and any later direct product-
+   leader instruction.
+4. Inspect existing implementation owners before adding code. Follow sequence
+   anchors marked `reuse unchanged` or `modify existing`, and verify input
+   provenance.
+5. Follow exact linked mockups. Use compatible example or export code when
+   available, without silently changing surfaces, components, states, or
+   interactions.
+6. Proceed with ordinary internal choices that stay inside current behavior and
+   material constraints.
+7. Report implementation deviations in the task or audit result. Fix the
+   implementation toward the PIP when authorized. Do not edit the canonical PIP
+   merely to document what the implementation currently does.
+8. If the team wants the implementation difference to become product intent,
+   create a coherent PIP fork for product-leader review. Adopt it only after the
+   product decision.
 
-An agent-authored PIP edit, implementation ticket, test, and audit conclusion
-cannot establish one another as product intent. Compare implementation handoff
-against the task-start canonical PIP, not only the PIP as edited during the task.
+When useful, compare the PIP's default or overridden target DCL with an observed
+implementation DCL in the audit notes. Never persist the implementation level
+or comparison in the PIP.
 
 ## Simplify or migrate an older package
 
-For a format-5 or similarly heavy package:
+For a format-6 or similarly heavy package:
 
-1. Identify unique confirmed product facts, current proposals, open conflicts,
-   evidence links, and acceptance outcomes before removing machinery.
-2. Move the active outcome, actors, capabilities, release scope, exclusions,
-   and measures into `product.yaml`.
-3. Remove governance for a small or single-product-leader team after preserving
-   current product meaning in its owning artifacts. For a larger multi-authority
-   team, keep only the authority, decision, and active conflict context needed
-   for coordination in `governance.yaml`.
-4. Keep acceptance scenarios in `acceptance.yaml` and express necessary
-   relationships through `verifies` and a small number of `related_ids` links.
-5. Preserve existing cross-file IDs that still identify the same meaning. Drop
-   IDs used only to support an old registry or local bookkeeping.
+1. Identify the current product facts and acceptance outcomes before removing
+   machinery. Keep evidence, proposals, open questions, implementation findings,
+   and history in working notes if they still matter operationally.
+2. Move release, outcome, boundary, actors, capabilities, simple acceptance,
+   exclusions, measures, and optional default DCL into `product.yaml`.
+3. Remove package and item statuses, readiness labels, signatures, confirmation
+   metadata, handoff records, implementation observations, proposal lanes,
+   source catalogs, and routine decision history from the canonical PIP.
+4. Remove governance for a single-product-leader team. In a real multi-
+   authority team, retain only scope, precedence, and supersession context.
+5. Move simple acceptance inline. Keep `acceptance.yaml` only when its scenarios
+   remain easier to understand separately.
 6. Consolidate context/component/container views into stack context, screen maps
    into user flows, and conceptual/persisted relationships into one data-model
-   view when that information is still needed.
-7. Retain journeys only when phases, time, recurrence, role changes, handoffs,
-   or research context add meaning beyond the flows.
-8. Remove artifact indexes, trace graphs, coverage matrices, routine change
-   logs, readiness ledgers, discretion registries, empty placeholders, and
-   duplicated metadata after their unique information has a direct owner.
-9. Let Git preserve ordinary historical content. Do not hash the package or
-   duplicate repository history inside it.
-10. Check all remaining direct links and review the migrated target. A
-    representation-only migration must not silently change product behavior.
+   view when those facts remain needed.
+7. Replace scoped target/PIP/implementation DCL comparisons with one optional
+   product default and narrow current-intent overrides. Move implementation
+   comparisons to audit notes.
+8. Add concise current rationale to each diagram owner and remove historical
+   narration.
+9. Remove artifact indexes, trace graphs, coverage matrices, change logs,
+   readiness ledgers, discretion registries, empty placeholders, package hashes,
+   and duplicated metadata.
+10. Preserve meaningful cross-file IDs, direct links, and product behavior.
+    Check the result proportionally.
 
-Do not chase mechanical parity with the old file count. Preserve product
-meaning, authority, evidence, unresolved uncertainty, and observable acceptance.
-Do not add DCL retroactively unless a current product or implementation decision
-would benefit from it.
+Do not chase parity with the old file count. A representation-only migration
+must not silently change product meaning.

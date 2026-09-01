@@ -10,9 +10,15 @@ transitions.
 
 ```mermaid
 flowchart LR
-  %% Add confirmed or explicitly proposed physical participants. During
-  %% reconstruction, include observed or inferred participants when their
-  %% status and source are explicit.
-  %% Label each node with its ARCH-* ID, runtime or provider, responsibilities,
-  %% and owned state. Label each edge with direction and interaction meaning.
+  %% Add only the physical participants in the current intended product.
+  %% Label each node with its ARCH-* ID when cross-referenced, runtime or
+  %% provider, responsibilities, and owned state. Label each edge with direction
+  %% and interaction meaning.
 ```
+
+## Current rationale
+
+- State each active reason needed to understand the physical boundaries,
+  responsibility placement, provider choice, or deployment shape.
+- Use cause-and-effect language and material tradeoffs. Do not recount former
+  designs, superseded decisions, dates, or product history.

@@ -3,35 +3,37 @@ cases:
     prompt: Create a Product Intent Package for a small single-user application.
     should_activate: true
     must:
-      - start with the four default format-6.3 files
-      - omit governance, authority registries, decision history, signatures, and confirmation metadata for this small product
-      - add an optional artifact only when it answers a distinct question
-      - record outcome, actors, capabilities, release scope, blockers, and acceptance
-      - use direct stable-ID links rather than an artifact index or traceability graph
-      - omit a journey when a focused user flow already explains the experience
-      - leave non-observable implementation choices to engineering within confirmed constraints
+      - start with the three default format-7.0 files
+      - put simple observable acceptance on capabilities in product.yaml
+      - add a separate acceptance file or another optional artifact only when it answers a distinct question
+      - omit package and item status, readiness, governance, signatures, confirmation metadata, implementation findings, and handoff records
+      - record release, outcome, boundary, actors, capabilities, exclusions, measures, and optional default DCL
+      - add concise current rationale to owning diagram files without product history
+      - leave unspecified internal choices to engineering within current constraints
 
   - id: reconstruct-existing-product
     prompt: Reconstruct the current intent of this existing product from its screens,
       code, documents, and stakeholder decisions.
     should_activate: true
     must:
-      - declare one target baseline
+      - use separate working notes and an isolated PIP fork
       - treat sources as evidence rather than automatic target intent
-      - separate observed, inferred, proposed, confirmed, blocked, and stale material
-      - route material conflicts through the product leader
+      - keep observations, inferences, questions, and implementation differences outside the PIP
+      - route material product choices through the product leader
+      - express one coherent end state in the fork without status labels
+      - leave the canonical PIP unchanged until the fork is adopted
       - preserve a legacy package format unless migration is explicitly requested
-      - create only artifacts supported by product complexity
 
   - id: iterate-semantic-change
     prompt: Change subscriptions so users can pause and resume, then update the Product
       Intent Package.
     should_activate: true
     must:
-      - identify the changed actor outcome and consequential decision
-      - update actual dependent artifacts and acceptance outcomes
-      - leave unresolved affected material visibly blocked or stale
-      - use Git for ordinary history rather than creating bookkeeping for every edit
+      - identify the changed actor outcome and owning product fact
+      - use an isolated PIP fork if the new end state still needs a product decision
+      - update actual dependent artifacts, acceptance, and current rationale
+      - keep only one coherent current end state in the canonical PIP
+      - use Git for ordinary history rather than product-history bookkeeping
       - avoid changing unrelated artifacts
 
   - id: separate-diagram-responsibilities
@@ -40,49 +42,57 @@ cases:
     should_activate: true
     must:
       - keep actor actions, surfaces, visible outcomes, and recovery in the user flow
-      - make consequential surface boundaries clear enough to identify needed mockups and state variants
-      - keep ordered runtime messages and failures in focused sequences
-      - keep valid lifecycle states and transitions in state machines
+      - make surface boundaries clear enough to identify needed mockups and state variants
+      - keep ordered runtime logic, input provenance, retries, and fallbacks in focused sequences
+      - keep stable lifecycle states and process interaction in state machines
       - keep entities and relationships in the data model or ERD
-      - use stack context for physical participants, responsibilities, and owned state
-      - use one rule or decision table for condition combinations
-      - preserve context with direct stable-ID references instead of copied logic
+      - use stack context for physical participants, deployment, responsibilities, and owned state
+      - preserve context with direct references instead of copied logic
 
   - id: pip-governed-implementation
-    prompt: Implement the application described by this completed Product Intent Package.
+    prompt: Implement the application described by this Product Intent Package.
     should_activate: true
     must:
-      - preserve the task-start canonical PIP revision as the target baseline
-      - prevent same-task tickets, code, tests, audits, and working PIP edits from circularly establishing new product intent
-      - pause for authority before a new classification, population split, processing-boundary change, broad backfill, or product-policy predicate
-      - keep ordinary engineering choices within confirmed outcomes and constraints
-      - record only material current implementation evidence as observed and separate from target doctrine
+      - record the task-start canonical PIP revision outside the PIP
+      - prevent same-task tickets, code, tests, audits, and PIP edits from circularly creating product intent
+      - inspect existing code and follow sequence reuse or modification anchors
+      - follow exact linked mockups and compatible example code without silent redesign
+      - pause before a new classification, population split, processing-boundary change, broad backfill, or product-policy predicate
+      - keep implementation findings and alignment results outside the PIP
+      - fix implementation toward current intent or create a PIP fork for a desired intent change
 
   - id: document-unapproved-implementation-change
-    prompt: An implementer added a persisted eligibility flag and changed retrieval behavior even though the confirmed PIP only required safe public output. Update the PIP to document what now exists.
+    prompt: An implementer added a persisted eligibility flag and changed retrieval behavior even though the PIP only requires safe public output. Update the PIP to document what now exists.
     should_activate: true
     must:
-      - preserve safe public output as the current target unless the product leader changes it
-      - record the current implementation as an observed source-backed implementation observation
-      - state whether the implementation aligns, deviates, or is unclear relative to confirmed intent
-      - present any desired doctrine change as proposed or as an open conflict rather than confirmed
-      - avoid redrawing canonical target diagrams to ratify the implementation
+      - refuse to rewrite canonical intent merely to match implementation
+      - report the material implementation deviation in task or audit notes
+      - preserve safe public output as canonical intent unless the product leader changes it
+      - create an isolated coherent PIP fork only if the changed end state should be considered
+      - avoid implementation observations, proposal statuses, or as-built diagrams in the canonical package
 
-  - id: scoped-development-complexity
-    prompt: Assess DCL for a PIP whose offline preparation may stop and be retried
-      manually, whose publication boundary protects durable public state, and whose
-      user-facing retrieval must serve a large, rapidly growing corpus. The current
-      PIP and implementation differ.
+  - id: development-complexity-default-and-overrides
+    prompt: Set DCL for a product whose ordinary paths are a small production product,
+      whose offline preparation may be retried manually, and whose interactive
+      retrieval serves a rapidly growing corpus.
     should_activate: true
     must:
-      - derive separate scoped targets from current users, interactions, failure consequences, recovery expectations, risk, and credible load
-      - avoid a package-wide level, average, inherited level, or feature checklist
-      - use the optional dcl field on a coherently scoped YAML owner when one exists
-      - show target, PIP-current, and implementation-current values with each implementable sequence
-      - keep the target proposed until the product leader adopts it and keep both current values inferred
-      - cite the implementation snapshot and explain differing known values in a gap note
-      - preserve exact dangerous-edge protections regardless of a surrounding process's low DCL
-      - treat a mismatch as a review signal rather than authority to add or delete machinery
+      - derive one product-wide default from current users, interactions, failure consequences, recovery, risk, and credible load
+      - add narrow overrides only for materially different scopes
+      - avoid assigning DCL to every record, averaging levels, or raising the default to the highest exception
+      - show default or override DCL above each implementable sequence
+      - keep implementation DCL and target-versus-implementation comparisons outside the PIP
+      - preserve dangerous-edge protections regardless of a low default or override
+      - treat DCL as shorthand rather than a feature checklist or readiness gate
+
+  - id: current-rationale-not-history
+    prompt: Explain in the PIP why the current web, worker, and database architecture was chosen.
+    should_activate: true
+    must:
+      - put each reason in the diagram file that owns the design choice
+      - state all active causes, constraints, consequences, and material tradeoffs succinctly
+      - avoid dates, former designs, superseded decisions, and chronological product history
+      - use Git rather than a PIP decision log for ordinary history
 
   - id: negative-ordinary-coding
     prompt: Refactor this utility module without changing behavior.

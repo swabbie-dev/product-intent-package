@@ -1,0 +1,10 @@
+# Use a separate acceptance file only when several scenarios, material failure
+# paths, cross-capability behavior, or detailed quality outcomes are clearer
+# here than inline in `product.yaml`.
+scenarios: []
+# - id: ACC-001
+#   name: ''
+#   verifies: [CAP-001]
+#   given: []
+#   when: []
+#   then: []

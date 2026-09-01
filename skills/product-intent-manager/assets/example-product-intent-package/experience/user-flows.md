@@ -27,10 +27,20 @@ flowchart TD
   START --> LOADING
 ```
 
-The screen is a responsive, single centered column. Increment is a native,
-keyboard-operable button, and loading, ready, error, submitting, and reconciling
-state changes are announced to assistive technology. The screen uses no
-animation.
-
 The flow owns actor actions and visible outcomes. Runtime calls and commit
 behavior belong to the linked sequences and `RULE-001`.
+
+## Current rationale
+
+- One responsive, centered screen is sufficient because the product has one
+  user goal and no secondary navigation or account surfaces.
+- Loading, ready, error, submitting, and reconciling remain visibly distinct
+  because each state gives the user different available actions and certainty
+  about the persisted value.
+- The reconciling state blocks another increment because the prior request may
+  already have committed; another request could create an unintended duplicate.
+- Retry is offered after a known unchanged result or a failed read because those
+  operations are safe to repeat.
+- A native keyboard-operable button and announced state changes are necessary
+  for assistive-technology use. Animation is unnecessary for understanding the
+  state changes.

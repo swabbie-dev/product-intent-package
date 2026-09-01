@@ -1,7 +1,7 @@
-# Copy this file to `governance.yaml` only when a larger team has several
-# product leaders making decisions that require active coordination beyond what
-# product.yaml, the owning artifacts, Git, and the task system communicate.
-# Do not use it as a routine history.
+# Copy this file to `governance.yaml` only when several product leaders or
+# delegated authorities need explicit scope, precedence, or supersession to
+# coordinate overlapping decisions. Do not use it for readiness, signoff,
+# proposals, implementation findings, or routine history.
 
 authorities: []
 # List only product authorities whose overlapping or delegated scopes must be
@@ -10,33 +10,14 @@ authorities: []
 #   name: ''
 #   role: product_leader
 #   scope: []
+#   precedence: ''
 
 decisions: []
-# Keep only decisions whose authority, rationale, precedence, or supersession
-# must remain visible to several product leaders. Do not repeat PIP content.
+# Keep only cross-authority decisions whose ownership, precedence, or
+# supersession must remain visible to the team. The owning PIP artifact still
+# holds the current requirement and current rationale; do not repeat them here.
 # - id: DEC-001
-#   status: confirmed
-#   statement: ''
 #   authority_id: AUTH-001
-#   decision_ref: ''
 #   affects: []
-
-open_items: []
-# Use only for active cross-authority questions, conflicts, or proposed changes.
-# - id: OPEN-001
-#   type: conflict # or question or proposed_change
-#   status: blocked # proposed_change normally uses proposed
-#   summary: ''
-#   why_it_matters: ''
-#   affected_ids: []
-#   authority_id: AUTH-001
-
-implementation_observations: []
-# Use only for sparse, material cross-artifact evidence needed by the larger
-# team. Local observations belong beside their owning target; routine history
-# stays in Git or the task system.
-# - status: observed
-#   summary: ''
-#   source_ref: git:<full-revision>
-#   affected_ids: []
-#   relationship_to_confirmed_intent: aligns # or deviates or unclear
+#   supersedes: []
+#   coordination_context: ''

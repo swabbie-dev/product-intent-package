@@ -1,13 +1,14 @@
-schema_version: 6.3.0
-package_id: PIP-UNSET
-status: draft
+schema_version: 7.0.0
 name: ''
-
-target:
-  baseline: greenfield
-  release: ''
-
+release: ''
 outcome: ''
+boundary: ''
+
+# Optional. When used, this is the product-wide default. Add a narrow
+# `dcl_override` only on an owner whose product needs materially differ.
+# dcl:
+#   level: 4
+#   basis: ''
 
 actors: []
 # - id: ACTOR-001
@@ -19,16 +20,11 @@ capabilities: []
 #   name: ''
 #   actor_ids: []
 #   outcome: ''
-#   status: proposed
-#   related_ids: []
-# A YAML record may own the optional `dcl` mapping only when that record is the
-# smallest coherent operational scope. Never add a package-wide default or copy
-# one scope's DCL across capabilities, processes, or other records. See the
-# Product Intent Manager DCL guidance for the field shape.
+#   acceptance:
+#     - Observable outcome that makes success or material failure recognizable.
+# Add `dcl_override` only when this capability materially differs from the
+# product default. See the Product Intent Manager DCL guidance.
 
-release:
-  included_capability_ids: []
-  boundary: ''
-  exclusions: []
-  success_measures: []
-  # - Observable measure with a confirmed target.
+exclusions: []
+success_measures: []
+# - Observable product measure when one is useful.

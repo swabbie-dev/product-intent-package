@@ -13,10 +13,17 @@ erDiagram
 ```
 
 There is exactly one counter record, seeded at deployment with `value: 0`.
-Reads do not mutate it. An accepted increment changes `value` atomically by one;
-a failure confirmed before commit does not change it. `RULE-001` owns those
-behavioral requirements.
+Reads do not mutate it. `RULE-001` owns increment behavior.
 
-`DATA-001` is non-personal product data retained for the product lifetime.
-Production backups or exports must make it recoverable, and application rollback
-must not delete or reset it.
+## Current rationale
+
+- One singleton record represents `DOM-001` because the product has one shared
+  counter and excludes accounts and multi-tenancy.
+- `value` is persisted and incremented atomically because otherwise concurrent
+  accepted increments could be lost and a reload could show a nonauthoritative
+  client value.
+- `updated_at` records the latest durable change because operators need minimal
+  context when diagnosing or restoring the shared value.
+- `DATA-001` is retained for the product lifetime and protected by backups or
+  exports because deployment, rollback, or infrastructure failure must not
+  reset the product's state.

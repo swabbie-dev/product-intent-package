@@ -13,12 +13,11 @@ references it. These boundaries form the mockup inventory; individual flow
 nodes do not each require a mockup. A project may consistently distinguish
 surface types with labels such as `VIEW`, `COMPONENT`, `DIALOG`, and `EXTERNAL`.
 
-For each surface governed by an authority-confirmed mockup, add the exact frame
-or node, version or branch when available, intent status, and any companion
-example or export-code reference. The confirmed mockup is the implementation
-target, not a visual attachment. Do not add, remove, merge, split, or materially
-alter its views, components, or states without accountable product or design
-approval. Keep unconfirmed mockups labeled as evidence or proposals.
+For each surface governed by a current release mockup, add the exact frame or
+node, version or branch when available, and any companion example or export-code
+reference. The linked mockup is the implementation target, not a visual
+attachment. Do not add, remove, merge, split, or materially alter its views,
+components, or states unless the product or design leader changes the target.
 
 Use labeled edges for navigation choices and visible permission, availability,
 or validation outcomes. Use a diamond only for a question visibly presented to
@@ -29,8 +28,14 @@ table, or sequence.
 ```mermaid
 flowchart TD
   %% Label the flow with its FLOW-* ID. Use ACTOR-* and SCREEN-* IDs where
-  %% In reconstruction, label non-confirmed claims with status and source.
   %% applicable, and phrase each node as an actor action or visible product
   %% response. Reserve diamonds for questions visibly presented to the actor.
   %% Use labeled subgraphs to bound user-visible surfaces and their states.
 ```
+
+## Current rationale
+
+- State each active reason for the surface boundaries, visible state
+  distinctions, navigation, or recovery experience.
+- Explain current cause and effect; do not narrate prior designs, superseded
+  decisions, dates, or product history.

@@ -1,3 +1,6 @@
+# This product uses a separate acceptance file because its failure, recovery,
+# and quality scenarios are clearer as detailed given/when/then cases than as a
+# short capability list.
 scenarios:
   - id: ACC-001
     name: Apply an accepted increment exactly once
