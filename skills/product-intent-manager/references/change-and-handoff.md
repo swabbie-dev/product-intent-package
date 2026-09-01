@@ -136,8 +136,11 @@ For an existing-product or design-led implementation, also check that:
 
 For product-significant database design, check that:
 
-- each index uses matching attribute badges and an `INDEXES` compartment and
-  states its product or process reason;
+- each physical index has exactly one badge and one complete `INDEXES`
+  compartment entry; indexes are never grouped under one badge or abbreviated
+  as `same key`, and every attribute badge matches its key order, predicate,
+  expression, or included-column role;
+- each index states its product or process reason;
 - an index or predicate supports an independently stated product rule rather
   than inventing a classification;
 - any explicit lock or serialization protects a named invariant, is no broader

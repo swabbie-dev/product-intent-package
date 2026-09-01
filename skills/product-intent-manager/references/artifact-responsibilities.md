@@ -242,14 +242,26 @@ navigation, process order, transition validity, or a full database definition.
 When an index is product-significant, use the combined badge-and-compartment
 convention:
 
-1. Put a textual badge on every affected attribute row: `[I1·1]`, `[I1·2]`,
-   and so on for an ordinary index; `U` for a unique index or constraint; and
-   `P` for a partial, expression, or otherwise specialized index. Use `·where`,
-   `·inc`, or `·expr` for predicate-only, included, or expression-source
-   columns. Show every badge when a column participates in several indexes.
-2. Repeat each badge in an `INDEXES` compartment immediately below the entity.
-   Use matching colors when the tool allows, while retaining text so color is
-   never the only signal.
+1. Assign one base badge to exactly one physical index definition. `[I1]` may
+   identify only one index; it must never label two definitions, variants, or
+   alternatives. Two indexes receive two badges even when they use the same
+   keys, support the same sequence, or differ only by predicate.
+2. Choose the prefix from the definition: `I` for an ordinary non-unique index,
+   `U` for an ordinary unique index or constraint, and `P` for a partial,
+   expression, or otherwise specialized index. Use `P` for a specialized index
+   even when it is also unique, and state `UNIQUE` in its full definition.
+3. Put the base badge plus a role suffix on every affected attribute row.
+   `·1`, `·2`, and so on mean first, second, and subsequent key columns in that
+   index's order; they do not mean table-column position or sort direction. Use
+   `·where` for a predicate-only column, `·inc` for an included column, and
+   `·expr` for a column that supplies an indexed expression. Show every badge
+   when one column participates in several indexes.
+4. Repeat each base badge once in an `INDEXES` compartment immediately below
+   the entity. Write that index's complete current definition; do not use
+   shorthand such as `same key`, combine multiple physical names in one entry,
+   or require the reader to infer keys, directions, includes, expressions, or
+   predicates from another badge. Use matching colors when the tool allows,
+   while retaining text so color is never the only signal.
 
 The compartment owns only the current intended definition and relevant reason:
 physical name when needed, uniqueness and method, ordered keys and direction,
@@ -278,6 +290,36 @@ INDEXES
      UNIQUE BTREE (match_id ASC) WHERE disabled_at IS NULL
      Supports RULE-001: at most one active page per Match
 ```
+
+Indexes with the same ordered keys but different predicates remain separate:
+
+```text
+ATTRIBUTE       TYPE         INDEX BADGE
+kind            TEXT         [P2·1] [P3·1]
+enqueued_at     TIMESTAMPTZ  [P2·2] [P3·2]
+id              TEXT         [P2·3] [P3·3]
+available_at    TIMESTAMPTZ  [P2·inc]
+status          TEXT         [P2·where] [P3·where]
+priority        TEXT                    [P3·where]
+
+INDEXES
+[P2] pipeline_job_queue_arrival_idx
+     BTREE (kind ASC, enqueued_at ASC, id ASC)
+     INCLUDE (available_at)
+     WHERE status = 'queued'
+     Supports SEQ-010: ordinary queue claims
+
+[P3] pipeline_job_requested_store_queue_idx
+     BTREE (kind ASC, enqueued_at ASC, id ASC)
+     WHERE status = 'queued' AND priority = 'requested_store'
+     Supports SEQ-010: requested-Store queue claims
+```
+
+Here `kind` has two badges because it is the first key column in two different
+indexes. The shared `·1` suffix does not combine the indexes; `[P2]` and `[P3]`
+remain independent definitions. If `priority` comes from an expression over a
+payload rather than a stored column, put `[P3·expr]` on the source attribute and
+write the exact expression in `[P3]`.
 
 An index may support an owning product rule; its predicate cannot establish the
 rule by itself. Define the meaning, affected population, owner, update

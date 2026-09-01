@@ -143,7 +143,11 @@ Record database mechanics only when they are product-significant:
 
 - For a consequential index, show a textual, color-matched badge on every
   affected ERD attribute and repeat the badge in an `INDEXES` compartment below
-  the entity. The compartment owns the current definition and the product or
+  the entity. One base badge such as `[I1]` identifies exactly one complete
+  physical index definition; never group two indexes under one badge, even when
+  their keys or purpose overlap. Give indexes with different predicates,
+  expressions, included columns, uniqueness, methods, directions, or key order
+  separate badges. The compartment owns each full definition and its product or
   process reason. Omit routine implementation indexes.
 - Before allowing several database clients or pools in one process, check
   whether a bounded shared pool can combine them without serializing genuinely
