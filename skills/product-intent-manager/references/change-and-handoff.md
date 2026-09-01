@@ -129,6 +129,9 @@ For an existing-product or design-led implementation, also check that:
 - sequences name verified existing code to `reuse unchanged` or `modify
   existing`, and justify any `new` owner;
 - consequential inputs state their source;
+- consequential database steps name each physical table or view and operation,
+  reference the canonical index badge when applicable, or show exact key fields
+  when no canonical index applies;
 - user-flow surface boundaries identify what needs mockups;
 - exact linked mockups and compatible example code are followed; and
 - every diagram's current rationale succinctly covers the active reasons for
@@ -155,6 +158,9 @@ For product-significant database design, check that:
   fencing, release, and recovery stay in the owning sequence;
 - every index or coordination badge sits on the exact physical column and type,
   never a grouped field or abbreviated reference projection;
+- sequence access annotations agree with the linked ERD table names, index
+  badges, and key fields without duplicating full index definitions or promising
+  query-planner behavior;
 - a coordination overlay is present only when multiple contenders or mechanisms
   need a contention map, and it agrees with the linked sequence and data model;
 - connection design considers aggregate fan-out and combines process-local

@@ -4,10 +4,13 @@
 records the result of each accepted request so a lost response can be reconciled
 without applying the increment again.
 
+The exact physical tables are `counter` for `DATA-001` and
+`counter_increment_receipt` for `DATA-002`.
+
 ```mermaid
 flowchart LR
-  DATA_001["<b>DATA-001 COUNTER RECORD</b><br/>id UUID PK<br/>value INTEGER · not null; minimum 0<br/>target INTEGER · not null; greater than 0<br/>state TEXT · open or complete<br/>updated_at TIMESTAMPTZ · not null"]
-  DATA_002["<b>DATA-002 INCREMENT RECEIPT</b><br/>id UUID PK<br/>counter_id UUID FK<br/>request_key UUID UK [U1·1]<br/>value_after INTEGER · not null<br/>state_after TEXT · open or complete<br/>created_at TIMESTAMPTZ · not null<br/><br/><b>INDEXES</b><br/>[U1] counter_increment_request_key<br/>UNIQUE BTREE (request_key ASC)<br/>Supports RULE-001 and SEQ-001: replay-safe increment"]
+  DATA_001["<b>DATA-001 · counter</b><br/>id UUID PK<br/>value INTEGER · not null; minimum 0<br/>target INTEGER · not null; greater than 0<br/>state TEXT · open or complete<br/>updated_at TIMESTAMPTZ · not null"]
+  DATA_002["<b>DATA-002 · counter_increment_receipt</b><br/>id UUID PK<br/>counter_id UUID FK<br/>request_key UUID UK [U1·1]<br/>value_after INTEGER · not null<br/>state_after TEXT · open or complete<br/>created_at TIMESTAMPTZ · not null<br/><br/><b>INDEXES</b><br/>[U1] counter_increment_request_key<br/>UNIQUE BTREE (request_key ASC)<br/>Supports RULE-001 and SEQ-001: replay-safe increment"]
   DATA_001 -->|"one counter records zero or more receipts"| DATA_002
 ```
 

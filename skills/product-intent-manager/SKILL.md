@@ -12,7 +12,8 @@ Keep these boundaries clear from the start:
 - **Sequence diagrams hold detailed process logic:** ordered calls and events,
   input sources, existing code to reuse or modify, decisions, durable changes,
   retries, fallbacks, timeouts, partial failures, recovery, polling, heartbeats,
-  and lease renewal.
+  lease renewal, and the tables and access paths used by consequential database
+  steps.
 - **State machines show high-level process interaction:** stable lifecycle states
   and the transitions produced by the processes represented in sequence
   diagrams. They intentionally omit each process's internal logic and routine
@@ -161,6 +162,14 @@ Record database mechanics only when they are product-significant:
   audit behavior. Do not hide them in a synthetic row such as
   `fitness_controls SMALLINT × 5`. A clearly labeled cross-diagram reference
   projection may stay abbreviated and link to the owning `DATA-*` entity.
+- In each consequential database step in a sequence, name the operation,
+  `DATA-*` ID, and exact physical table or view. Default to the owning ERD's
+  index badge when that index is the intended access path; otherwise list the
+  key lookup, join, filter, or mutation fields. When one logical step uses
+  several tables, name each table and its read, join, write, or constraint role.
+  Keep the database service as the lifeline, link rather than repeat the ERD's
+  full index definition, and do not claim the database planner is guaranteed to
+  choose an index unless that guarantee actually exists.
 - For a consequential index, show a textual, color-matched badge on every
   affected ERD attribute and repeat the badge in an `INDEXES` compartment below
   the entity. One base badge such as `[I1]` identifies exactly one complete

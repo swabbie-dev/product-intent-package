@@ -276,6 +276,16 @@ abbreviated entity repeated only as a cross-diagram reference projection. Never
 collapse product-significant columns into a synthetic grouped field. Every
 index or coordination badge requires the exact physical column and type.
 
+For every consequential database step, a sequence names the operation,
+`DATA-*` ID, exact physical table or view, and the intended access path. Prefer
+the owning ERD's index badge when a canonical index applies; otherwise name the
+exact lookup, join, filter, or mutation fields. A multi-table logical step lists
+each table and its role. Tables remain annotations on the physical database
+lifeline, not separate participants. The sequence does not repeat the full
+index definition or promise a planner choice. A runtime index becomes PIP
+content only when its access behavior is product-significant; otherwise the
+sequence records key fields and leaves physical index choice to engineering.
+
 ## Optional governance
 
 Do not create `governance.yaml` for a small team or a product whose decisions

@@ -66,7 +66,7 @@ trace graph.
 | Surface-specific content and actions | Screen or linked design record, when needed |
 | Condition combinations that select an outcome | Rule or decision table |
 | Valid states and process-triggered transitions | State machine |
-| Ordered calls, events, input provenance, retries, fallbacks, and runtime failure | Sequence |
+| Ordered calls, events, input provenance, database table use and intended access paths, retries, fallbacks, and runtime failure | Sequence |
 | Physical responsibility, owned state, provider, deployment placement, trust boundary | Stack context |
 | Cross-process contenders, coordination scope, mechanism, and protected resource | Stack-context coordination overlay |
 | Entity identity, relationship, and cardinality | Data model / ERD |
@@ -195,6 +195,48 @@ Use the physical client as a participant; a `SCREEN-*` is a visible starting or
 resulting surface, not a runtime lifeline. Split sequences only when message
 order, ownership, or recovery materially differs. A sequence may name the state
 transition it causes but must not restate the lifecycle model.
+
+### Database access in sequences
+
+For each consequential database interaction, show the logical operation,
+`DATA-*` ID, exact physical table or view, and how the step locates or constrains
+the relevant rows. Default to the ERD's index badge when a canonical index is
+the intended access path because that badge already identifies its keys,
+predicate, expressions, and included columns. If no canonical index applies,
+show the exact key lookup, join, filter, or mutation fields instead.
+
+```mermaid
+sequenceDiagram
+  participant Worker
+  participant DB as PostgreSQL
+  Worker->>DB: Claim the next eligible Job
+  Note right of DB: READ/UPDATE · DATA-006 pipeline_job<br/>ACCESS · [P2] pipeline_job_queue_arrival_idx<br/>INPUT · kind <- claim parameter; status <- queued state constant
+```
+
+Without an applicable canonical index:
+
+```mermaid
+sequenceDiagram
+  participant Backend
+  participant DB as PostgreSQL
+  Backend->>DB: Load the selected Match
+  Note right of DB: READ · DATA-003 pitch<br/>KEY · id <- route parameter
+```
+
+When one logical database call reads, joins, or writes several product tables,
+list each table and its distinct role in one adjacent note. Do the same for the
+product-significant tables behind an encapsulating function or view; omit
+incidental database catalogs and engine internals. Keep the physical database
+as the lifeline rather than turning tables into participants.
+
+The sequence references an index badge and short name; the ERD remains the sole
+owner of the complete index definition. A query planner may choose a different
+physical plan, so `ACCESS` means the intended or required access path, not a
+claim about every runtime execution. Do not promote every routine index into
+the PIP. If a particular index is required for a product latency, capacity,
+ordering, or correctness outcome, document it as product-significant in the ERD
+and reference its badge. Otherwise show the relevant key fields and leave
+physical index choice to engineering.
 
 ### Database coordination in sequences
 

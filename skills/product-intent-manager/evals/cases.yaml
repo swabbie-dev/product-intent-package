@@ -75,6 +75,19 @@ cases:
       - allow the copied entity to remain abbreviated only when it is labeled as a reference projection and links to its DATA owner
       - require exact physical columns and types for every index or coordination badge
 
+  - id: sequence-database-access-context
+    prompt: A sequence says only that PostgreSQL loads, ranks, and saves results,
+      even though the logical steps use several product tables and one required
+      product-significant index.
+    should_activate: true
+    must:
+      - keep PostgreSQL as the physical lifeline rather than adding table participants
+      - name every consequential table or view and its read, join, write, or constraint role
+      - reference the ERD index badge for the intended product-significant access path
+      - show exact key fields when no canonical index applies
+      - include input provenance for consequential access fields
+      - leave the complete index definition in the ERD and avoid promising the planner will always choose it
+
   - id: pip-governed-implementation
     prompt: Implement the application described by this Product Intent Package.
     should_activate: true

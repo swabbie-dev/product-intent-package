@@ -24,13 +24,15 @@ sequenceDiagram
   end
   Note over B: increment amount <- product constant 1
   B->>S: API-001 Increment(request_key)
-  S->>D: Begin short transaction and find DATA-002 by [U1]
+  S->>D: Begin short transaction and find the increment receipt
+  Note right of D: READ · DATA-002 counter_increment_receipt<br/>ACCESS · [U1] counter_increment_request_key<br/>INPUT · request_key <- API-001 parameter
   alt Receipt already exists
     D-->>S: Recorded value_after and state_after
     S-->>B: Return recorded result without mutation
     B-->>U: Display recorded progress or completion
   else Request key is new and counter is open
-    S->>D: Atomically increment DATA-001, complete at target, and insert DATA-002
+    S->>D: Atomically increment, complete at target, and record the receipt
+    Note right of D: READ/UPDATE · DATA-001 counter<br/>KEY · id <- COUNTER_ID product constant<br/>INSERT · DATA-002 counter_increment_receipt<br/>CONSTRAINT · [U1] request_key uniqueness
     D-->>S: Commit value_after and state_after
     S-->>B: Return committed result
     B-->>U: Display progress or Target reached
@@ -84,11 +86,13 @@ sequenceDiagram
     U->>B: Open Counter or choose Retry
     Note over U,B: trigger <- user action on SCREEN-001
     B->>S: API-002 Current progress
-    S->>D: Read DATA-001 value, target, and state
+    S->>D: Read current value, target, and state
+    Note right of D: READ · DATA-001 counter<br/>KEY · id <- COUNTER_ID product constant
   else Unknown increment outcome
     Note over B: request_key <- retained input from SEQ-001
     B->>S: API-002 Reconcile(request_key)
-    S->>D: Find DATA-002 by request_key through [U1]
+    S->>D: Find the original increment receipt
+    Note right of D: READ · DATA-002 counter_increment_receipt<br/>ACCESS · [U1] counter_increment_request_key<br/>INPUT · request_key <- retained SEQ-001 value
   end
   alt Current progress or receipt is found
     D-->>S: Persisted progress and state
