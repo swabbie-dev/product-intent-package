@@ -61,6 +61,12 @@ canonical PIP for product behavior, acceptance, constraints, diagrams, and
 design targets rather than paraphrasing them. If a ticket conflicts with its
 linked PIP, the PIP governs and the ticket must be corrected or clarified.
 
+Audit against the canonical PIP, not against a ticket's wording. A ticket may
+identify which implementation area and PIP records to inspect, but the linked
+PIP supplies the expected behavior, acceptance, constraints, and design. Ticket
+status, checklists, tests, or paraphrased requirements do not prove PIP
+alignment. Report ticket drift separately from implementation drift.
+
 ## Keep the package proportional
 
 The default package has three files:
@@ -160,6 +166,12 @@ When the PIP governs implementation or an implementation-oriented sequence:
 Engineering owns unspecified internals when they do not change current
 behavior, security, privacy, data integrity, compatibility, reliability,
 operability, cost bounds, or other stated constraints.
+
+For an audit, use tickets only to locate the requested scope, affected code,
+and implementation evidence. Reopen the canonical PIP release or revision and
+derive every product-alignment criterion from its owning records. Follow direct
+links and obvious semantic dependents needed to judge that scope; do not turn
+ticket acceptance or completion status into the audit target.
 
 ## Data access and concurrency
 

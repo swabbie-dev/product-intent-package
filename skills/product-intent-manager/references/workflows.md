@@ -117,24 +117,29 @@ a PIP:
    only execution boundaries, code anchors, order, tips, hazards, blockers,
    progress, and proportional verification. Do not restate product behavior,
    acceptance, constraints, diagram logic, data rules, or design targets.
-3. Treat code, migrations, tests, tickets, logs, and runtime behavior as
+3. For an audit, use tickets to identify the requested implementation scope,
+   affected code, and relevant PIP links. Derive audit criteria from the
+   canonical PIP owners, not from ticket wording, checklists, or status. Follow
+   direct links and obvious semantic dependents needed to judge that scope.
+4. Treat code, migrations, tests, tickets, logs, and runtime behavior as
    implementation evidence. They do not change product intent. A ticket may
    narrow execution scope but cannot revise the PIP.
-4. Compare planned or observed product-significant behavior, schema, policy,
+5. Compare planned or observed product-significant behavior, schema, policy,
    queries, and design with the task-start PIP and any later direct instruction
    from a verified authority whose scope covers the complete change.
-5. Inspect existing implementation owners before adding code. Follow sequence
+6. Inspect existing implementation owners before adding code. Follow sequence
    anchors marked `reuse unchanged` or `modify existing`, and verify input
    provenance.
-6. Follow exact linked mockups. Use compatible example or export code when
+7. Follow exact linked mockups. Use compatible example or export code when
    available, without silently changing surfaces, components, states, or
    interactions.
-7. Proceed with ordinary internal choices that stay inside current behavior and
+8. Proceed with ordinary internal choices that stay inside current behavior and
    material constraints.
-8. Report implementation deviations in the task or audit result. Fix the
-   implementation toward the PIP when authorized. Do not edit the canonical PIP
-   merely to document what the implementation currently does.
-9. If the team wants the implementation difference to become product intent,
+9. Report implementation-to-PIP deviations in the task or audit result, and
+   report ticket-to-PIP drift separately. Fix the implementation toward the PIP
+   when authorized. Do not edit the canonical PIP merely to document what the
+   ticket or implementation currently says or does.
+10. If the team wants the implementation difference to become product intent,
    create a coherent PIP fork for review by an authority whose scope covers the
    complete change. Adopt it only after that product decision.
 

@@ -123,6 +123,18 @@ cases:
       - define completion as alignment with the linked PIP plus task-specific evidence rather than duplicated acceptance checklists
       - correct or clarify a conflicting ticket and resolve missing product meaning in the PIP rather than letting ticket text become product authority
 
+  - id: audit-pip-not-ticket
+    prompt: Audit the implementation for a completed Linear ticket whose acceptance checklist paraphrases, and partly differs from, its linked canonical PIP records.
+    should_activate: true
+    must:
+      - use the ticket to identify the requested implementation scope, affected code, and relevant PIP records
+      - record and read the canonical PIP release or revision used as the audit baseline
+      - derive expected behavior, acceptance, constraints, data rules, and design targets from the PIP rather than the ticket
+      - avoid treating ticket status, checked boxes, or passing ticket-specific tests as proof of PIP alignment
+      - follow direct PIP links and obvious semantic dependents needed to assess the scoped implementation
+      - report ticket-to-PIP drift separately from implementation-to-PIP drift
+      - avoid changing the PIP to make either the ticket or implementation appear compliant
+
   - id: document-unapproved-implementation-change
     prompt: An implementer added a persisted eligibility flag and changed retrieval behavior even though the PIP only requires safe public output. Update the PIP to document what now exists.
     should_activate: true

@@ -40,11 +40,19 @@ significant behavior, design, schema, migration, query, policy, and data changes
 with that baseline and later direct instructions from a verified authority whose
 scope covers the change.
 
+For an audit, a ticket may guide which implementation area, code, and PIP
+records to inspect. It is not the conformance target. Derive expected behavior,
+acceptance, constraints, diagrams, data rules, and design targets from the
+canonical PIP owners. Follow direct links and obvious semantic dependents needed
+to assess the requested scope. A completed ticket, checked box, passing test, or
+faithful-looking paraphrase does not establish PIP alignment.
+
 Implementation findings stay in the task, audit, or code review. Do not add an
 as-built lane, implementation observation, deviation status, or implementation
 DCL to the PIP. If the implementation is wrong, fix it toward the PIP. If the
 team wants different product intent, create a coherent PIP fork and route that
-product change separately.
+product change separately. Report ticket-to-PIP drift separately from
+implementation-to-PIP drift so neither is mistaken for product authority.
 
 Apply the semantic-expansion boundary in
 [Authority and Evidence](authority-and-evidence.md#semantic-expansion-boundary)
@@ -223,8 +231,9 @@ and `git diff --check` is clean when Git is used.
 
 Separately compare implementation with the PIP when implementation is in scope.
 Report `aligns`, `deviates`, or `unclear` in the task or audit response and name
-only material differences. Do not persist that result in the package, and do
-not change the PIP to make divergent implementation appear compliant.
+only material differences. Use a ticket to guide audit scope, never as the
+expected product. Do not persist that result in the package, and do not change
+the PIP to make a divergent ticket or implementation appear compliant.
 
 Use existing tools and proportional manual checks. A missing renderer should be
 reported, not solved by adding Python, a package hash, snapshot tests, a new

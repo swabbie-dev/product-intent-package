@@ -352,6 +352,11 @@ and must not be mirrored into the package. A task may narrow execution scope
 but cannot revise the PIP; resolve a conflict or product gap in the PIP rather
 than treating ticket text as truth.
 
+An audit may use a task to identify which implementation area and PIP records
+are in scope. The audit target is the canonical PIP, not ticket prose, status,
+checklists, or completion evidence. Derive conformance criteria from the linked
+PIP owners and report ticket drift separately from implementation drift.
+
 The skill's coherence, format, and implementation-alignment checks describe how
 an agent should use the PIP. They do not create PIP files, fields, gates,
 signatures, readiness labels, or handoff reports. See

@@ -38,6 +38,9 @@ system link to the applicable PIP release, revision, and records rather than
 restating product behavior or acceptance. Tickets contain implementation scope,
 code anchors, order, tips, hazards, blockers, progress, and proportional
 verification. They may narrow execution but cannot revise the PIP.
+Audits may use tickets to locate the requested scope and evidence, but audit
+expected behavior and conformance against the canonical PIP—not ticket prose,
+status, or checklists.
 
 The default package has three files:
 
