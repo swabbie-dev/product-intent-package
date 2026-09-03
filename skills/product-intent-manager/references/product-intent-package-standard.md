@@ -213,7 +213,17 @@ or:
 Recommend a DCL line for each implementable sequence. Do not copy an override
 onto connected user flows or state machines. Keep implementation assessments
 and target-versus-implementation comparisons in audit or task notes outside the
-PIP. Exact requirements always override the number. See
+PIP. Exact requirements always override the number.
+
+DCL does not decide whether a rare or complex edge case is automated. When
+current intent does not already resolve the case, ask the product manager,
+originator, or other human product authority whether it should be handled
+automatically, routed to safe manual review or recovery, failed or deferred
+visibly, or excluded from the release. Record the chosen behavior in its owning
+PIP artifact. Apply this at every DCL; preserve automatic protection wherever
+harm could occur before manual review.
+
+See
 [Development Complexity](development-complexity.md).
 
 ## Stable IDs and links

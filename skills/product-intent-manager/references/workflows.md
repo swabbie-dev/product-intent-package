@@ -60,7 +60,10 @@ or inconsistent. Do not use the canonical PIP as the research workspace.
 Before assigning DCL, establish current user interactions, whether users wait,
 failure consequences, acceptable interruption and recovery, credible load,
 risk, and operating needs. Do not infer DCL from company stage or implementation
-complexity.
+complexity. Before expanding the design for a rare or complex edge case the PIP
+does not resolve, ask a human product authority whether it should be automatic,
+routed to safe manual review or recovery, failed or deferred visibly, or
+excluded from the release. Do not infer that choice from DCL.
 
 ## Complete
 

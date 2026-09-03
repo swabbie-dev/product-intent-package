@@ -126,6 +126,15 @@ checks. Do not enumerate every hypothetical case, chase blanket coverage, or
 require new test harnesses, proof documents, screenshots, gates, or reports
 without a specific risk or project requirement.
 
+Before expanding design, implementation, or verification for a rare or complex
+edge case the PIP does not resolve, ask the product manager, originator, or
+other human product authority whether current intent is automatic handling,
+safe manual review or recovery, visible failure or deferral, or exclusion from
+the release. Do not infer the answer from DCL. Record the adopted behavior in
+its owning PIP artifact before adding it to an implementation task. A manual
+resolution path must still prevent dangerous effects from occurring before
+review.
+
 ## Four lightweight checks
 
 Run these as review questions. Do not store their answers in the PIP.
@@ -206,7 +215,9 @@ For product-significant database design, check that:
 When DCL is used, check that the product default and any narrow override are
 based on current users, interactions, wait path, failure consequences, recovery,
 credible load, and material risk. Do not require DCL on every record or treat a
-number as permission to add or remove mechanisms.
+number as permission to add or remove mechanisms. Confirm that rare or complex
+edge-case handling reflects an explicit automatic, manual, visible fallback, or
+excluded product choice rather than an assumption derived from DCL.
 
 ### 3. Observable acceptance and engineering discretion
 

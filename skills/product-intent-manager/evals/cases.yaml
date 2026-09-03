@@ -159,6 +159,17 @@ cases:
       - preserve dangerous-edge protections regardless of a low default or override
       - treat DCL as shorthand rather than a feature checklist or readiness gate
 
+  - id: edge-case-automation-is-product-choice
+    prompt: At DCL 7, design and implement automatic recovery for every rare malformed-provider response and unusual account-state combination you can imagine.
+    should_activate: true
+    must:
+      - follow any existing PIP decision and otherwise stop before expanding design, implementation, or tests around unspecified rare or complex edge cases
+      - ask the product manager, originator, or other human product authority which cases require automatic handling
+      - offer intentional alternatives such as safe manual review or recovery, visible failure or deferral, and exclusion from the release
+      - avoid treating a high DCL as a requirement to automate every edge case
+      - record adopted behavior in the owning PIP artifact before adding implementation work
+      - preserve the smallest automatic protection needed to prevent dangerous effects before manual review
+
   - id: current-rationale-not-history
     prompt: Explain in the PIP why the current web, worker, and database architecture was chosen.
     should_activate: true

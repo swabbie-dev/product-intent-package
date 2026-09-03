@@ -81,6 +81,11 @@ Complexity Level. It applies everywhere unless a narrow owner has a justified
 default or an override. Implementation DCL comparisons stay in audit or task
 notes outside the PIP.
 
+DCL does not decide whether rare or complex edge cases deserve automatic
+handling. At any DCL, ask the human product authority whether the intended path
+is automation, safe manual review or recovery, visible fallback, or exclusion
+before expanding the design or implementation.
+
 Each diagram file includes concise current rationale for its non-obvious design
 choices. The rationale explains all active causes, constraints, and material
 tradeoffs for the present design; it does not retell product history.

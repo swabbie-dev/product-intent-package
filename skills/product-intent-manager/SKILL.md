@@ -138,6 +138,19 @@ PIP. It is not a readiness score, acceptance gate, or reason to add machinery.
 Use the lowest level that safely fits actual users, interactions, recovery,
 risk, and credible load. A low DCL never weakens authorization, security,
 privacy, money safety, data integrity, or destructive-operation protections.
+
+DCL never requires automatic handling of every edge case. When the PIP does not
+already resolve a rare or complex case, ask the product manager, originator, or
+other human product authority before designing, implementing, or extensively
+testing it. Clarify whether current intent is automatic handling, manual review
+or recovery, visible failure or deferral, or exclusion from the release. Do
+this at every DCL; a high DCL does not make costly rare-case automation
+automatically worthwhile. Record the chosen behavior in the owning PIP artifact
+before implementation. A manual path must still contain the case safely until
+review; it cannot defer an
+authorization, security, privacy, money, data-integrity, or destructive effect
+until after harm occurs.
+
 Read [Development Complexity](references/development-complexity.md) before
 assigning or changing a level.
 
@@ -262,6 +275,9 @@ can be reused, and whether each requested test, gate, proof, or review protects
 a core outcome or dangerous edge case. Verify the core path, PIP-required
 failure or recovery behavior, and dangerous edge cases; do not demand exhaustive
 permutations, blanket coverage, new test machinery, or proof artifacts.
+Before expanding a task around a rare or complex edge case the PIP does not
+resolve, confirm the intended automatic, manual, visible fallback, or excluded
+behavior with a human product authority rather than inferring it from DCL.
 
 ## Workflow
 

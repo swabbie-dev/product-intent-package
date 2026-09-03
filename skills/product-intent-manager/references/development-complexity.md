@@ -57,6 +57,33 @@ These are judgment inputs, not numeric dimensions to average. Choose the lowest
 level that safely satisfies the current intent. Reassess when users,
 interactions, risks, or credible load materially change.
 
+## Decide edge-case handling separately
+
+DCL does not determine whether a rare or complex edge case deserves automatic
+handling. When the PIP does not already resolve the case, ask the product
+manager, originator, or other human product authority before designing,
+implementing, or extensively testing it. Clarify which current behavior is
+intended:
+
+- handle it automatically;
+- contain it and route it to manual review, intervention, or recovery;
+- fail or defer visibly with a defined next action; or
+- exclude the case from the current release.
+
+Apply this question at every DCL. Low DCL does not automatically justify manual
+handling, and high DCL does not automatically justify elaborate automation for
+a rare case. Consider frequency, user impact, time sensitivity, detectability,
+reversibility, operating burden, and the cost and complexity of reliable
+automation. Record the chosen behavior in the PIP artifact that owns the
+affected flow, acceptance, process, state, or quality constraint before chasing
+implementation detail.
+
+Manual review is valid when it is an intentional product or operating path and
+the system can safely contain the case until a human acts. It is not a reason to
+allow an authorization, security, privacy, money, data-integrity, or destructive
+effect to occur before review. Preserve the smallest automatic protection
+needed to prevent that harm, even when final resolution is manual.
+
 ## Ordinal scale
 
 Use whole levels from 1 through 10. The names are memory aids, not business
