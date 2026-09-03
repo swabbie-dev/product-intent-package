@@ -223,6 +223,15 @@ visibly, or excluded from the release. Record the chosen behavior in its owning
 PIP artifact. Apply this at every DCL; preserve automatic protection wherever
 harm could occur before manual review.
 
+When manual handling is chosen, default to reliable awareness rather than a
+complete admin control plane. The responsible admin or operator must be
+notified through a monitored path with enough context to identify and
+investigate the safely contained incident. Do not require a new admin surface
+or controls unless the approved procedure needs an action unavailable through
+existing tools, or actual frequency, urgency, or volume justifies it. Keep
+incidental operating steps in a runbook or implementation note rather than the
+PIP.
+
 See
 [Development Complexity](development-complexity.md).
 

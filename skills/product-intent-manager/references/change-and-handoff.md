@@ -135,6 +135,14 @@ its owning PIP artifact before adding it to an implementation task. A manual
 resolution path must still prevent dangerous effects from occurring before
 review.
 
+For a manual fallback, first verify that a responsible admin or operator will
+actually become aware of the incident through a monitored path and receive
+enough context to identify and investigate it. Do not require bespoke admin
+screens, queues, or action controls unless the intended response cannot be
+performed safely with existing tools or real frequency, urgency, or volume
+justifies them. Visibility is the default requirement; a full control surface
+is not.
+
 ## Four lightweight checks
 
 Run these as review questions. Do not store their answers in the PIP.
@@ -217,7 +225,9 @@ based on current users, interactions, wait path, failure consequences, recovery,
 credible load, and material risk. Do not require DCL on every record or treat a
 number as permission to add or remove mechanisms. Confirm that rare or complex
 edge-case handling reflects an explicit automatic, manual, visible fallback, or
-excluded product choice rather than an assumption derived from DCL.
+excluded product choice rather than an assumption derived from DCL. When a
+manual fallback exists, confirm that it provides monitored admin awareness
+without inventing controls the actual response does not need.
 
 ### 3. Observable acceptance and engineering discretion
 

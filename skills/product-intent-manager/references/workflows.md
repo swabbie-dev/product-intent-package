@@ -64,6 +64,10 @@ complexity. Before expanding the design for a rare or complex edge case the PIP
 does not resolve, ask a human product authority whether it should be automatic,
 routed to safe manual review or recovery, failed or deferred visibly, or
 excluded from the release. Do not infer that choice from DCL.
+For a manual fallback, define the smallest monitored notification that makes the
+responsible admin aware and provides enough incident context. Add dedicated
+admin controls only when the approved response cannot use existing tools or its
+frequency, urgency, or volume justifies them.
 
 ## Complete
 

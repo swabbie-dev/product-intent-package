@@ -85,6 +85,10 @@ DCL does not decide whether rare or complex edge cases deserve automatic
 handling. At any DCL, ask the human product authority whether the intended path
 is automation, safe manual review or recovery, visible fallback, or exclusion
 before expanding the design or implementation.
+For a manual fallback, prioritize a monitored notification that makes the
+responsible admin aware and identifies the safely contained incident. Do not
+create a dedicated admin control surface unless the actual response procedure
+or demonstrated operating need requires it.
 
 Each diagram file includes concise current rationale for its non-obvious design
 choices. The rationale explains all active causes, constraints, and material

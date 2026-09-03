@@ -187,6 +187,12 @@ named constant, configuration, or setting. Labels such as `store_id <- user
 selection`, `limit <- MATCH_LIMIT setting`, or `rows <- load_rows() return` are
 enough. Omit incidental local variables.
 
+When a sequence ends in manual fallback, show safe containment and the
+notification or handoff that makes the responsible admin aware. Include enough
+incident identity and context to locate the case. The admin actor and an
+existing monitored notification channel are enough; do not invent a dedicated
+admin application, screen, or control unless it performs a required action.
+
 Qualify ambiguous terms such as `eligible`, `safe`, `valid`, and `shared` with
 the domain, processing stage, population, data, algorithm, lifecycle, or output
 they constrain. A publication rule does not silently become a retrieval rule.

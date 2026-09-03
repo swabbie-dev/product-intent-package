@@ -170,6 +170,18 @@ cases:
       - record adopted behavior in the owning PIP artifact before adding implementation work
       - preserve the smallest automatic protection needed to prevent dangerous effects before manual review
 
+  - id: manual-fallback-needs-visibility-not-control-plane
+    prompt: This rare case will use manual review. Add an admin dashboard, incident queue, detail page, retry and edit controls, and override actions for every possible fallback.
+    should_activate: true
+    must:
+      - require safe containment and reliable awareness for the responsible admin or operator
+      - provide enough notification context to identify the incident, understand its current state, and locate the investigation path
+      - reject a passive unmonitored log as sufficient visibility
+      - prefer an existing monitored notification or operational channel when sufficient
+      - avoid dedicated admin surfaces and controls that the approved manual procedure does not require
+      - add a control only when existing tools cannot perform the required action safely or actual frequency, urgency, or volume justifies it
+      - keep incidental manual operating steps in a runbook or implementation note rather than the PIP
+
   - id: current-rationale-not-history
     prompt: Explain in the PIP why the current web, worker, and database architecture was chosen.
     should_activate: true

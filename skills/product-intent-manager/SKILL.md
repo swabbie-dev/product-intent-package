@@ -147,9 +147,20 @@ or recovery, visible failure or deferral, or exclusion from the release. Do
 this at every DCL; a high DCL does not make costly rare-case automation
 automatically worthwhile. Record the chosen behavior in the owning PIP artifact
 before implementation. A manual path must still contain the case safely until
-review; it cannot defer an
-authorization, security, privacy, money, data-integrity, or destructive effect
-until after harm occurs.
+review; it cannot defer an authorization, security, privacy, money,
+data-integrity, or destructive effect until after harm occurs.
+
+For an intentional manual fallback, prioritize reliable admin awareness over a
+complete admin control surface. The owning PIP behavior should require the
+responsible admin or operator to be notified with enough context to identify the
+incident, understand its safe current state, and find the existing place or
+procedure for investigation. When a sequence exists, show that notification or
+handoff. Use an existing monitored channel when it is sufficient; a passive log
+no one is expected to watch is not visibility. Do not invent dashboards,
+queues, retry buttons, editors, overrides, or other controls for every possible
+fallback. Add a dedicated control only when the chosen manual procedure
+actually requires that action and existing tools are insufficient, or when
+frequency, urgency, or volume justifies it.
 
 Read [Development Complexity](references/development-complexity.md) before
 assigning or changing a level.

@@ -84,6 +84,21 @@ allow an authorization, security, privacy, money, data-integrity, or destructive
 effect to occur before review. Preserve the smallest automatic protection
 needed to prevent that harm, even when final resolution is manual.
 
+For a manual fallback, the default product requirement is visibility: make the
+responsible admin or operator aware that the incident occurred and provide
+enough context to identify it, understand the safe current state, and locate the
+existing investigation or recovery procedure. Prefer the smallest reliable,
+monitored notification path already available. A log entry by itself is not
+sufficient when no person or alerting process is expected to notice it.
+
+Do not infer that manual handling requires a dedicated admin dashboard, inbox,
+queue, detail page, retry button, editor, override, or control for every case.
+Add product-specific controls only when the approved manual procedure requires
+an action that existing operational tools cannot safely perform, or when the
+case's frequency, urgency, or volume makes the control worthwhile. The PIP owns
+the visibility and product outcome; a runbook or implementation note may own
+the incidental operating steps.
+
 ## Ordinal scale
 
 Use whole levels from 1 through 10. The names are memory aids, not business
