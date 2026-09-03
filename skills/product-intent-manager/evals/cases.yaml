@@ -112,6 +112,17 @@ cases:
       - keep implementation findings and alignment results outside the PIP
       - fix implementation toward current intent or create a PIP fork for a desired intent change
 
+  - id: implementation-ticket-not-product-spec
+    prompt: Create Linear tickets to implement CAP-003, SEQ-004, and the linked mockups from this canonical Product Intent Package.
+    should_activate: true
+    must:
+      - cite the canonical PIP release or revision and link directly to the relevant records
+      - avoid copying, summarizing, or paraphrasing product behavior, acceptance, constraints, sequence logic, data rules, or mockup requirements into tickets
+      - use tickets only for implementation boundaries, code or design anchors, dependency order, tips, hazards, blockers, progress, and proportional verification
+      - let ticket scope narrow what an implementation pass touches without revising the PIP
+      - define completion as alignment with the linked PIP plus task-specific evidence rather than duplicated acceptance checklists
+      - correct or clarify a conflicting ticket and resolve missing product meaning in the PIP rather than letting ticket text become product authority
+
   - id: document-unapproved-implementation-change
     prompt: An implementer added a persisted eligibility flag and changed retrieval behavior even though the PIP only requires safe public output. Update the PIP to document what now exists.
     should_activate: true

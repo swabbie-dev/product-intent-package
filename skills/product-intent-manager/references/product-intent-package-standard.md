@@ -343,8 +343,14 @@ in governance.
 
 The existing task system or working notes own the minimal steps, assignments,
 dependencies, progress, and implementation verification needed to reach the
-PIP. They do not become product authority and must not be mirrored into the
-package.
+PIP. A task links to the canonical release, revision, and relevant records; it
+does not copy or paraphrase their behavior, acceptance, constraints, diagrams,
+data rules, or design targets. Tasks contain implementation-specific context
+such as boundaries, code anchors, order, tips, hazards, blockers, assignment,
+progress, and proportional verification. They do not become product authority
+and must not be mirrored into the package. A task may narrow execution scope
+but cannot revise the PIP; resolve a conflict or product gap in the PIP rather
+than treating ticket text as truth.
 
 The skill's coherence, format, and implementation-alignment checks describe how
 an agent should use the PIP. They do not create PIP files, fields, gates,

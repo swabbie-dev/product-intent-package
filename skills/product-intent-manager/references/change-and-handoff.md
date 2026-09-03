@@ -54,11 +54,20 @@ or encoding product policy in a database predicate.
 
 ## Minimal implementation tasks
 
-The PIP describes the intended product. The existing task tracker or concise
-working notes describe the shortest practical route from the codebase to that
-product. Keep tasks, assignment, sequence, progress, and verification outside
-the PIP. Link to the release and relevant PIP record rather than copying its
-content.
+The PIP describes the intended product. An implementation ticket in Linear,
+Notion, ClickUp, GitHub, or another task system describes only the shortest
+practical route from the codebase to that product. It is an execution overlay,
+not a second specification. Keep tasks, assignment, order, progress, and
+verification outside the PIP. Identify the canonical PIP release or revision
+and link directly to the relevant records or files.
+
+Do not copy, summarize, reinterpret, or rewrite product behavior, acceptance,
+constraints, diagram logic, data rules, or design targets into a ticket. Even a
+faithful paraphrase creates another version that can drift or be mistaken for
+authority. A task may narrow implementation scope but cannot revise the linked
+PIP. When the task and PIP conflict, follow the PIP and correct or clarify the
+task. When the PIP lacks needed product meaning, resolve that gap through the
+PIP authority process rather than making the ticket authoritative.
 
 Create or mutate an external task only when authorized. Otherwise return a
 draft. Do not introduce a PIP task file, task registry, or parallel tracker.
@@ -66,11 +75,17 @@ draft. Do not introduce a PIP task file, task registry, or parallel tracker.
 A task should contain no more than the implementer needs to act without product
 guesswork:
 
-- the intended outcome and relevant PIP links;
+- a concise implementation objective and direct PIP links or record IDs;
+- the execution boundary: what code, schema, configuration, or surfaces to
+  touch and what adjacent areas not to touch;
 - a verified code or design owner to reuse or modify when it matters;
 - only essential ordering or dependency information;
-- an observable done condition; and
-- the smallest relevant verification.
+- codebase-specific tips, known hazards, assumptions to verify, or blockers;
+- assignment, progress, and links to implementation evidence when useful; and
+- the smallest relevant verification or completion evidence.
+
+State completion as alignment with the linked PIP plus task-specific evidence.
+Do not duplicate PIP acceptance as a ticket checklist.
 
 Keep one product outcome together even when it touches several files or layers.
 Split only for independent ownership, dependency order, material risk, release
@@ -81,9 +96,10 @@ progress easier to count.
 For each task, ask:
 
 1. Does every instruction directly align the codebase with the PIP?
-2. Can any instruction or task be removed or merged?
-3. Does it reuse existing code, tests, tools, and project process where useful?
-4. Does every requested test, gate, proof, report, or review protect a core
+2. Does it link to product truth instead of restating or interpreting it?
+3. Can any instruction or task be removed or merged?
+4. Does it reuse existing code, tests, tools, and project process where useful?
+5. Does every requested test, gate, proof, report, or review protect a core
    outcome or dangerous edge case?
 
 Remove ceremony that does not survive those questions.

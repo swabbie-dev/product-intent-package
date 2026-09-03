@@ -113,23 +113,28 @@ a PIP:
 
 1. Record the task-start canonical PIP Git revision and release in the existing
    task or working notes, not in the PIP.
-2. Treat code, migrations, tests, tickets, logs, and runtime behavior as
-   implementation evidence. They do not change product intent.
-3. Compare planned or observed product-significant behavior, schema, policy,
+2. In an implementation ticket, link directly to relevant PIP records and keep
+   only execution boundaries, code anchors, order, tips, hazards, blockers,
+   progress, and proportional verification. Do not restate product behavior,
+   acceptance, constraints, diagram logic, data rules, or design targets.
+3. Treat code, migrations, tests, tickets, logs, and runtime behavior as
+   implementation evidence. They do not change product intent. A ticket may
+   narrow execution scope but cannot revise the PIP.
+4. Compare planned or observed product-significant behavior, schema, policy,
    queries, and design with the task-start PIP and any later direct instruction
    from a verified authority whose scope covers the complete change.
-4. Inspect existing implementation owners before adding code. Follow sequence
+5. Inspect existing implementation owners before adding code. Follow sequence
    anchors marked `reuse unchanged` or `modify existing`, and verify input
    provenance.
-5. Follow exact linked mockups. Use compatible example or export code when
+6. Follow exact linked mockups. Use compatible example or export code when
    available, without silently changing surfaces, components, states, or
    interactions.
-6. Proceed with ordinary internal choices that stay inside current behavior and
+7. Proceed with ordinary internal choices that stay inside current behavior and
    material constraints.
-7. Report implementation deviations in the task or audit result. Fix the
+8. Report implementation deviations in the task or audit result. Fix the
    implementation toward the PIP when authorized. Do not edit the canonical PIP
    merely to document what the implementation currently does.
-8. If the team wants the implementation difference to become product intent,
+9. If the team wants the implementation difference to become product intent,
    create a coherent PIP fork for review by an authority whose scope covers the
    complete change. Adopt it only after that product decision.
 

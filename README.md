@@ -33,6 +33,12 @@ record, implementation observation, proposal lane, handoff record, or review
 result. Git records ordinary history. Tasks, conversations, evidence,
 implementation findings, and audits stay outside the package.
 
+Implementation tickets in Linear, Notion, ClickUp, GitHub, or another task
+system link to the applicable PIP release, revision, and records rather than
+restating product behavior or acceptance. Tickets contain implementation scope,
+code anchors, order, tips, hazards, blockers, progress, and proportional
+verification. They may narrow execution but cannot revise the PIP.
+
 The default package has three files:
 
 ```text

@@ -54,6 +54,13 @@ contradictory. If a coherent change needs dependent edits outside that scope, a
 PIP fork. Read [Authority and Evidence](references/authority-and-evidence.md)
 before accepting or applying a canonical edit request.
 
+Implementation tickets in Linear, Notion, ClickUp, GitHub, or another task
+system are execution overlays, not secondary product specifications. A ticket
+may narrow what an implementation pass will touch, but it must point to the
+canonical PIP for product behavior, acceptance, constraints, diagrams, and
+design targets rather than paraphrasing them. If a ticket conflicts with its
+linked PIP, the PIP governs and the ticket must be corrected or clarified.
+
 ## Keep the package proportional
 
 The default package has three files:
@@ -214,15 +221,28 @@ the diagram conventions.
 
 ## Minimal implementation tasks
 
-The PIP owns the end state. The existing task tracker or concise working notes
-own only the smallest practical steps to reach it. Keep tasks outside the PIP
-and link them to the relevant PIP records instead of restating the package.
+The PIP owns the end state. An implementation ticket or concise working note
+owns only the smallest practical execution context needed to reach it. Identify
+the canonical PIP release or revision and link directly to the relevant record
+IDs or files. Do not copy, summarize, reinterpret, or rewrite the PIP's product
+behavior, acceptance, constraints, sequence logic, data rules, or mockup
+requirements into the ticket; parallel wording can be mistaken for authority
+and drift from its owner.
 
-A task needs only the intended outcome, a relevant PIP link, a verified code or
-design anchor when it prevents guesswork, an observable done condition, and the
-smallest useful verification. Split only for independent ownership, dependency
-order, material risk, or separately shippable scope. Do not create a ticket per
-file, layer, diagram, scenario, or implementation step.
+A useful ticket contains implementation-specific information: the execution
+boundary—including what to touch and what not to touch—verified code or design
+anchors, essential order, codebase-specific tips and hazards, blockers,
+assignment or progress, and proportional verification evidence.
+
+Use a concise implementation objective or PIP IDs for the ticket title. Define
+completion as alignment with the linked PIP plus task-specific evidence; do not
+duplicate PIP acceptance as a ticket checklist. If the PIP lacks required
+product meaning, resolve or update the PIP through its authority process rather
+than filling the gap in a ticket. Split only for independent ownership,
+dependency order, material risk, or separately shippable scope. Do not create a
+ticket per file, layer, diagram, scenario, or implementation step. Read
+[PIP Use and Alignment Checks](references/change-and-handoff.md#minimal-implementation-tasks)
+when creating or reviewing implementation tasks.
 
 For each task, ask whether every instruction directly aligns the codebase with
 the PIP, whether it can be removed or merged, whether existing code and tests
