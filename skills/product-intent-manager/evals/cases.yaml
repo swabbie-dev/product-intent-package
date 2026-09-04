@@ -193,7 +193,7 @@ cases:
       - use Git rather than a PIP decision log for ordinary history
 
   - id: end-state-not-construction-plan
-    prompt: The authorized PIP target is the provider's native sign-in component and loadProgress() as the loading and reconciliation owner. Update a flow that says to reuse the old component and a sequence with modify-existing labels, a migration task list, and completed-work notes.
+    prompt: The authorized PIP target is the provider's native sign-in component and loadProgress() as the loading and reconciliation owner. Update a flow that says to reuse the old component and a sequence with modify-existing labels, a one-time migration task list, and completed-work notes. The package also directs workers to drain in-flight work on every deployment and preserve saved work during maintenance.
     should_activate: true
     must:
       - state the intended component and function responsibility as present-tense facts or timeless requirements
@@ -201,6 +201,8 @@ cases:
       - keep still-useful implementation work in external notes rather than moving it to another PIP artifact
       - preserve consequential runtime logic, input provenance, intended ownership, current rationale, and compatibility constraints
       - distinguish intent from evidence that the implementation already matches it
+      - preserve standing deployment and maintenance rules because they remain applicable after any one execution
+      - distinguish ongoing intent from one-time work by whether completion makes the instruction obsolete, not by imperative wording or action order
 
   - id: negative-ordinary-coding
     prompt: Refactor this utility module without changing behavior.

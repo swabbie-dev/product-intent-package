@@ -164,6 +164,9 @@ knowing the previous design or pending work? Apply the
 [end-state wording guidance](product-intent-package-standard.md#write-the-end-state-not-the-change):
 keep runtime behavior and intended owners, move construction steps and progress
 outside the PIP, and do not treat present-tense intent as evidence of delivery.
+Preserve standing maintenance, deployment, recovery, and other action rules
+that still govern the next applicable situation after being followed once.
+Imperative wording or ordered actions alone do not make a rule a task.
 
 If a material product question remains, resolve it outside the package. Keep the
 canonical PIP unchanged and use an isolated PIP fork for a concrete alternative.

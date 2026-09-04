@@ -36,14 +36,20 @@ what the product is meant to be. Git records ordinary history.
 
 Write every PIP artifact as present-tense product facts or timeless requirements:
 “The sign-in surface uses the provider's native component” or “Use the provider's
-native component for sign-in.” Describe the intended result, not how to reach
-it or what it replaces. Never put reuse/modify directions, “replace the old,”
-“will add,” migration steps, or completed-work narration in the PIP; those
-belong only in external tasks or notes.
+native component for sign-in.” Describe the intended result, not the one-time
+work to reach it or what it replaces. Never put reuse/modify directions,
+“replace the old,” “will add,” one-time migration steps, or completed-work
+narration in the PIP; those belong only in external tasks or notes.
 This applies to diagram labels, supporting notes, and acceptance too. Detailed
 runtime logic and required components or code owners still belong in the PIP;
 construction instructions do not. Present-tense intent is not a claim that the
 implementation already matches it.
+
+Standing action rules are valid PIP content, including product-significant
+maintenance, deployment, and recovery instructions. Ask: “After this action is
+completed once, does the rule still govern the next applicable situation?”
+If yes, it is ongoing intent, not a completed task. Do not remove a valid rule
+merely because it uses an imperative or describes ordered actions.
 
 Keep conversations, evidence, unresolved questions, implementation findings,
 tasks, and review results outside the canonical package. If someone wants to

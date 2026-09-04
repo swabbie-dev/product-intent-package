@@ -94,11 +94,13 @@ It specifies intent, not evidence that the code already implements it.
 | Reuse the existing sign-in component instead of the old custom view. | The shared sign-in surface uses the provider's native sign-in component. |
 | Modify `loadProgress()` to reconcile uncertain requests. | `loadProgress()` owns initial loading and reconciliation of uncertain requests. |
 | We added retries; next, implement the failure message. | A failed read offers Retry and keeps Increment unavailable. |
+| Add graceful shutdown in the next deployment. | On each deployment, drain in-flight work before stopping the worker. |
 
-Keep work order, reuse/modify/new labels, migration steps, implementation gaps,
-completion reports, and before/after comparisons in tasks or working notes
-outside the PIP. Keep ordinary history in Git. Do not merely change “will add”
-to “adds”: rewrite the sentence around the resulting behavior or constraint.
+Keep work order, reuse/modify/new labels, one-time migration steps,
+implementation gaps, completion reports, and before/after comparisons in tasks
+or working notes outside the PIP. Keep ordinary history in Git. Do not merely
+change “will add” to “adds”: rewrite the sentence around the resulting behavior
+or constraint.
 
 Do not remove technical design meaning to achieve this. Required components,
 function ownership, input provenance, detailed runtime steps, retries, data
@@ -106,6 +108,17 @@ rules, and compatibility constraints remain in their owning artifacts. “A retr
 uses the original request key” describes runtime behavior, not construction
 work. Current release identifiers and supported schema or protocol versions
 also remain valid facts; a chronology of version changes does not.
+
+Standing instructions for maintenance, deployment, recovery, or other recurring
+conditions are also valid when they define product-significant operating
+behavior. For example, “During maintenance, preserve saved work and show the
+unavailable state” remains applicable after any one maintenance event.
+Distinguish these by meaning, not verb tense: after an action is performed,
+does the rule still govern the next applicable situation? A standing rule does
+not become stale merely because it has been followed; a one-time change task
+becomes obsolete when completed. Preserve the former in its owning PIP artifact
+and keep the latter in companion tasks. Incidental runbook commands still
+belong outside the PIP.
 
 ### Alternative intent uses a PIP fork
 
