@@ -8,6 +8,36 @@ conventions, not new artifact types or a requirement to document every column,
 call, or branch. [Artifact Responsibilities](artifact-responsibilities.md) owns
 the meaning and selection rules.
 
+## Recommended dark-mode style
+
+Default to dark-mode diagram styling unless the project requests another theme.
+Use a near-black canvas, dark navy or charcoal panels, light text, and visible
+but restrained borders. A useful starting palette is:
+
+| Element | Color |
+| --- | --- |
+| Canvas | `#101213` |
+| ERD rows | `#111827` |
+| Entity heading / section heading | `#263544` / `#1f2c38` |
+| Primary text / secondary text | `#e5edf5` / `#b8c4d0` |
+| Outer borders / row separators | `#8ea0b3` / `#344556` |
+| Sequence notes | `#242626` with light text |
+| Sequence arrows / lifelines and branch outlines | light gray / muted blue |
+| Index badge accents: I / U / P | `#6ea8ff` / `#6fd38a` / `#c58aff` |
+
+For ERDs, use tinted badge fills with brighter outlines and light labels. For
+sequences, keep action text and arrows clear against the canvas, use subdued
+note panels, and distinguish branch frames without overwhelming the messages.
+Keep text labels alongside every color distinction.
+
+Start Mermaid with `config.theme: dark`; style custom HTML table cells and
+badges explicitly because they may not inherit the Mermaid theme. Check text,
+arrowheads, edge labels, notes, and exports against the actual background.
+Adaptive light/dark styles are acceptable if their dark appearance remains
+consistent; avoid a mixture of bright default panels and dark custom tables.
+This preference governs documentation diagrams, not the product application's
+UI theme.
+
 ## Custom table-shaped ERDs
 
 Use Mermaid `flowchart` with HTML table labels when the viewer supports them.
@@ -29,7 +59,7 @@ This permits richer entity compartments than a plain `erDiagram`:
   their owners rather than duplicating their fields.
 
 Use restrained borders, contrasting section headers, left-aligned cells, and
-adequate spacing. Support light and dark backgrounds where practical. Keep
+adequate spacing. Apply the recommended dark palette consistently. Keep
 long definitions wrapped and avoid shrinking text to fit an oversized canvas.
 Split by coherent data responsibility when necessary, preserving references.
 
@@ -39,6 +69,7 @@ badge colors and typography consistently through the viewer's supported styles:
 ```mermaid
 ---
 config:
+  theme: dark
   flowchart:
     htmlLabels: true
 ---
@@ -86,6 +117,7 @@ Choose only relevant note labels:
 ```mermaid
 ---
 config:
+  theme: dark
   sequence:
     noteAlign: left
 ---

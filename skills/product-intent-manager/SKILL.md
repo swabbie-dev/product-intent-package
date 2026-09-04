@@ -27,6 +27,9 @@ Keep these boundaries clear from the start:
 Missing sequence-level detail in a state machine or user flow is correct. Link
 to the owning sequence instead of copying its internals into those views.
 
+Recommend a dark-mode style for PIP diagrams: dark backgrounds, light readable
+text, subdued panels, and contrasting lines and badges. Apply it consistently
+to ERDs and sequence diagrams unless the project requests another theme.
 Prefer enriched diagram presentation: custom table-shaped ERDs with attribute,
 type, key/rule, and index-badge columns plus attached index/coordination
 compartments; numbered sequences with readable action arrows and adjacent,
