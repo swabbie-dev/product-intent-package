@@ -27,6 +27,14 @@ Keep these boundaries clear from the start:
 Missing sequence-level detail in a state machine or user flow is correct. Link
 to the owning sequence instead of copying its internals into those views.
 
+Prefer enriched diagram presentation: custom table-shaped ERDs with attribute,
+type, key/rule, and index-badge columns plus attached index/coordination
+compartments; numbered sequences with readable action arrows and adjacent,
+left-aligned notes for consequential data and execution details. Read
+[Diagram Presentation](references/diagram-presentation.md) when authoring either.
+Include only the detail that matters to the process; simpler diagrams remain
+appropriate when there is no extra information to convey.
+
 ## The canonical PIP is current intent
 
 The canonical PIP is the product's current intended end state. It does not need

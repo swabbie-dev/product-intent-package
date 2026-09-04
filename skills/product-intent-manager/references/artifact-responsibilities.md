@@ -151,6 +151,10 @@ mockup should likewise link to the exact file and named surface or variant.
 
 ## Sequences
 
+Prefer the numbered, annotated presentation in
+[Diagram Presentation](diagram-presentation.md#annotated-sequences): readable
+action arrows with adjacent labeled execution and data notes.
+
 A sequence owns detailed process logic for one consequential process. Include
 its trigger, physical `ARCH-*` participants, ordered synchronous or asynchronous
 messages, input provenance, authority and data boundaries, durable change, and
@@ -292,6 +296,10 @@ mention that invariant in a short note and link the sequence rather than drawing
 its internal loop.
 
 ## Data models and ERDs
+
+Prefer the custom table-node presentation in
+[Diagram Presentation](diagram-presentation.md#custom-table-shaped-erds) when
+fields, index badges, or coordination compartments carry product meaning.
 
 Use one data-model view for conceptual relationships and persisted entities.
 Show identity, ownership, relationships, cardinality, and product-significant
