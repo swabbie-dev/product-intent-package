@@ -56,8 +56,8 @@ sequenceDiagram
 
 - The browser creates one request key for a new action and retains it through
   reconciliation because a network failure must not turn uncertainty into a
-  second product action. A retry after reconciliation confirms no receipt reuses
-  that key; a known precommit failure may start a new attempt with a new key.
+  second product action. When reconciliation finds no receipt, Retry uses the
+  original key; a known precommit failure may start a new attempt with a new key.
 - The API checks `[U1]` before mutation and returns an existing receipt because
   replaying a recorded request is a read, not another increment.
 - The counter update, completion transition, and receipt insert share one short
@@ -102,7 +102,7 @@ sequenceDiagram
     D-->>S: No recorded request
     S-->>B: Confirmed not applied
     B-->>U: Show unchanged progress and Retry
-    Note over B: Retry reuses the retained request_key
+    Note over B: Retry uses the retained request_key
   else Read fails
     D-->>S: Read failure
     S-->>B: Confirmed failure

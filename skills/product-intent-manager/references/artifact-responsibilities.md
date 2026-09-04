@@ -175,11 +175,12 @@ implementation DCL comparison in the PIP.
 
 For an existing codebase, inspect the implementation before writing the
 sequence. Keep physical systems as lifelines. In a message or adjacent note,
-name only the existing path and function, handler, job, or module needed to
-prevent duplicate implementation, and label it `reuse unchanged` or `modify
-existing`. Call for `new` code only after confirming no suitable owner exists or
-the current PIP requires a separate responsibility. Do not build a complete
-call graph.
+name only the intended path and function, handler, job, or module needed to
+make ownership clear and prevent duplicate implementation. State its runtime
+responsibility: “`loadProgress()` reads current progress and reconciles unknown
+outcomes.” Preserve suitable existing owners. Put instructions to reuse,
+modify, replace, migrate, or create code in external implementation notes, not
+in the sequence or a supporting task list. Do not build a complete call graph.
 
 For each consequential input, state its origin: user input and surface, named
 function parameter or return, persisted field, external response or event, or

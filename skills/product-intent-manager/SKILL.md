@@ -10,7 +10,7 @@ description: Create, reconstruct, simplify, or update an explicitly requested Pr
 Keep these boundaries clear from the start:
 
 - **Sequence diagrams hold detailed process logic:** ordered calls and events,
-  input sources, existing code to reuse or modify, decisions, durable changes,
+  input sources, intended code ownership, decisions, durable changes,
   retries, fallbacks, timeouts, partial failures, recovery, polling, heartbeats,
   lease renewal, and the tables and access paths used by consequential database
   steps.
@@ -34,6 +34,17 @@ status fields, readiness labels, signatures, confirmation records, handoff
 records, implementation observations, or proposal markers. It simply states
 what the product is meant to be. Git records ordinary history.
 
+Write every PIP artifact as present-tense product facts or timeless requirements:
+“The sign-in surface uses the provider's native component” or “Use the provider's
+native component for sign-in.” Describe the intended result, not how to reach
+it or what it replaces. Never put reuse/modify directions, “replace the old,”
+“will add,” migration steps, or completed-work narration in the PIP; those
+belong only in external tasks or notes.
+This applies to diagram labels, supporting notes, and acceptance too. Detailed
+runtime logic and required components or code owners still belong in the PIP;
+construction instructions do not. Present-tense intent is not a claim that the
+implementation already matches it.
+
 Keep conversations, evidence, unresolved questions, implementation findings,
 tasks, and review results outside the canonical package. If someone wants to
 propose a different end state, create an isolated PIP fork in a branch,
@@ -54,9 +65,11 @@ contradictory. If a coherent change needs dependent edits outside that scope, a
 PIP fork. Read [Authority and Evidence](references/authority-and-evidence.md)
 before accepting or applying a canonical edit request.
 
-Implementation tickets in Linear, Notion, ClickUp, GitHub, or another task
-system are execution overlays, not secondary product specifications. A ticket
-may narrow what an implementation pass will touch, but it must point to the
+Use the team's existing task manager or implementation notes alongside the PIP.
+The PIP does not define task management, a ticket format, or a delivery workflow.
+Tickets in Linear, Notion, ClickUp, GitHub, or another task system are execution
+overlays, not secondary product specifications. A ticket may narrow what an
+implementation pass will touch, but it must point to the
 canonical PIP for product behavior, acceptance, constraints, diagrams, and
 design targets rather than paraphrasing them. If a ticket conflicts with its
 linked PIP, the PIP governs and the ticket must be corrected or clarified.
@@ -169,10 +182,11 @@ assigning or changing a level.
 
 When the PIP governs implementation or an implementation-oriented sequence:
 
-- **Reuse before adding.** Inspect the code and name the existing function,
-  handler, job, or module that should be `reuse unchanged` or `modify existing`.
-  Specify `new` only after confirming there is no suitable owner or a stated
-  constraint requires separation.
+- **Name intended code ownership.** Inspect existing code and identify the
+  function, handler, job, or module that owns the process, for example
+  “`path::function` handles this request.” Preserve suitable existing owners
+  instead of creating parallel implementations. Keep whether to reuse, modify,
+  or add code in external implementation notes, not PIP action labels.
 - **Name input provenance.** For each input that affects a branch, durable
   change, visible outcome, or acceptance, state whether it comes from a user
   and surface, a named function parameter or return, a persisted field, an
@@ -255,11 +269,13 @@ Record database mechanics only when they are product-significant:
 See [Artifact Responsibilities](references/artifact-responsibilities.md) for
 the diagram conventions.
 
-## Minimal implementation tasks
+## Boundary with companion implementation tasks
 
-The PIP owns the end state. An implementation ticket or concise working note
-owns only the smallest practical execution context needed to reach it. Identify
-the canonical PIP release or revision and link directly to the relevant record
+The PIP owns the end state. Companion tickets or working notes own the smallest
+practical execution context needed to reach it, including reuse/modify
+directions. The following guidance keeps those notes subordinate to the PIP;
+it does not prescribe a task-management process. Identify the canonical PIP
+release or revision and link directly to the relevant record
 IDs or files. Do not copy, summarize, reinterpret, or rewrite the PIP's product
 behavior, acceptance, constraints, sequence logic, data rules, or mockup
 requirements into the ticket; parallel wording can be mistaken for authority

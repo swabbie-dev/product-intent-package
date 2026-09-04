@@ -4,6 +4,10 @@ Use the workflow that matches the request. In every mode, maintain only the
 artifacts needed for this product and keep tasks, analysis, implementation
 evidence, and review results outside the PIP.
 
+In every mode, write the resulting PIP as present-tense product facts or
+timeless requirements, not as an account of changes or a list of work. See
+[end-state wording](product-intent-package-standard.md#write-the-end-state-not-the-change).
+
 ## Create
 
 1. Copy the three-file template from `assets/product-intent-template/`.
@@ -135,8 +139,9 @@ a PIP:
    queries, and design with the task-start PIP and any later direct instruction
    from a verified authority whose scope covers the complete change.
 6. Inspect existing implementation owners before adding code. Follow sequence
-   anchors marked `reuse unchanged` or `modify existing`, and verify input
-   provenance.
+   ownership and verify input provenance. Reuse or modify suitable existing
+   code rather than creating a parallel owner; keep that construction plan in
+   external implementation notes, not in the PIP.
 7. Follow exact linked mockups. Use compatible example or export code when
    available, without silently changing surfaces, components, states, or
    interactions.

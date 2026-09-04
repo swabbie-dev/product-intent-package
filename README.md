@@ -33,6 +33,13 @@ record, implementation observation, proposal lane, handoff record, or review
 result. Git records ordinary history. Tasks, conversations, evidence,
 implementation findings, and audits stay outside the package.
 
+Write PIP content as present-tense product facts or timeless requirements, not
+as instructions to change an earlier implementation. Required components and
+code owners belong in the PIP; reuse/modify labels and construction steps belong
+in external implementation notes. Describing intent does not claim it is built.
+Use the team's existing task manager alongside the PIP; the PIP does not define
+task management or prescribe a delivery workflow.
+
 Implementation tickets in Linear, Notion, ClickUp, GitHub, or another task
 system link to the applicable PIP release, revision, and records rather than
 restating product behavior or acceptance. Tickets contain implementation scope,
@@ -103,7 +110,7 @@ The five diagram responsibilities remain distinct:
 - state machine: valid lifecycle states and high-level process interaction;
 - data model/ERD: concepts, persisted records, relationships, and product-
   significant constraints; and
-- sequence: detailed ordered runtime logic, input provenance, code reuse,
+- sequence: detailed ordered runtime logic, input provenance, code ownership,
   retries, fallbacks, and recovery for one consequential process.
 
 State machines and user flows intentionally omit sequence-level detail.

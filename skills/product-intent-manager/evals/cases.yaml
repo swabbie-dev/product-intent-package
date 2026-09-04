@@ -106,7 +106,7 @@ cases:
     must:
       - record the task-start canonical PIP revision outside the PIP
       - prevent same-task tickets, code, tests, audits, and PIP edits from circularly creating product intent
-      - inspect existing code and follow sequence reuse or modification anchors
+      - inspect existing code and follow intended sequence ownership, keeping reuse or modification work in external implementation notes
       - follow exact linked mockups and compatible example code without silent redesign
       - pause before a new classification, population split, processing-boundary change, broad backfill, or product-policy predicate
       - keep implementation findings and alignment results outside the PIP
@@ -119,6 +119,7 @@ cases:
       - cite the canonical PIP release or revision and link directly to the relevant records
       - avoid copying, summarizing, or paraphrasing product behavior, acceptance, constraints, sequence logic, data rules, or mockup requirements into tickets
       - use tickets only for implementation boundaries, code or design anchors, dependency order, tips, hazards, blockers, progress, and proportional verification
+      - put reuse or modification directions in companion tasks without defining a task-management system or workflow in the PIP
       - let ticket scope narrow what an implementation pass touches without revising the PIP
       - define completion as alignment with the linked PIP plus task-specific evidence rather than duplicated acceptance checklists
       - correct or clarify a conflicting ticket and resolve missing product meaning in the PIP rather than letting ticket text become product authority
@@ -190,6 +191,16 @@ cases:
       - state all active causes, constraints, consequences, and material tradeoffs succinctly
       - avoid dates, former designs, superseded decisions, and chronological product history
       - use Git rather than a PIP decision log for ordinary history
+
+  - id: end-state-not-construction-plan
+    prompt: The authorized PIP target is the provider's native sign-in component and loadProgress() as the loading and reconciliation owner. Update a flow that says to reuse the old component and a sequence with modify-existing labels, a migration task list, and completed-work notes.
+    should_activate: true
+    must:
+      - state the intended component and function responsibility as present-tense facts or timeless requirements
+      - remove prior-design comparisons, construction instructions, and progress narration from all affected PIP content
+      - keep still-useful implementation work in external notes rather than moving it to another PIP artifact
+      - preserve consequential runtime logic, input provenance, intended ownership, current rationale, and compatibility constraints
+      - distinguish intent from evidence that the implementation already matches it
 
   - id: negative-ordinary-coding
     prompt: Refactor this utility module without changing behavior.

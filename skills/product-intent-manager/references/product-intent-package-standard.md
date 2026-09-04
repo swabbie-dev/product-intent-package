@@ -80,6 +80,33 @@ implementation work. Adjacent research, design, operations, schema, or contract
 sources remain authoritative for their own detail; link them when needed rather
 than copying them into the package.
 
+### Write the end state, not the change
+
+Use present-tense statements of intended fact or timeless directives. Both
+“The sign-in surface uses the provider's native component” and “Use the
+provider's native component for sign-in” describe the required product without
+implying a previous design or an implementation task. This convention applies
+throughout YAML, diagram labels, supporting notes, rationale, and acceptance.
+It specifies intent, not evidence that the code already implements it.
+
+| Avoid in PIP content | State the intended product instead |
+| --- | --- |
+| Reuse the existing sign-in component instead of the old custom view. | The shared sign-in surface uses the provider's native sign-in component. |
+| Modify `loadProgress()` to reconcile uncertain requests. | `loadProgress()` owns initial loading and reconciliation of uncertain requests. |
+| We added retries; next, implement the failure message. | A failed read offers Retry and keeps Increment unavailable. |
+
+Keep work order, reuse/modify/new labels, migration steps, implementation gaps,
+completion reports, and before/after comparisons in tasks or working notes
+outside the PIP. Keep ordinary history in Git. Do not merely change “will add”
+to “adds”: rewrite the sentence around the resulting behavior or constraint.
+
+Do not remove technical design meaning to achieve this. Required components,
+function ownership, input provenance, detailed runtime steps, retries, data
+rules, and compatibility constraints remain in their owning artifacts. “A retry
+uses the original request key” describes runtime behavior, not construction
+work. Current release identifiers and supported schema or protocol versions
+also remain valid facts; a chronology of version changes does not.
+
 ### Alternative intent uses a PIP fork
 
 When a different end state is being proposed, create an isolated PIP fork in a
@@ -265,12 +292,15 @@ repository layout, and similar internals when the choice does not change the
 PIP's behavior, security, privacy, data integrity, compatibility, reliability,
 operability, cost bounds, or other stated constraints.
 
-When implementation reuse matters, a sequence should name the verified path and
-symbol and say `reuse unchanged` or `modify existing`. Name `new` code only when
-no suitable owner exists or the PIP requires a separate responsibility. For
-each consequential sequence input, state its source: user and surface, named
-function parameter or return, persisted field, external payload, or named
-constant, configuration, or setting.
+When code ownership matters, inspect existing code and name the intended path,
+symbol, and responsibility declaratively, such as “`loadProgress()` owns initial
+loading and reconciliation.” Preserve a suitable existing owner; do not silently
+introduce a parallel implementation. The PIP names the required owner, not the
+work to establish it. Whether code needs reuse unchanged, modification, or new
+construction belongs in external implementation notes after inspecting the
+codebase. For each consequential sequence input, state its source: user and
+surface, named function parameter or return, persisted field, external payload,
+or named constant, configuration, or setting.
 
 An exact mockup linked as the current release target is binding visible and
 interaction intent. Implementers must preserve its surfaces, components,
@@ -360,7 +390,12 @@ in governance.
 
 ## Tasks and checks stay outside the PIP
 
-The existing task system or working notes own the minimal steps, assignments,
+Use an existing task manager or working notes alongside the PIP. The PIP does
+not define task management: no prescribed tracker, ticket schema, statuses, or
+delivery workflow. Companion tasks own reuse/modify directions and construction
+work; the PIP owns intended product behavior and responsibilities.
+
+The task system or working notes own the minimal steps, assignments,
 dependencies, progress, and implementation verification needed to reach the
 PIP. A task links to the canonical release, revision, and relevant records; it
 does not copy or paraphrase their behavior, acceptance, constraints, diagrams,

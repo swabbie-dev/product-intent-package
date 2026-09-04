@@ -21,8 +21,9 @@ For a material product-intent change:
 4. When authority covers the complete change, update the owner first, then
    affected flows, behavior, data, architecture,
    sequences, constraints, and acceptance.
-5. Refresh affected `Current rationale` sections so they state all and only the
-   active reasons for the resulting design.
+5. Write affected content as present-tense facts or timeless requirements for
+   the resulting product, not instructions to change it. Refresh `Current
+   rationale` with only the active reasons for that design.
 6. Resolve contradictions outside the package, then adopt one coherent end
    state through an editor whose authority covers the complete change and the
    team's normal Git process. Do not create a per-change signoff or approval
@@ -62,6 +63,9 @@ or encoding product policy in a database predicate.
 
 ## Minimal implementation tasks
 
+This section defines the boundary with companion tasks, not a task-management
+system or required workflow. Use the team's existing tracker or working notes.
+
 The PIP describes the intended product. An implementation ticket in Linear,
 Notion, ClickUp, GitHub, or another task system describes only the shortest
 practical route from the codebase to that product. It is an execution overlay,
@@ -86,7 +90,7 @@ guesswork:
 - a concise implementation objective and direct PIP links or record IDs;
 - the execution boundary: what code, schema, configuration, or surfaces to
   touch and what adjacent areas not to touch;
-- a verified code or design owner to reuse or modify when it matters;
+- reuse/modify directions for verified code or design owners when they matter;
 - only essential ordering or dependency information;
 - codebase-specific tips, known hazards, assumptions to verify, or blockers;
 - assignment, progress, and links to implementation evidence when useful; and
@@ -154,6 +158,13 @@ measures, and acceptance are understandable and consistent. The canonical PIP
 must describe one current end state, without alternatives, statuses,
 implementation findings, or historical narration.
 
+Read affected YAML, diagram labels, supporting notes, and acceptance as a
+description of the intended product. Would they still make sense without
+knowing the previous design or pending work? Apply the
+[end-state wording guidance](product-intent-package-standard.md#write-the-end-state-not-the-change):
+keep runtime behavior and intended owners, move construction steps and progress
+outside the PIP, and do not treat present-tense intent as evidence of delivery.
+
 If a material product question remains, resolve it outside the package. Keep the
 canonical PIP unchanged and use an isolated PIP fork for a concrete alternative.
 
@@ -177,8 +188,8 @@ artifact is not a failure.
 
 For an existing-product or design-led implementation, also check that:
 
-- sequences name verified existing code to `reuse unchanged` or `modify
-  existing`, and justify any `new` owner;
+- sequences name intended code owners and their runtime responsibilities,
+  preserving suitable existing owners without construction-task labels;
 - consequential inputs state their source;
 - consequential database steps name each physical table or view and operation,
   reference the canonical index badge when applicable, or show exact key fields
@@ -241,7 +252,7 @@ interactions. Do not duplicate every visual detail into YAML.
 
 Unspecified internals remain with engineering when choices stay inside PIP
 behavior and constraints. This discretion does not permit a parallel replacement
-for a stated reuse anchor or a silent change to current mockups, views,
+for a stated code owner or a silent change to current mockups, views,
 components, states, or interactions.
 
 ### 4. Consistency, format, and implementation alignment

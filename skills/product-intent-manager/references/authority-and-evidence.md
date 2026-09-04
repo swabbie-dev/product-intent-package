@@ -100,11 +100,13 @@ or node and version for the release. Generated or exported code remains an
 implementation reference: prefer compatible reuse, but do not let it override
 the visible target, accessibility, security, or repository constraints.
 
-Code can establish that a function exists. When the PIP sequence says `reuse
-unchanged` or `modify existing`, that instruction is current implementation
-intent. An implementer may not silently replace it with a parallel owner. A
-different end state belongs in a PIP fork or an explicit product/technical-
-leader instruction.
+Code can establish that a function exists. A PIP sequence states the intended
+owner and responsibility, not a `reuse unchanged` or `modify existing` task.
+An implementer may not silently replace that owner with a parallel one. Keep
+the codebase gap and the work to close it in external implementation notes;
+present-tense PIP wording does not prove implementation alignment. A different
+end state belongs in a PIP fork or an explicit product/technical-leader
+instruction.
 
 ## Conflict protocol
 
